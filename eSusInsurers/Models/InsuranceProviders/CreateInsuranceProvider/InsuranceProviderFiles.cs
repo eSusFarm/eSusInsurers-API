@@ -1,4 +1,4 @@
-﻿namespace eSusInsurers.Models
+﻿namespace eSusInsurers.Models.InsuranceProviders.CreateInsuranceProvider
 {
     public class InsuranceProviderFiles
     {

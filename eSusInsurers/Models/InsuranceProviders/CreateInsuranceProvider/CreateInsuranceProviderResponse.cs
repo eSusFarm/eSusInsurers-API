@@ -1,4 +1,4 @@
-﻿namespace eSusInsurers.Models
+﻿namespace eSusInsurers.Models.InsuranceProviders.CreateInsuranceProvider
 {
     /// <summary>
     /// Represents the result of a newly created insurance provider.

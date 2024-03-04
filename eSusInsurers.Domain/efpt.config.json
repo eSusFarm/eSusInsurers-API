@@ -5,22 +5,166 @@
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
-   "ModelNamespace": "EntityTypeConfigurations",
+   "ModelNamespace": "",
    "OutputContextPath": null,
-   "OutputPath": "Models",
+   "OutputPath": "Entities",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "eSusInsurers.Domain",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 2,
-   "SelectedToBeGenerated": 1,
+   "SelectedToBeGenerated": 0,
    "T4TemplatePath": null,
    "Tables": [
+      {
+         "Name": "[dbo].[AppEvents]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AppEvents_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Countries]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Countries_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Districts]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Districts_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EmailTemplates]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EmailTemplates_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Functionalities]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Functionalities_AU]",
+         "ObjectType": 0
+      },
       {
          "Name": "[dbo].[InsuranceProviderDocuments]",
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[InsuranceProviderDocuments_AU]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[InsuranceProviders]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[InsuranceProviders_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[InsurerUsers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[InsurerUsers_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Locations]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Locations_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Regions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Regions_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RoleFunctionalities]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RoleFunctionalities_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Roles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Roles_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RoleSubFunctionalities]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RoleSubFunctionalities_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SeasonPhases]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SeasonPhases_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Seasons]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Seasons_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SubCounties]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SubCounties_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SubFunctionalities]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SubFunctionalities_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Users]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Users_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserTypes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserTypes_AU]",
          "ObjectType": 0
       }
    ],
@@ -42,6 +186,7 @@
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
    "UseSchemaFolders": false,
    "UseSchemaNamespaces": false,
    "UseSpatial": false,

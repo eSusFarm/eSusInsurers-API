@@ -3,7 +3,7 @@ using eSusInsurers.Common.Mappings;
 using eSusInsurers.Domain.Entities;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace eSusInsurers.Models
+namespace eSusInsurers.Models.InsuranceProviders.CreateInsuranceProvider
 {
     /// <summary>
     /// CreateInsuranceProviderRequest
