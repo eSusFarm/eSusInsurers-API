@@ -7,36 +7,33 @@ using System.Collections.Generic;
 
 namespace eSusInsurers.Domain.Entities.Configurations
 {
-    public partial class RoleSubFunctionalityConfiguration : IEntityTypeConfiguration<RoleSubFunctionality>
+    public partial class PaymentModesAuConfiguration : IEntityTypeConfiguration<PaymentModesAu>
     {
-        public void Configure(EntityTypeBuilder<RoleSubFunctionality> entity)
+        public void Configure(EntityTypeBuilder<PaymentModesAu> entity)
         {
             entity.Property(x => x.Id)
-                  .HasColumnName("RoleSubFunctionalityId");
+           .HasColumnName("HistoryRowId");
 
-            entity.HasKey(e => e.Id).HasName("PK__RoleSubF__6EC696773AEAF78C");
+            entity.HasKey(e => e.Id).HasName("PK__PaymentM__5F389638FC7BC967");
+
+            entity.ToTable("PaymentModes_AU");
 
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.HistoryCreatedDate).HasColumnType("datetime");
             entity.Property(e => e.ModifiedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-            entity.Property(e => e.SubFunctionality)
-                .IsRequired()
-                .HasMaxLength(200)
+            entity.Property(e => e.PaymentMode)
+                .HasMaxLength(100)
                 .IsUnicode(false);
-
-            entity.HasOne(d => d.RoleFunctionality).WithMany(p => p.RoleSubFunctionalities)
-                .HasForeignKey(d => d.RoleFunctionalityId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_RoleFunctionalities");
 
             OnConfigurePartial(entity);
         }
 
-        partial void OnConfigurePartial(EntityTypeBuilder<RoleSubFunctionality> entity);
+        partial void OnConfigurePartial(EntityTypeBuilder<PaymentModesAu> entity);
     }
 }

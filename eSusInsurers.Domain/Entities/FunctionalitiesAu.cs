@@ -7,13 +7,16 @@ namespace eSusInsurers.Domain.Entities;
 
 public partial class FunctionalitiesAu : BaseAuditableEntity
 {
+
     public DateTime HistoryCreatedDate { get; set; }
 
     public int FunctionalityId { get; set; }
 
-    public string Feature { get; set; }
+    public int FeatureId { get; set; }
 
     public string Functionality { get; set; }
 
     public bool? IsActive { get; set; }
+
+    public virtual Feature Feature { get; set; }
 }

@@ -7,40 +7,37 @@ using System.Collections.Generic;
 
 namespace eSusInsurers.Domain.Entities.Configurations
 {
-    public partial class RoleFunctionalityConfiguration : IEntityTypeConfiguration<RoleFunctionality>
+    public partial class CropConfiguration : IEntityTypeConfiguration<Crop>
     {
-        public void Configure(EntityTypeBuilder<RoleFunctionality> entity)
+        public void Configure(EntityTypeBuilder<Crop> entity)
         {
             entity.Property(x => x.Id)
-                  .HasColumnName("RoleFunctionalityId");
+               .HasColumnName("CropId");
 
-            entity.HasKey(e => e.Id).HasName("PK__RoleFunc__2EE8FCDA54E22C2C");
+            entity.HasKey(e => e.Id).HasName("PK__Crops__92356115E929DB23");
 
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            entity.Property(e => e.Feature)
+            entity.Property(e => e.CropName)
                 .IsRequired()
-                .HasMaxLength(200)
+                .HasMaxLength(100)
                 .IsUnicode(false);
-            entity.Property(e => e.Functionality)
-                .IsRequired()
-                .HasMaxLength(200)
-                .IsUnicode(false);
+            entity.Property(e => e.MinOrderQuantity).HasColumnType("decimal(11, 2)");
             entity.Property(e => e.ModifiedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.QuantityUnits).HasDefaultValue(1);
 
-            entity.HasOne(d => d.Role).WithMany(p => p.RoleFunctionalities)
-                .HasForeignKey(d => d.RoleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Roles_RoleFunctionalities");
+            entity.HasOne(d => d.CropCategory).WithMany(p => p.Crops)
+                .HasForeignKey(d => d.CropCategoryId)
+                .HasConstraintName("FK__Crops__CropCateg__36470DEF");
 
             OnConfigurePartial(entity);
         }
 
-        partial void OnConfigurePartial(EntityTypeBuilder<RoleFunctionality> entity);
+        partial void OnConfigurePartial(EntityTypeBuilder<Crop> entity);
     }
 }

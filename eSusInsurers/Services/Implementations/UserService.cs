@@ -11,6 +11,7 @@ using eSusInsurers.Models.Users.ChangePassword;
 using eSusInsurers.Models.Users.Login;
 using eSusInsurers.Services.Interfaces;
 using System.Security.Claims;
+using Claim = System.Security.Claims.Claim;
 
 namespace eSusInsurers.Services.Implementations
 {
@@ -131,7 +132,7 @@ namespace eSusInsurers.Services.Implementations
 
                 _ = Task.Run(async () =>
                 {
-                  //  await _emailService.SendEmailAsync(parameters, "", new string[] { userName }, cancellationToken);
+                    await _emailService.SendEmailAsync(parameters, "SendOTP", new string[] { userName }, cancellationToken);
                 });
             }
             catch (Exception ex)

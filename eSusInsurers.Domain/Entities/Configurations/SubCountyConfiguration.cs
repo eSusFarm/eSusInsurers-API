@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<SubCounty> entity)
         {
             entity.Property(x => x.Id)
-                  .HasColumnName("SubCountyId");
+                             .HasColumnName("SubCountyId");
 
             entity.HasKey(e => e.Id).HasName("PK__SubCount__11B0FF6F27F77664");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_SubCounties_AU"));
 
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)

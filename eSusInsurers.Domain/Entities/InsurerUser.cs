@@ -7,7 +7,6 @@ namespace eSusInsurers.Domain.Entities;
 
 public partial class InsurerUser : BaseAuditableEntity
 {
-
     public string FirstName { get; set; }
 
     public string LastName { get; set; }

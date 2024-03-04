@@ -16,9 +16,7 @@ namespace eSusInsurers.Infrastructure.Repositories
 
         public async Task<EmailTemplate?> GetByEventNameAsync(string eventName, CancellationToken cancellationToken)
         {
-            return await _emailTemplates.Include(x => x.Event)
-                                        .Where(x => x.Event.EventName == eventName)
-                                        .FirstOrDefaultAsync(cancellationToken);
+            return await _emailTemplates.Include(x => x.Event).FirstOrDefaultAsync(x => x.Event.EventName == eventName, cancellationToken);
         }
     }
 }

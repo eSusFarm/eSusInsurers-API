@@ -15,7 +15,7 @@ public partial class Role : BaseAuditableEntity
 
     public virtual ICollection<EmailTemplatesAu> EmailTemplatesAus { get; set; } = new List<EmailTemplatesAu>();
 
-    public virtual ICollection<RoleFunctionality> RoleFunctionalities { get; set; } = new List<RoleFunctionality>();
+    public virtual ICollection<RoleFeature> RoleFeatures { get; set; } = new List<RoleFeature>();
 
-    public virtual ICollection<RoleFunctionalitiesAu> RoleFunctionalitiesAus { get; set; } = new List<RoleFunctionalitiesAu>();
+    public virtual ICollection<RoleFeaturesAu> RoleFeaturesAus { get; set; } = new List<RoleFeaturesAu>();
 }

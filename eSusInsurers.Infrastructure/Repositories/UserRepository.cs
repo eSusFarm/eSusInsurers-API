@@ -16,7 +16,7 @@ namespace eSusInsurers.Infrastructure.Repositories
 
         public async Task<User?> GetByUserNameAsync(string userName, CancellationToken cancellationToken)
         {
-            return await _users.Include(x=>x.UserType).FirstOrDefaultAsync(x => x.UserName == userName, cancellationToken);
+            return await _users.Include(x => x.UserType).FirstOrDefaultAsync(x => x.UserName == userName, cancellationToken);
         }
     }
 }

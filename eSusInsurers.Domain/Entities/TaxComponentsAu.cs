@@ -5,19 +5,15 @@ using System.Collections.Generic;
 
 namespace eSusInsurers.Domain.Entities;
 
-public partial class RoleFunctionalitiesAu : BaseAuditableEntity
+public partial class TaxComponentsAu : BaseAuditableEntity
 {
     public DateTime HistoryCreatedDate { get; set; }
 
-    public int RoleFunctionalityId { get; set; }
+    public int TaxComponentId { get; set; }
 
-    public string Feature { get; set; }
+    public string TaxComponent { get; set; }
 
-    public string Functionality { get; set; }
-
-    public int RoleId { get; set; }
+    public int? Value { get; set; }
 
     public bool? IsActive { get; set; }
-
-    public virtual Role Role { get; set; }
 }

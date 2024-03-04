@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<InsuranceProvider> entity)
         {
             entity.Property(x => x.Id)
-                 .HasColumnName("InsurerId");
+                            .HasColumnName("InsurerId");
 
             entity.HasKey(e => e.Id).HasName("PK__Insuranc__7E508CE610302A5F");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_InsuranceProviders_AU"));
 
             entity.Property(e => e.Address).IsUnicode(false);
             entity.Property(e => e.Comments).IsUnicode(false);

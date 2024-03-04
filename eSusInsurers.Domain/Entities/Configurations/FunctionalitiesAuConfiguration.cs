@@ -12,7 +12,7 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<FunctionalitiesAu> entity)
         {
             entity.Property(x => x.Id)
-                 .HasColumnName("HistoryRowId");
+                            .HasColumnName("HistoryRowId");
 
             entity.HasKey(e => e.Id).HasName("PK__Function__5F3896386691478B");
 
@@ -22,10 +22,6 @@ namespace eSusInsurers.Domain.Entities.Configurations
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            entity.Property(e => e.Feature)
-                .IsRequired()
-                .HasMaxLength(200)
-                .IsUnicode(false);
             entity.Property(e => e.Functionality)
                 .IsRequired()
                 .HasMaxLength(200)
@@ -35,6 +31,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Feature).WithMany(p => p.FunctionalitiesAus)
+                .HasForeignKey(d => d.FeatureId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Features_AU");
 
             OnConfigurePartial(entity);
         }

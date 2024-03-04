@@ -5,13 +5,11 @@ using System.Collections.Generic;
 
 namespace eSusInsurers.Domain.Entities;
 
-public partial class RoleSubFunctionality : BaseAuditableEntity
+public partial class TaxComponent : BaseAuditableEntity
 {
-    public string SubFunctionality { get; set; }
+    public string TaxComponent1 { get; set; }
 
-    public int RoleFunctionalityId { get; set; }
+    public int? Value { get; set; }
 
     public bool? IsActive { get; set; }
-
-    public virtual RoleFunctionality RoleFunctionality { get; set; }
 }

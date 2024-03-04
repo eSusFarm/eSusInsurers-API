@@ -12,7 +12,7 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<UsersAu> entity)
         {
             entity.Property(x => x.Id)
-                  .HasColumnName("HistoryRowId");
+                             .HasColumnName("HistoryRowId");
 
             entity.HasKey(e => e.Id).HasName("PK__Users_AU__5F38963819D471A3");
 
@@ -28,6 +28,9 @@ namespace eSusInsurers.Domain.Entities.Configurations
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.Otp)
+                .HasMaxLength(10)
+                .IsUnicode(false);
             entity.Property(e => e.OtpExipiryTime).HasColumnType("datetime");
             entity.Property(e => e.PasswordHash)
                 .IsRequired()

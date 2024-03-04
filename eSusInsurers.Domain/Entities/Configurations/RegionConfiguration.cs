@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<Region> entity)
         {
             entity.Property(x => x.Id)
-                  .HasColumnName("RegionId");
+                              .HasColumnName("RegionId");
 
             entity.HasKey(e => e.Id).HasName("PK__Regions__ACD844A3D37510A7");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_Regions_AU"));
 
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)

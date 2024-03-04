@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<UserType> entity)
         {
             entity.Property(x => x.Id)
-                  .HasColumnName("TypeId");
+                             .HasColumnName("TypeId");
 
             entity.HasKey(e => e.Id).HasName("PK__UserType__516F03B5146EA880");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_UserTypes_AU"));
 
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)

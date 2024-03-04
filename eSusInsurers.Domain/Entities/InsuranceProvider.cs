@@ -51,6 +51,10 @@ public partial class InsuranceProvider : BaseAuditableEntity
 
     public virtual Country Country { get; set; }
 
+    public virtual ICollection<InsurancePolicy> InsurancePolicies { get; set; } = new List<InsurancePolicy>();
+
+    public virtual ICollection<InsurancePoliciesAu> InsurancePoliciesAus { get; set; } = new List<InsurancePoliciesAu>();
+
     public virtual ICollection<InsuranceProviderDocument> InsuranceProviderDocuments { get; set; } = new List<InsuranceProviderDocument>();
 
     public virtual ICollection<InsuranceProviderDocumentsAu> InsuranceProviderDocumentsAus { get; set; } = new List<InsuranceProviderDocumentsAu>();

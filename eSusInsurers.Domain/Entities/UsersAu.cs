@@ -33,7 +33,7 @@ public partial class UsersAu : BaseAuditableEntity
 
     public bool? IsActive { get; set; }
 
-    public int? Otp { get; set; }
+    public string Otp { get; set; }
 
     public DateTime? OtpExipiryTime { get; set; }
 

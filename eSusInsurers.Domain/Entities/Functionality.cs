@@ -7,11 +7,13 @@ namespace eSusInsurers.Domain.Entities;
 
 public partial class Functionality : BaseAuditableEntity
 {
-    public string Feature { get; set; }
+    public int FeatureId { get; set; }
 
     public string Functionality1 { get; set; }
 
     public bool? IsActive { get; set; }
+
+    public virtual Feature Feature { get; set; }
 
     public virtual ICollection<SubFunctionality> SubFunctionalities { get; set; } = new List<SubFunctionality>();
 

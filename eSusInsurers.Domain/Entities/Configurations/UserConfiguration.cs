@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<User> entity)
         {
             entity.Property(x => x.Id)
-                  .HasColumnName("UserId");
+                              .HasColumnName("UserId");
 
             entity.HasKey(e => e.Id).HasName("PK__Users__1788CC4C236FCDBD");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_Users_AU"));
 
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
@@ -25,6 +27,9 @@ namespace eSusInsurers.Domain.Entities.Configurations
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.Otp)
+                .HasMaxLength(10)
+                .IsUnicode(false);
             entity.Property(e => e.OtpExipiryTime).HasColumnType("datetime");
             entity.Property(e => e.PasswordHash)
                 .IsRequired()

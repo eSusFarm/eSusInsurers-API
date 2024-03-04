@@ -23,6 +23,10 @@ public partial class Location : BaseAuditableEntity
 
     public virtual District District { get; set; }
 
+    public virtual ICollection<InsuranceRiskAu> InsuranceRiskAus { get; set; } = new List<InsuranceRiskAu>();
+
+    public virtual ICollection<InsuranceRisk> InsuranceRisks { get; set; } = new List<InsuranceRisk>();
+
     public virtual Region Region { get; set; }
 
     public virtual ICollection<Season> Seasons { get; set; } = new List<Season>();

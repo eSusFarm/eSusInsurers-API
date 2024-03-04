@@ -19,6 +19,10 @@ public partial class Season : BaseAuditableEntity
 
     public virtual Location Location { get; set; }
 
+    public virtual ICollection<InsuranceRiskAu> InsuranceRiskAus { get; set; } = new List<InsuranceRiskAu>();
+
+    public virtual ICollection<InsuranceRisk> InsuranceRisks { get; set; } = new List<InsuranceRisk>();
+
     public virtual ICollection<SeasonPhase> SeasonPhases { get; set; } = new List<SeasonPhase>();
 
     public virtual ICollection<SeasonPhasesAu> SeasonPhasesAus { get; set; } = new List<SeasonPhasesAu>();

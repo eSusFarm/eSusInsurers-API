@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<InsurerUser> entity)
         {
             entity.Property(x => x.Id)
-                 .HasColumnName("InsurerUserId");
+                           .HasColumnName("InsurerUserId");
 
             entity.HasKey(e => e.Id).HasName("PK__InsurerU__68754BA822ABDB9E");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_InsurerUsers_AU"));
 
             entity.Property(e => e.ContactNumber).HasColumnType("numeric(15, 0)");
             entity.Property(e => e.CreatedBy)

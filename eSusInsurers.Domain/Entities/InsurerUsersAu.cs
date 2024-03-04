@@ -7,7 +7,6 @@ namespace eSusInsurers.Domain.Entities;
 
 public partial class InsurerUsersAu : BaseAuditableEntity
 {
-
     public DateTime HistoryCreatedDate { get; set; }
 
     public int InsurerUserId { get; set; }

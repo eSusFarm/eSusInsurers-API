@@ -18,9 +18,29 @@ public partial class esusinsurer_nonprodContext : DbContext
 
     public virtual DbSet<AppEventsAu> AppEventsAus { get; set; }
 
+    public virtual DbSet<Claim> Claims { get; set; }
+
+    public virtual DbSet<ClaimsAu> ClaimsAus { get; set; }
+
     public virtual DbSet<CountriesAu> CountriesAus { get; set; }
 
     public virtual DbSet<Country> Countries { get; set; }
+
+    public virtual DbSet<Crop> Crops { get; set; }
+
+    public virtual DbSet<CropCategoriesAu> CropCategoriesAus { get; set; }
+
+    public virtual DbSet<CropCategory> CropCategories { get; set; }
+
+    public virtual DbSet<CropInsurance> CropInsurances { get; set; }
+
+    public virtual DbSet<CropInsuranceAu> CropInsuranceAus { get; set; }
+
+    public virtual DbSet<CropInsurancePremium> CropInsurancePremiums { get; set; }
+
+    public virtual DbSet<CropInsurancePremiumsAu> CropInsurancePremiumsAus { get; set; }
+
+    public virtual DbSet<CropsAu> CropsAus { get; set; }
 
     public virtual DbSet<District> Districts { get; set; }
 
@@ -30,9 +50,33 @@ public partial class esusinsurer_nonprodContext : DbContext
 
     public virtual DbSet<EmailTemplatesAu> EmailTemplatesAus { get; set; }
 
+    public virtual DbSet<Farmer> Farmers { get; set; }
+
+    public virtual DbSet<FarmerCrop> FarmerCrops { get; set; }
+
+    public virtual DbSet<FarmerCropsAu> FarmerCropsAus { get; set; }
+
+    public virtual DbSet<FarmersAu> FarmersAus { get; set; }
+
+    public virtual DbSet<Feature> Features { get; set; }
+
+    public virtual DbSet<FeaturesAu> FeaturesAus { get; set; }
+
     public virtual DbSet<FunctionalitiesAu> FunctionalitiesAus { get; set; }
 
     public virtual DbSet<Functionality> Functionalities { get; set; }
+
+    public virtual DbSet<InsurancePoliciesAu> InsurancePoliciesAus { get; set; }
+
+    public virtual DbSet<InsurancePolicy> InsurancePolicies { get; set; }
+
+    public virtual DbSet<InsurancePremium> InsurancePremia { get; set; }
+
+    public virtual DbSet<InsurancePremiumAu> InsurancePremiumAus { get; set; }
+
+    public virtual DbSet<InsurancePremiumFrequency> InsurancePremiumFrequencies { get; set; }
+
+    public virtual DbSet<InsurancePremiumFrequencyAu> InsurancePremiumFrequencyAus { get; set; }
 
     public virtual DbSet<InsuranceProvider> InsuranceProviders { get; set; }
 
@@ -42,6 +86,10 @@ public partial class esusinsurer_nonprodContext : DbContext
 
     public virtual DbSet<InsuranceProvidersAu> InsuranceProvidersAus { get; set; }
 
+    public virtual DbSet<InsuranceRisk> InsuranceRisks { get; set; }
+
+    public virtual DbSet<InsuranceRiskAu> InsuranceRiskAus { get; set; }
+
     public virtual DbSet<InsurerUser> InsurerUsers { get; set; }
 
     public virtual DbSet<InsurerUsersAu> InsurerUsersAus { get; set; }
@@ -50,19 +98,23 @@ public partial class esusinsurer_nonprodContext : DbContext
 
     public virtual DbSet<LocationsAu> LocationsAus { get; set; }
 
+    public virtual DbSet<PaymentMode> PaymentModes { get; set; }
+
+    public virtual DbSet<PaymentModesAu> PaymentModesAus { get; set; }
+
+    public virtual DbSet<PremiumPayment> PremiumPayments { get; set; }
+
+    public virtual DbSet<PremiumPaymentsAu> PremiumPaymentsAus { get; set; }
+
     public virtual DbSet<Region> Regions { get; set; }
 
     public virtual DbSet<RegionsAu> RegionsAus { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
-    public virtual DbSet<RoleFunctionalitiesAu> RoleFunctionalitiesAus { get; set; }
+    public virtual DbSet<RoleFeature> RoleFeatures { get; set; }
 
-    public virtual DbSet<RoleFunctionality> RoleFunctionalities { get; set; }
-
-    public virtual DbSet<RoleSubFunctionalitiesAu> RoleSubFunctionalitiesAus { get; set; }
-
-    public virtual DbSet<RoleSubFunctionality> RoleSubFunctionalities { get; set; }
+    public virtual DbSet<RoleFeaturesAu> RoleFeaturesAus { get; set; }
 
     public virtual DbSet<RolesAu> RolesAus { get; set; }
 
@@ -82,6 +134,10 @@ public partial class esusinsurer_nonprodContext : DbContext
 
     public virtual DbSet<SubFunctionality> SubFunctionalities { get; set; }
 
+    public virtual DbSet<TaxComponent> TaxComponents { get; set; }
+
+    public virtual DbSet<TaxComponentsAu> TaxComponentsAus { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserType> UserTypes { get; set; }
@@ -94,29 +150,55 @@ public partial class esusinsurer_nonprodContext : DbContext
     {
         modelBuilder.ApplyConfiguration(new Configurations.AppEventConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.AppEventsAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.ClaimConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.ClaimsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.CountriesAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.CountryConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.CropConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.CropCategoriesAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.CropCategoryConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.CropInsuranceConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.CropInsuranceAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.CropInsurancePremiumConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.CropInsurancePremiumsAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.CropsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.DistrictConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.DistrictsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.EmailTemplateConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.EmailTemplatesAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.FarmerConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.FarmerCropConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.FarmerCropsAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.FarmersAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.FeatureConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.FeaturesAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.FunctionalitiesAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.FunctionalityConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsurancePoliciesAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsurancePolicyConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsurancePremiumConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsurancePremiumAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsurancePremiumFrequencyConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsurancePremiumFrequencyAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsuranceProviderConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsuranceProviderDocumentConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsuranceProviderDocumentsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsuranceProvidersAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsuranceRiskConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsuranceRiskAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsurerUserConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsurerUsersAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.LocationConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.LocationsAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.PaymentModeConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.PaymentModesAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.PremiumPaymentConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.PremiumPaymentsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.RegionConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.RegionsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.RoleConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.RoleFunctionalitiesAuConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.RoleFunctionalityConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.RoleSubFunctionalitiesAuConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.RoleSubFunctionalityConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.RoleFeatureConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.RoleFeaturesAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.RolesAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.SeasonConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.SeasonPhaseConfiguration());
@@ -126,6 +208,8 @@ public partial class esusinsurer_nonprodContext : DbContext
         modelBuilder.ApplyConfiguration(new Configurations.SubCountyConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.SubFunctionalitiesAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.SubFunctionalityConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.TaxComponentConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.TaxComponentsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.UserConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.UserTypeConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.UserTypesAuConfiguration());

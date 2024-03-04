@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<Season> entity)
         {
             entity.Property(x => x.Id)
-                  .HasColumnName("SeasonId");
+                             .HasColumnName("SeasonId");
 
             entity.HasKey(e => e.Id).HasName("PK__Seasons__C1814E388EA3B892");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_Seasons_AU"));
 
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)

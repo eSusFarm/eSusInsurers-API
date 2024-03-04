@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<Country> entity)
         {
             entity.Property(x => x.Id)
-                  .HasColumnName("CountryId");
+                             .HasColumnName("CountryId");
 
             entity.HasKey(e => e.Id).HasName("PK__Countrie__10D1609F96CFAFE2");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_Countries_AU"));
 
             entity.Property(e => e.CountryCode)
                 .IsRequired()

@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<SubFunctionality> entity)
         {
             entity.Property(x => x.Id)
-                  .HasColumnName("SubFunctionalityId");
+                             .HasColumnName("SubFunctionalityId");
 
             entity.HasKey(e => e.Id).HasName("PK__SubFunct__BFAB7EFF10BAB273");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_SubFunctionalities_AU"));
 
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
