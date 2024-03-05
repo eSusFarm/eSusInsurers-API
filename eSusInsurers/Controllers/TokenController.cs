@@ -11,7 +11,6 @@ namespace eSusInsurers.Controllers
     [Route("insurance/token")]
     public class TokenController : BaseController
     {
-
         #region Fields
         private readonly ITokenService _tokenService;
         #endregion
@@ -58,7 +57,7 @@ namespace eSusInsurers.Controllers
         /// Refresh Access Token
         /// </remarks>
         /// <param name="tokenApiModel">Information of the user access token and refresh token</param>
-        /// <response code="200">Indicates the user token refreshed successfully.</response>
+        /// <response code="200">Indicates the refresh token is revoked.</response>
         [HttpPost("revoke"), Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Revoke()

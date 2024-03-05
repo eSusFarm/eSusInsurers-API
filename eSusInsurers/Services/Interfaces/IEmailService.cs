@@ -7,6 +7,7 @@ namespace eSusInsurers.Services.Interfaces
         Task SendEmailAsync(NotificationContentParameters parameters
                                                     , string eventName
                                                     , string[] ToAddress
-                                                    , CancellationToken cancellationToken);
+                                                    , IFormFileCollection? attachments = null
+                                                    , CancellationToken cancellationToken = default);
     }
 }

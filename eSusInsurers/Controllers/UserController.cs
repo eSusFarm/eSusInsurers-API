@@ -1,6 +1,7 @@
 ﻿using eSusInsurers.Models;
 using eSusInsurers.Models.Users.ChangePassword;
 using eSusInsurers.Models.Users.Login;
+using eSusInsurers.Models.Users.UpdatePassword;
 using eSusInsurers.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,7 +51,7 @@ namespace eSusInsurers.Controllers
         /// </remarks>
         /// <param name="userName">To check whether user name exists or not</param>
         /// <response code="200">Indicates the user existance.</response>
-        [HttpGet("check-username/{userName}")]
+        [HttpGet("{userName}/check-username")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> CheckUsername(string userName)
         {
@@ -73,13 +74,61 @@ namespace eSusInsurers.Controllers
         /// </remarks>
         /// <param name="userName">Send otp to the userName</param>
         /// <response code="200">Indicates the otp has been successsful.</response>
-        [HttpPost("send-otp/{userName}")]
+        [HttpPost("{userName}/send-otp")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> SendOtp(string userName)
         {
             try
             {
                 var response = await _userService.SendOtp(userName, new CancellationToken());
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// Confirm Otp of user
+        /// </summary>
+        /// <remarks>
+        /// COnfirm Otp od user
+        /// </remarks>
+        /// <param name="userName">userName of the user</param>
+        /// <param name="otp">Otp sent to the userName</param>
+        /// <response code="200">Indicates the otp has been confirmed.</response>
+        [HttpPost("{userName}/confirm-otp/{otp}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> ConfirmOtp(string userName, string otp)
+        {
+            try
+            {
+                var response = await _userService.ConfirmOtp(userName, otp, new CancellationToken());
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// Update user password after confirmation of otp
+        /// </summary>
+        /// <remarks>
+        /// Update user password after confirmation of otp
+        /// </remarks>
+        /// <param name="userName">userName of the user</param>
+        /// <param name="updatePasswordRequest">request for the update password</param>
+        /// <response code="200">Indicates the otp has been updated successfully.</response>
+        [HttpPost("{userName}/update-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdatePassword(string userName, [FromBody] UpdatePasswordRequest updatePasswordRequest)
+        {
+            try
+            {
+                var response = await _userService.UpdatePassword(userName, updatePasswordRequest, new CancellationToken());
                 return Ok(response);
             }
             catch (Exception e)

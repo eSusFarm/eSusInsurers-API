@@ -28,34 +28,28 @@ namespace eSusInsurers.Services.Implementations
         public async Task SendEmailAsync(NotificationContentParameters parameters
                                                      , string eventName
                                                      , string[] ToAddress
-                                                     , CancellationToken cancellationToken)
+                                                     , IFormFileCollection? attachments = null
+                                                     , CancellationToken cancellationToken = default)
         {
-            try
+            _fireForget.Execute<IUnitOfWork>(async unitOfWork =>
             {
-                _fireForget.Execute<IUnitOfWork>(async unitOfWork =>
+                try
                 {
-                    try
-                    {
-                        var templateDetails = await unitOfWork.EmailTemplateRepository.GetByEventNameAsync(eventName, cancellationToken);
+                    var templateDetails = await unitOfWork.EmailTemplateRepository.GetByEventNameAsync(eventName, cancellationToken);
 
-                        if (templateDetails != null)
-                        {
-                            var subject = _updateNotificationTemplate.UpdateNotificationContentParametrs(parameters, templateDetails.MailSubject, eventName);
-                            var content = _updateNotificationTemplate.UpdateNotificationContentParametrs(parameters, templateDetails.MailContent, eventName);
-                            var message = new Message(ToAddress, subject, content, null);
-                            await _emailSender.SendEmailAsync(message);
-                        }
-                    }
-                    catch (Exception ex)
+                    if (templateDetails != null)
                     {
-                        throw;
+                        var subject = _updateNotificationTemplate.UpdateNotificationContentParametrs(parameters, templateDetails.MailSubject, eventName);
+                        var content = _updateNotificationTemplate.UpdateNotificationContentParametrs(parameters, templateDetails.MailContent, eventName);
+                        var message = new Message(ToAddress, subject, content, attachments);
+                        await _emailSender.SendEmailAsync(message);
                     }
-                });
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            });
         }
     }
 }

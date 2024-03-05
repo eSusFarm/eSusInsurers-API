@@ -28,24 +28,23 @@ namespace EmailService.Services
 
             emailMessage.Subject = message.Subject;
 
-            var bodyBuilder = new BodyBuilder { HtmlBody = message.Content };
+            emailMessage.IsBodyHtml = true;
+
+            emailMessage.Body = message.Content;
 
             if (message.Attachments != null && message.Attachments.Any())
             {
-                byte[] fileBytes;
                 foreach (var attachment in message.Attachments)
                 {
                     using (var ms = new MemoryStream())
                     {
                         attachment.CopyTo(ms);
-                        fileBytes = ms.ToArray();
+                        emailMessage.Attachments.Add(new Attachment(ms, attachment.ContentType));
                     }
 
-                    bodyBuilder.Attachments.Add(attachment.FileName, fileBytes, ContentType.Parse(attachment.ContentType));
                 }
             }
 
-            emailMessage.Body = bodyBuilder.ToString();
             return emailMessage;
         }
 
@@ -61,9 +60,9 @@ namespace EmailService.Services
                     client.UseDefaultCredentials = false;
                     client.Credentials = new NetworkCredential(_emailConfig.UserName, _emailConfig.Password);
 
-                    client.SendAsync(mailMessage, null);
+                    await client.SendMailAsync(mailMessage);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     throw;
                 }

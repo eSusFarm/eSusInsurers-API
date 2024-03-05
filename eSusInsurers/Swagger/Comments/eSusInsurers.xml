@@ -134,7 +134,7 @@
             Refresh Access Token
             </remarks>
             <param name="tokenApiModel">Information of the user access token and refresh token</param>
-            <response code="200">Indicates the user token refreshed successfully.</response>
+            <response code="200">Indicates the refresh token is revoked.</response>
         </member>
         <member name="T:eSusInsurers.Controllers.UserController">
             <summary>
@@ -170,6 +170,28 @@
             </remarks>
             <param name="userName">Send otp to the userName</param>
             <response code="200">Indicates the otp has been successsful.</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.UserController.ConfirmOtp(System.String,System.String)">
+            <summary>
+            Confirm Otp of user
+            </summary>
+            <remarks>
+            COnfirm Otp od user
+            </remarks>
+            <param name="userName">userName of the user</param>
+            <param name="otp">Otp sent to the userName</param>
+            <response code="200">Indicates the otp has been confirmed.</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.UserController.UpdatePassword(System.String,eSusInsurers.Models.Users.UpdatePassword.UpdatePasswordRequest)">
+            <summary>
+            Update user password after confirmation of otp
+            </summary>
+            <remarks>
+            Update user password after confirmation of otp
+            </remarks>
+            <param name="userName">userName of the user</param>
+            <param name="updatePasswordRequest">request for the update password</param>
+            <response code="200">Indicates the otp has been updated successfully.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.Login(eSusInsurers.Models.Users.Login.LoginRequest)">
             <summary>

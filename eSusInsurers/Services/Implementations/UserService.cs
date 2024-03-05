@@ -9,6 +9,7 @@ using eSusInsurers.Models;
 using eSusInsurers.Models.Common;
 using eSusInsurers.Models.Users.ChangePassword;
 using eSusInsurers.Models.Users.Login;
+using eSusInsurers.Models.Users.UpdatePassword;
 using eSusInsurers.Services.Interfaces;
 using System.Security.Claims;
 using Claim = System.Security.Claims.Claim;
@@ -26,8 +27,6 @@ namespace eSusInsurers.Services.Implementations
         private readonly string _pepper;
         private readonly int _iteration = 3;
         private readonly ITokenService _tokenService;
-        private readonly IEmailTemplateRepository _email;
-
         #endregion
 
         #region Constructor
@@ -122,18 +121,99 @@ namespace eSusInsurers.Services.Implementations
 
                 await transaction.CommitAsync(cancellationToken);
 
-                var parameters = new NotificationContentParameters()
-                {
-                    Index0 = user.Otp[0].ToString(),
-                    Index1 = user.Otp[1].ToString(),
-                    Index2 = user.Otp[2].ToString(),
-                    Index3 = user.Otp[3].ToString(),
-                };
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync(cancellationToken);
 
-                _ = Task.Run(async () =>
-                {
-                    await _emailService.SendEmailAsync(parameters, "SendOTP", new string[] { userName }, cancellationToken);
-                });
+                throw;
+            }
+
+            var parameters = new NotificationContentParameters()
+            {
+                Index0 = user.Otp[0].ToString(),
+                Index1 = user.Otp[1].ToString(),
+                Index2 = user.Otp[2].ToString(),
+                Index3 = user.Otp[3].ToString(),
+            };
+
+            _ = Task.Run(async () =>
+            {
+                await _emailService.SendEmailAsync(parameters, AppEvents.SendOtp, new string[] { userName }, null, cancellationToken);
+            });
+
+            return true;
+        }
+
+        public async Task<string> ConfirmOtp(string userName, string otp, CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(userName, nameof(userName));
+
+            ArgumentNullException.ThrowIfNull(otp, nameof(otp));
+
+            var user = await _unitOfWork.UserRepository.GetByUserNameAsync(userName, cancellationToken);
+
+            if (user == null)
+                throw new Exception($"Username ({userName}) doesn't exist.");
+
+            if (user.OtpExipiryTime < _dateTime.Now)
+                throw new Exception($"Otp has been expired.");
+
+            if (user.Otp != otp)
+                throw new Exception($"Invalid Otp.");
+
+            user.Otp = null;
+
+            user.OtpExipiryTime = null;
+
+            var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
+
+            try
+            {
+                await _unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
+
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+
+                throw;
+            }
+
+            return user.PasswordSalt;
+        }
+
+        public async Task<bool> UpdatePassword(string userName, UpdatePasswordRequest request, CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(userName, nameof(userName));
+
+            ArgumentNullException.ThrowIfNull(request, nameof(request));
+
+            var user = await _unitOfWork.UserRepository.GetByUserNameAsync(userName, cancellationToken);
+
+            if (user == null)
+                throw new Exception($"Username ({userName}) doesn't exist.");
+
+            user.PasswordHash = PasswordHasher.ComputeHash(request.NewPassword, user.PasswordSalt, _pepper, _iteration);
+
+            user.ModifiedBy = user.UserName;
+
+            user.ModifiedDate = _dateTime.Now;
+
+            var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
+
+            try
+            {
+                await _unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
+
             }
             catch (Exception ex)
             {
@@ -152,12 +232,12 @@ namespace eSusInsurers.Services.Implementations
             var user = await _unitOfWork.UserRepository.GetByUserNameAsync(request.Username, cancellationToken);
 
             if (user == null)
-                return new UnauthorizedException("Username or password did not match.");
+                throw new UnauthorizedException("Username or password did not match.");
 
             var passwordHash = PasswordHasher.ComputeHash(request.Password, user.PasswordSalt, _pepper, _iteration);
 
             if (user.PasswordHash != passwordHash)
-                return new UnauthorizedException("Username or password did not match.");
+                throw new UnauthorizedException("Username or password did not match.");
 
             var claims = new[]
         {
@@ -215,12 +295,9 @@ namespace eSusInsurers.Services.Implementations
             if (user.PasswordHash != passwordHash)
                 return new UnauthorizedException("Incorrect old password.");
 
-            var claims = new[]
-        {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Role, user.UserType.UserType1),
-        };
             user.PasswordHash = PasswordHasher.ComputeHash(request.NewPassword, user.PasswordSalt, _pepper, _iteration);
+
+            user.ModifiedBy = user.UserName;
 
             user.ModifiedDate = _dateTime.Now;
 
