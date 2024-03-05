@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<EmailTemplate> entity)
         {
             entity.Property(x => x.Id)
-                  .HasColumnName("TemplateId");
+                             .HasColumnName("TemplateId");
 
             entity.HasKey(e => e.Id).HasName("PK__EmailTemplates__TemplateId");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_EmailTemplates_AU"));
 
             entity.Property(e => e.Bcc).IsUnicode(false);
             entity.Property(e => e.Cc).IsUnicode(false);

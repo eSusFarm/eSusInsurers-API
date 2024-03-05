@@ -12,7 +12,7 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<FarmersAu> entity)
         {
             entity.Property(x => x.Id)
-             .HasColumnName("HistoryRowId");
+                         .HasColumnName("HistoryRowId");
 
             entity.HasKey(e => e.Id).HasName("PK__Farmers___5F389638B6C4A290");
 
@@ -20,6 +20,9 @@ namespace eSusInsurers.Domain.Entities.Configurations
 
             entity.Property(e => e.Address)
                 .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.AdminComments)
+                .HasMaxLength(500)
                 .IsUnicode(false);
             entity.Property(e => e.ChiefName)
                 .HasMaxLength(100)
@@ -49,15 +52,24 @@ namespace eSusInsurers.Domain.Entities.Configurations
                 .IsUnicode(false)
                 .IsFixedLength();
             entity.Property(e => e.HistoryCreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.IdbackView)
+                .IsUnicode(false)
+                .HasColumnName("IDBackView");
+            entity.Property(e => e.IdfrontView)
+                .IsUnicode(false)
+                .HasColumnName("IDFrontView");
             entity.Property(e => e.Idnumber)
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("IDNumber");
             entity.Property(e => e.IsFarmerDeletedbySuperAdmin).HasColumnName("isFarmerDeletedbySuperAdmin");
             entity.Property(e => e.IsSuspended).HasColumnName("isSuspended");
+            entity.Property(e => e.Latitude).HasColumnType("decimal(20, 10)");
             entity.Property(e => e.LevelOfEducation)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.Location).IsUnicode(false);
+            entity.Property(e => e.Longitude).HasColumnType("decimal(20, 10)");
             entity.Property(e => e.MobileNumber).HasColumnType("numeric(15, 0)");
             entity.Property(e => e.MobilePin)
                 .HasColumnType("numeric(10, 0)")
@@ -81,12 +93,14 @@ namespace eSusInsurers.Domain.Entities.Configurations
             entity.Property(e => e.Password)
                 .HasMaxLength(30)
                 .IsUnicode(false);
+            entity.Property(e => e.ProfilePicture).IsUnicode(false);
             entity.Property(e => e.Province)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.RiverName)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.ServiceProvider).HasMaxLength(100);
             entity.Property(e => e.StreetName)
                 .HasMaxLength(100)
                 .IsUnicode(false);

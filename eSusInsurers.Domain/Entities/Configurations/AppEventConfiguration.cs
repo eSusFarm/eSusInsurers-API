@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<AppEvent> entity)
         {
             entity.Property(x => x.Id)
-                  .HasColumnName("EventId");
+                              .HasColumnName("EventId");
 
             entity.HasKey(e => e.Id).HasName("PK__AppEvent__7944C810F5EE2443");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_AppEvents_AU"));
 
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)

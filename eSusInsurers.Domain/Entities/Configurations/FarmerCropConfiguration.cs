@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<FarmerCrop> entity)
         {
             entity.Property(x => x.Id)
-              .HasColumnName("FarmerCropId");
+                         .HasColumnName("FarmerCropId");
 
             entity.HasKey(e => e.Id).HasName("PK__FarmerCr__56CFA48E155F5C1D");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_FarmerCrops_AU"));
 
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)

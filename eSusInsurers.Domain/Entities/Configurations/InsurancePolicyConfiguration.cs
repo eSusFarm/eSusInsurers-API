@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<InsurancePolicy> entity)
         {
             entity.Property(x => x.Id)
-             .HasColumnName("InsurancePolicyId");
+                        .HasColumnName("InsurancePolicyId");
 
             entity.HasKey(e => e.Id).HasName("PK__Insuranc__8D74AD1FF1405620");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_InsurancePolicies_AU"));
 
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)

@@ -9,6 +9,8 @@ public partial class FarmersAu : BaseAuditableEntity
 {
     public DateTime? HistoryCreatedDate { get; set; }
 
+    public int FarmerId { get; set; }
+
     public decimal? MobileNumber { get; set; }
 
     public decimal? Msisdn { get; set; }
@@ -76,4 +78,20 @@ public partial class FarmersAu : BaseAuditableEntity
     public bool IsSuspended { get; set; }
 
     public string Comments { get; set; }
+
+    public decimal? Latitude { get; set; }
+
+    public decimal? Longitude { get; set; }
+
+    public string Location { get; set; }
+
+    public string ProfilePicture { get; set; }
+
+    public string IdfrontView { get; set; }
+
+    public string IdbackView { get; set; }
+
+    public string AdminComments { get; set; }
+
+    public string ServiceProvider { get; set; }
 }

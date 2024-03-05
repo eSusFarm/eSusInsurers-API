@@ -12,9 +12,12 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<Claim> entity)
         {
             entity.Property(x => x.Id)
-                .HasColumnName("ClaimId");
+                            .HasColumnName("ClaimId");
 
             entity.HasKey(e => e.Id).HasName("PK__Claims__EF2E139B6F0F8FA1");
+
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_Claims_AU"));
 
             entity.Property(e => e.AllowedAmount).HasColumnType("money");
             entity.Property(e => e.ClaimNumber)

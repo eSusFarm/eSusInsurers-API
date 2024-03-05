@@ -12,9 +12,11 @@ namespace eSusInsurers.Domain.Entities.Configurations
         public void Configure(EntityTypeBuilder<PaymentMode> entity)
         {
             entity.Property(x => x.Id)
-           .HasColumnName("PaymentModeId");
+                      .HasColumnName("PaymentModeId");
 
             entity.HasKey(e => e.Id).HasName("PK__PaymentM__F9599549EA41D054");
+
+            entity.ToTable(tb => tb.HasTrigger("trigger_PaymentModes_AU"));
 
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
