@@ -9,6 +9,7 @@ using eSusInsurers.Models;
 using eSusInsurers.Models.Common;
 using eSusInsurers.Models.Users.ChangePassword;
 using eSusInsurers.Models.Users.Login;
+using eSusInsurers.Models.Users.RefreshAccessToken;
 using eSusInsurers.Models.Users.UpdatePassword;
 using eSusInsurers.Services.Interfaces;
 using System.Security.Claims;
@@ -321,5 +322,22 @@ namespace eSusInsurers.Services.Implementations
             return true;
         }
 
+        //public async Task<AuthenticatedResponse> RefreshTokenAsync(string token, IHttpContextAccessor httpContextAccessor, CancellationToken cancellationToken = default)
+        //{
+
+        //    string emailId = httpContextAccessor.HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value.ToString();
+
+        //    if (string.IsNullOrEmpty(emailId))
+        //        throw new UnauthorizedException();
+
+        //    var user = await _unitOfWork.InternalUserRepository.GetByEmailIdAsync(emailId, cancellationToken);
+
+        //    var tokenModel = new TokenApiModel()
+        //    {
+        //        RefreshToken = user.RefreshToken
+        //    };
+
+        //    return await _tokenService.RefreshToken(tokenModel, emailId, token, cancellationToken);
+        //}
     }
 }

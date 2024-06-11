@@ -1,4 +1,5 @@
-﻿using eSusInsurers.Domain.Entities;
+﻿using eSusInsurers.Domain;
+using eSusInsurers.Domain.Entities;
 using eSusInsurers.Infrastructure.Common;
 using eSusInsurers.Infrastructure.Interfaces;
 using eSusInsurers.Infrastructure.Repositories;
@@ -18,14 +19,14 @@ namespace eSusInsurers.Infrastructure
         {
             if (!env.IsProduction())
             {
-                services.AddDbContext<esusinsurer_nonprodContext>(x => x.UseSqlServer(configuration.GetConnectionString("DbConnection"))
+                services.AddDbContext<eSusInsurerContext>(x => x.UseSqlServer(configuration.GetConnectionString("DbConnection"))
                                                                         .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
                                                                         .EnableSensitiveDataLogging());
 
             }
             else
             {
-                services.AddDbContext<esusinsurer_nonprodContext>(x => x.UseSqlServer(configuration.GetConnectionString("DbConnection"))
+                services.AddDbContext<eSusInsurerContext>(x => x.UseSqlServer(configuration.GetConnectionString("DbConnection"))
                                                                         .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
                                                                         .EnableSensitiveDataLogging());
             }

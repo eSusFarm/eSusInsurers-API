@@ -1,4 +1,4 @@
-﻿using eSusInsurers.Domain.Entities;
+﻿using eSusInsurers.Domain;
 using eSusInsurers.Infrastructure.Interfaces;
 using eSusInsurers.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -7,14 +7,38 @@ namespace eSusInsurers.Infrastructure.Common
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly esusinsurer_nonprodContext _context;
+        private readonly eSusInsurerContext _context;
+        
         private IInsuranceProviderRepository _insuranceProviderRepository;
+        
         private InsuranceProviderDocumentRepository _insuranceProviderDocumentRepository;
+        
         private IUserRepository _userRepository;
+        
         private IUserTypeRepository _userTypeRepository;
+        
         private IEmailTemplateRepository _emailTemplateRepository;
 
-        public UnitOfWork(esusinsurer_nonprodContext context)
+        private IRoleRepository _roleRepository;
+
+        private IMenuRolesPrivilegeRepository _menuRolesPrivilegeRepository;
+
+        private IMenuRolesFunctionalityRepository _menuRolesFunctionalityRepository;
+
+        private IMenuRoleFunctionalityApprovalProcessRepository _menuRoleFunctionalityApprovalProcessRepository;
+
+        private IApplicationMenuRepository _applicationMenuRepository;
+
+        private IApplicationChildMenuRepository _applicationChildMenuRepository;
+
+        private IApplicationFunctionalitiesRepository _applicationFunctionalitiesRepository;
+
+        private IFunctionalityApprovalProcessRepository _functionalityApprovalProcessRepository;
+
+        private IApplicationSettingsRepository _applicationSettingsRepository;
+
+
+        public UnitOfWork(eSusInsurerContext context)
         {
             try
             {
@@ -35,6 +59,24 @@ namespace eSusInsurers.Infrastructure.Common
         public IUserTypeRepository UserTypeRepository => _userTypeRepository ??= new UserTypeRepository(_context);
 
         public IEmailTemplateRepository EmailTemplateRepository => _emailTemplateRepository ??= new EmailTemplateRepository(_context);
+
+        public IRoleRepository RoleRepository => _roleRepository ??= new RoleRepository(_context);
+
+        public IMenuRolesPrivilegeRepository MenuRolesPrivilegeRepository => _menuRolesPrivilegeRepository ??= new MenuRolesPrivilegeRepository(_context);
+
+        public IMenuRolesFunctionalityRepository MenuRolesFunctionalityRepository => _menuRolesFunctionalityRepository ??= new MenuRolesFunctionalityRepository(_context);
+
+        public IMenuRoleFunctionalityApprovalProcessRepository MenuRoleFunctionalityApprovalProcessRepository => _menuRoleFunctionalityApprovalProcessRepository ??= new MenuRoleFunctionalityApprovalProcessRepository(_context);
+
+        public IApplicationMenuRepository ApplicationMenuRepository => _applicationMenuRepository ??= new ApplicationMenuRepository(_context);
+
+        public IApplicationChildMenuRepository ApplicationChildMenuRepository => _applicationChildMenuRepository ??= new ApplicationChildMenuRepository(_context);
+
+        public IApplicationFunctionalitiesRepository ApplicationFunctionalitiesRepository => _applicationFunctionalitiesRepository ??= new ApplicationFunctionalitiesRepository(_context);
+
+        public IFunctionalityApprovalProcessRepository FunctionalityApprovalProcessRepository => _functionalityApprovalProcessRepository ??= new FunctionalityApprovalProcessRepository(_context);
+
+        public IApplicationSettingsRepository ApplicationSettingsRepository => _applicationSettingsRepository ??= new ApplicationSettingsRepository(_context);
 
         public void SaveChanges()
             => _context.SaveChanges();

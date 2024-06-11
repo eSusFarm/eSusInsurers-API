@@ -1,12 +1,11 @@
 ﻿{
    "CodeGenerationMode": 4,
-   "ContextClassName": "esusinsurer_nonprodContext",
+   "ContextClassName": "eSusInsurerContext",
    "ContextNamespace": null,
-   "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": "",
-   "OutputContextPath": null,
+   "OutputContextPath": "..\\eSusInsurers.Domain",
    "OutputPath": "Entities",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "eSusInsurers.Domain",
@@ -21,6 +20,22 @@
       },
       {
          "Name": "[dbo].[AppEvents_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ApplicationChildMenu]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ApplicationFunctionalities]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ApplicationMenu]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ApplicationSettings]",
          "ObjectType": 0
       },
       {
@@ -120,6 +135,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[FunctionalityApprovalProcess]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[InsurancePolicies]",
          "ObjectType": 0
       },
@@ -184,6 +203,18 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[MenuRoleFunctionalityApprovalProcess]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MenuRolesFunctionalities]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MenuRolesPrivileges]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[PaymentModes]",
          "ObjectType": 0
       },
@@ -208,19 +239,7 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[RoleFeatures]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[RoleFeatures_AU]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Roles]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Roles_AU]",
          "ObjectType": 0
       },
       {
@@ -278,9 +297,17 @@
       {
          "Name": "[dbo].[UserTypes_AU]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SP_GetApplicationMenus]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SP_GetRoleDetails]",
+         "ObjectType": 1
       }
    ],
-   "UiHint": "eSusInsurer",
+   "UiHint": null,
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
@@ -302,5 +329,5 @@
    "UseSchemaFolders": false,
    "UseSchemaNamespaces": false,
    "UseSpatial": false,
-   "UseT4": false
+   "UseT4": true
 }

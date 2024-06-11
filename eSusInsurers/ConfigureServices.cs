@@ -6,9 +6,13 @@ using eSusInsurers.Helpers;
 using eSusInsurers.Services.Implementations;
 using eSusInsurers.Services.Interfaces;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
+using System.Text;
 using ILogger = Serilog.ILogger;
 
 namespace eSusInsurers
@@ -37,6 +41,31 @@ namespace eSusInsurers
                 options.Providers.Add<GzipCompressionProvider>();
             });
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+           .AddJwtBearer(options =>
+           {
+               options.SaveToken = true;
+               options.RequireHttpsMetadata = false;
+               options.TokenValidationParameters = new TokenValidationParameters()
+               {
+                   ValidateIssuer = true,
+                   ValidateAudience = true,
+                   ValidateLifetime = true,
+                   ValidateIssuerSigningKey = true,
+                   ClockSkew = TimeSpan.Zero,
+
+                   ValidAudience = configuration["JWT:ValidAudience"],
+                   ValidIssuer = configuration["JWT:ValidIssuer"],
+                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+               };
+           });
+
+            services.AddSwaggerExamplesFromAssemblies(typeof(Program).Assembly);
             return services;
         }
 
@@ -67,6 +96,7 @@ namespace eSusInsurers
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddTransient<IUpdateNotificationTemplate, UpdateNotificationTemplate>();
             services.AddTransient<IEmailService, Services.Implementations.EmailService>();
+            services.AddTransient<IRolesService, RolesService>();
             services.AddTransient<FireForget>();
 
             return services;
