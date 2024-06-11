@@ -23,10 +23,10 @@ namespace eSusInsurers.Controllers
         #endregion
 
         /// <summary>
-        /// Refresh Access Token
+        /// Refresh access token
         /// </summary>
         /// <remarks>
-        /// Refresh Access Token
+        /// Refresh access token
         /// </remarks>
         /// <param name="tokenApiModel">Information of the user access token and refresh token</param>
         /// <response code="200">Indicates the user token refreshed successfully.</response>
@@ -51,13 +51,12 @@ namespace eSusInsurers.Controllers
         }
 
         /// <summary>
-        /// Refresh Access Token
+        /// Revoke refresh token
         /// </summary>
         /// <remarks>
-        /// Refresh Access Token
+        /// Revoke refresh token
         /// </remarks>
-        /// <param name="tokenApiModel">Information of the user access token and refresh token</param>
-        /// <response code="200">Indicates the refresh token is revoked.</response>
+        /// <response code="204">Indicates the refresh token is revoked.</response>
         [HttpPost("revoke"), Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Revoke()
