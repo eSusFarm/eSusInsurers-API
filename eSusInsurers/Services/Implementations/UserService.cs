@@ -262,11 +262,62 @@ namespace eSusInsurers.Services.Implementations
                 throw;
             }
 
+            var menuRolesPrivileges = await unitOfWork.MenuRolesPrivilegeRepository.GetByRoleIdAsync(user.RoleId, cancellationToken);
+
+            var priveleges = menuRolesPrivileges
+                                                      .GroupBy(menu => new
+                                                      {
+                                                          menu.ApplicationMenuId,
+                                                          menu.ApplicationMenu.ApplicationMenuName,
+                                                          menu.ApplicationMenu.ApplicationMenuLink,
+                                                          menu.ApplicationMenu.ApplicationMenuIcon,
+                                                          menu.ApplicationMenu.ApplicationMenuIcon2,
+                                                          menu.ApplicationMenu.Sequence,
+                                                      })
+                                                      .Select(group => new RolePrivelege
+                                                      {
+                                                          ApplicationMenuId = group.Key.ApplicationMenuId,
+                                                          ApplicationMenuName = group.Key.ApplicationMenuName,
+                                                          ApplicationMenuLink = group.Key.ApplicationMenuLink,
+                                                          ApplicationMenuIcon = group.Key.ApplicationMenuIcon,
+                                                          ApplicationMenuIcon2 = group.Key.ApplicationMenuIcon2,
+                                                          ApplicationMenuSequence = group.Key.Sequence,
+                                                          ChildMenus = group.Where(menu => menu.ApplicationChildMenuId.HasValue).Select(menu => new Models.Users.Login.ApplicationChildMenu
+                                                          {
+                                                              ApplicationChildMenuId = menu.ApplicationChildMenuId,
+                                                              ApplicationChildMenuName = menu.ApplicationChildMenu?.ApplicationChildMenuName,
+                                                              ApplicationChildMenuLink = menu.ApplicationChildMenu?.ApplicationChildMenuLink,
+                                                              ApplicationChildMenuIcon = menu.ApplicationChildMenu?.ApplicationChildMenuIcon,
+                                                              ApplicationChildMenuIcon2 = menu.ApplicationChildMenu?.ApplicationChildMenuIcon2,
+                                                              ApplicationChildMenuSequence = menu.ApplicationChildMenu?.Sequence,
+                                                              Read = menu.Read,
+                                                              Create = menu.Create,
+                                                              Update = menu.Update,
+                                                              Delete = menu.Delete
+                                                          }).ToList(),
+                                                          Read = !group.Any(menu => menu.ApplicationChildMenuId.HasValue) ? group.First().Read : null,
+                                                          Create = !group.Any(menu => menu.ApplicationChildMenuId.HasValue) ? group.First().Create : null,
+                                                          Update = !group.Any(menu => menu.ApplicationChildMenuId.HasValue) ? group.First().Update : null,
+                                                          Delete = !group.Any(menu => menu.ApplicationChildMenuId.HasValue) ? group.First().Delete : null
+
+                                                      }).ToList();
+
+            priveleges = priveleges.OrderBy(cm => cm.ApplicationMenuSequence).ToList();
+
+            priveleges.ForEach(rp =>
+            {
+                if (rp.ChildMenus != null)
+                {
+                    rp.ChildMenus = rp.ChildMenus.OrderBy(cm => cm.ApplicationChildMenuSequence).ToList();
+                }
+            });
+
             return new AuthenticatedResponse
             {
                 Token = accessToken,
                 RefreshToken = refreshToken,
                 UserId = user.Id,
+                RolePriveleges = priveleges
             };
         }
 

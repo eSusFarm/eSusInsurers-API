@@ -65,11 +65,16 @@ namespace eSusInsurers.Domain.Configurations
             entity.Property(e => e.RefreshTokenExpiryTime)
                 .HasColumnType("datetime")
                 .HasColumnName("RefreshTokenExpiryTime ");
+            entity.Property(e => e.ReportingTo);
             entity.Property(e => e.RoleId);
 
             entity.HasOne(d => d.Insurer).WithMany(p => p.Users)
                 .HasForeignKey(d => d.InsurerId)
                 .HasConstraintName("FK_Users_InsuranceProviders");
+
+            entity.HasOne(d => d.ReportingToNavigation).WithMany(p => p.InverseReportingToNavigation)
+                .HasForeignKey(d => d.ReportingTo)
+                .HasConstraintName("FK_Users_Users");
 
             entity.HasOne(d => d.Role).WithMany(p => p.Users)
                 .HasForeignKey(d => d.RoleId)

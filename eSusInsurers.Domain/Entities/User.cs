@@ -42,7 +42,13 @@ public partial class User : BaseAuditableEntity
 
     public bool? IsActive { get; set; }
 
+    public int? ReportingTo { get; set; }
+
     public virtual InsuranceProvider Insurer { get; set; }
+
+    public virtual ICollection<User> InverseReportingToNavigation { get; set; } = new List<User>();
+
+    public virtual User ReportingToNavigation { get; set; }
 
     public virtual Role Role { get; set; }
 }
