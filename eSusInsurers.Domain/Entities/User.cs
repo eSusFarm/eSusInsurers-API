@@ -6,15 +6,25 @@ namespace eSusInsurers.Domain.Entities;
 public partial class User : BaseAuditableEntity
 {
 
-    public string UserName { get; set; } = null!;
+    public string FirstName { get; set; } = null!;
+
+    public string LastName { get; set; } = null!;
+
+    public string Gender { get; set; } = null!;
+
+    public string? EmailId { get; set; }
+
+    public decimal ContactNumber { get; set; }
+
+    public bool IsAgent { get; set; }
+
+    public int? InsurerId { get; set; }
+
+    public int RoleId { get; set; }
 
     public string PasswordSalt { get; set; } = null!;
 
     public string PasswordHash { get; set; } = null!;
-
-    public int? UserTypeId { get; set; }
-
-    public int? InsurerUserId { get; set; }
 
     public bool IsEnforcePassword { get; set; }
 
@@ -26,13 +36,13 @@ public partial class User : BaseAuditableEntity
 
     public DateTime? RefreshTokenExpiryTime { get; set; }
 
-    public bool? IsActive { get; set; }
-
     public string? Otp { get; set; }
 
     public DateTime? OtpExipiryTime { get; set; }
 
-    public virtual InsurerUser InsurerUser { get; set; }
+    public bool? IsActive { get; set; }
 
-    public virtual UserType UserType { get; set; }
+    public virtual InsuranceProvider Insurer { get; set; }
+
+    public virtual Role Role { get; set; }
 }

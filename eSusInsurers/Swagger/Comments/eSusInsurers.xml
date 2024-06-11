@@ -249,16 +249,16 @@
             <param name="otp">Otp sent to the userName</param>
             <response code="200">Indicates the otp has been confirmed.</response>
         </member>
-        <member name="M:eSusInsurers.Controllers.UserController.UpdatePassword(System.String,eSusInsurers.Models.Users.UpdatePassword.UpdatePasswordRequest)">
+        <member name="M:eSusInsurers.Controllers.UserController.ResetPassword(System.String,eSusInsurers.Models.Users.UpdatePassword.ResetPasswordRequest)">
             <summary>
-            Update user password after confirmation of otp
+            Reset Password
             </summary>
             <remarks>
-            Update user password after confirmation of otp
+            Reset Password
             </remarks>
-            <param name="userName">userName of the user</param>
-            <param name="updatePasswordRequest">request for the update password</param>
-            <response code="200">Indicates the otp has been updated successfully.</response>
+            <param name="emailId">email Id of the user</param>
+            <param name="request">Information of the user to reset password</param>
+            <response code="200">Indicates the user password is successfully updated.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.Login(eSusInsurers.Models.Users.Login.LoginRequest)">
             <summary>

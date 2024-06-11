@@ -92,7 +92,7 @@ namespace eSusInsurers.Services.Implementations
 
             var userName = principal.Identity.Name; //this is mapped to the Name claim by default
 
-            var user = await _unitOfWork.UserRepository.GetByUserNameAsync(userName, cancellationToken);
+            var user = await _unitOfWork.UserRepository.GetByEmailIdAsync(userName, cancellationToken);
             
             if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
                 throw new BadRequestException("Invalid client request");
@@ -133,7 +133,7 @@ namespace eSusInsurers.Services.Implementations
 
         public async Task<bool> RevokeToken(string userName, CancellationToken cancellationToken = default)
         {          
-            var user = await _unitOfWork.UserRepository.GetByUserNameAsync(userName, cancellationToken);
+            var user = await _unitOfWork.UserRepository.GetByEmailIdAsync(userName, cancellationToken);
 
             if (user is null)
                 throw new BadRequestException("Invalid user.");

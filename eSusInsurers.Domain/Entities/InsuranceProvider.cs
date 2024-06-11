@@ -58,7 +58,5 @@ public partial class InsuranceProvider : BaseAuditableEntity
 
     public virtual ICollection<InsuranceProviderDocumentsAu> InsuranceProviderDocumentsAus { get; set; } = new List<InsuranceProviderDocumentsAu>();
 
-    public virtual ICollection<InsurerUser> InsurerUsers { get; set; } = new List<InsurerUser>();
-
-    public virtual ICollection<InsurerUsersAu> InsurerUsersAus { get; set; } = new List<InsurerUsersAu>();
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

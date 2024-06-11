@@ -5,6 +5,6 @@ namespace eSusInsurers.Infrastructure.Interfaces
 {
     public interface IUserRepository : IRepository<User>
     {
-        Task<User?> GetByUserNameAsync(string userName, CancellationToken cancellationToken);
+        Task<User?> GetByEmailIdAsync(string userName, CancellationToken cancellationToken);
     }
 }

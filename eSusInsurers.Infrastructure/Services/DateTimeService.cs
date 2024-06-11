@@ -1,6 +1,6 @@
-﻿using eSusInsurers.Services.Interfaces;
+﻿using eSusInsurers.Infrastructure.Interfaces;
 
-namespace eSusInsurers.Services.Implementations
+namespace eSusInsurers.Infrastructure.Services
 {
     public class DateTimeService : IDateTime
     {

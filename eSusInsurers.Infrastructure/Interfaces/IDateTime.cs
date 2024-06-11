@@ -1,4 +1,4 @@
-﻿namespace eSusInsurers.Services.Interfaces
+﻿namespace eSusInsurers.Infrastructure.Interfaces
 {
     public interface IDateTime
     {

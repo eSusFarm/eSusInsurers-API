@@ -8,7 +8,6 @@ namespace eSusInsurers.Infrastructure.Common
         IInsuranceProviderRepository InsuranceProviderRepository { get; }
         IInsuranceProviderDocumentRepository InsuranceProviderDocumentRepository { get; }
         IUserRepository UserRepository { get; }
-        IUserTypeRepository UserTypeRepository { get; }
         IEmailTemplateRepository EmailTemplateRepository { get; }
         IRoleRepository RoleRepository { get; }
         IMenuRolesPrivilegeRepository MenuRolesPrivilegeRepository { get; }

@@ -5,6 +5,8 @@ namespace eSusInsurers.Helpers
 {
     public static class PasswordHasher
     {
+        private const string AllowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+]>?";
+
         public static string ComputeHash(string password, string salt, string pepper, int iteration)
         {
             if (iteration <= 0) return password;
@@ -24,6 +26,19 @@ namespace eSusInsurers.Helpers
             rng.GetBytes(byteSalt);
             var salt = Convert.ToBase64String(byteSalt);
             return salt;
+        }
+
+        public static string GeneratePassword()
+        {
+            Random random = new Random();
+            char[] password = new char[8];
+
+            for (int i = 0; i < 8; i++)
+            {
+                password[i] = AllowedChars[random.Next(0, AllowedChars.Length)];
+            }
+
+            return new string(password);
         }
     }
 }

@@ -97,10 +97,6 @@ public partial class eSusInsurerContext : DbContext
 
     public virtual DbSet<InsuranceRiskAu> InsuranceRiskAus { get; set; }
 
-    public virtual DbSet<InsurerUser> InsurerUsers { get; set; }
-
-    public virtual DbSet<InsurerUsersAu> InsurerUsersAus { get; set; }
-
     public virtual DbSet<Location> Locations { get; set; }
 
     public virtual DbSet<LocationsAu> LocationsAus { get; set; }
@@ -147,12 +143,6 @@ public partial class eSusInsurerContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    public virtual DbSet<UserType> UserTypes { get; set; }
-
-    public virtual DbSet<UserTypesAu> UserTypesAus { get; set; }
-
-    public virtual DbSet<UsersAu> UsersAus { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new Configurations.AppEventConfiguration());
@@ -181,6 +171,7 @@ public partial class eSusInsurerContext : DbContext
         modelBuilder.ApplyConfiguration(new Configurations.FarmerCropConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.FarmerCropsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.FarmersAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.FeatureConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.FunctionalitiesAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.FunctionalityConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.FunctionalityApprovalProcessConfiguration());
@@ -196,8 +187,6 @@ public partial class eSusInsurerContext : DbContext
         modelBuilder.ApplyConfiguration(new Configurations.InsuranceProvidersAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsuranceRiskConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsuranceRiskAuConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.InsurerUserConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.InsurerUsersAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.LocationConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.LocationsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.MenuRoleFunctionalityApprovalProcessConfiguration());
@@ -221,9 +210,6 @@ public partial class eSusInsurerContext : DbContext
         modelBuilder.ApplyConfiguration(new Configurations.TaxComponentConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.TaxComponentsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.UserConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.UserTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.UserTypesAuConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.UsersAuConfiguration());
 
         OnModelCreatingPartial(modelBuilder);
     }

@@ -17,67 +17,57 @@ using Claim = System.Security.Claims.Claim;
 
 namespace eSusInsurers.Services.Implementations
 {
-    public class UserService : IUserService
+    public class UserService(IUnitOfWork unitOfWork,
+                             IConfiguration configuration,
+                             IMapper mapper,
+                             ITokenService tokenService,
+                             IDateTime dateTime,
+                             IEmailService emailService) : IUserService
     {
         #region Fields
-        private IUnitOfWork _unitOfWork;
-        private readonly IEmailService _emailService;
-        private IDateTime _dateTime;
-        private IMapper _mapper;
-        private readonly IConfiguration _configuration;
-        private readonly string _pepper;
-        private readonly int _iteration = 3;
-        private readonly ITokenService _tokenService;
-        #endregion
+        private readonly string _pepper = configuration.GetValue<string>("PasswordHashPepper") ?? throw new Exception("Hash configuration is missing.");
 
-        #region Constructor
-        public UserService(IUnitOfWork unitOfWork
-                         , IConfiguration configuration
-                         , IMapper mapper
-                         , ITokenService tokenService
-                         , IDateTime dateTime
-                         , IEmailService emailService)
-        {
-            _unitOfWork = unitOfWork;
-            _configuration = configuration;
-            _pepper = _configuration.GetValue<string>("PasswordHashPepper") ?? throw new Exception("Hash configuration is missing.");
-            _mapper = mapper;
-            _tokenService = tokenService;
-            _dateTime = dateTime;
-            _emailService = emailService;
-        }
+        private readonly int _iteration = 3;
         #endregion
 
         public async Task<bool> Register(UserRegisterRequest request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 
-            var user = await _unitOfWork.UserRepository.GetByUserNameAsync(request.UserName, cancellationToken);
+            var user = await unitOfWork.UserRepository.GetByEmailIdAsync(request.UserName, cancellationToken);
 
             if (user != null)
                 throw new Exception($"Username ({request.UserName}) already exists.");
 
-            var userType = await _unitOfWork.UserTypeRepository.GetByIdAsync(request.UserTypeId, null, false, cancellationToken);
+            user = mapper.Map<User>(request);
 
-            if (userType == null)
-                throw new Exception($"User Type Id ({request.UserTypeId}) doesn't exist.");
+            var password = PasswordHasher.GeneratePassword();
 
+            user.PasswordHash = PasswordHasher.ComputeHash(password, user.PasswordSalt, _pepper, _iteration);
 
-            user = _mapper.Map<User>(request);
-
-            user.PasswordHash = PasswordHasher.ComputeHash(request.Password, user.PasswordSalt, _pepper, _iteration);
-
-            var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
+            var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
 
             try
             {
-                await _unitOfWork.UserRepository.AddAsync(user, cancellationToken);
+                await unitOfWork.UserRepository.AddAsync(user, cancellationToken);
 
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 await transaction.CommitAsync(cancellationToken);
+
+                _ = Task.Run(async () =>
+                {
+                    //var parameters = new NotificationContentParameters()
+                    //{
+                    //    EmailId = user.UserName,
+                    //    Password = password,
+                    //    UserName = user.UserName
+                    //};
+
+                    //await emailService.SendEmailAsync(parameters, AppEvents.CreateUser, [user.UserName], null, cancellationToken);
+                });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
 
@@ -91,7 +81,7 @@ namespace eSusInsurers.Services.Implementations
         {
             ArgumentNullException.ThrowIfNull(userName, nameof(userName));
 
-            var user = await _unitOfWork.UserRepository.GetByUserNameAsync(userName, cancellationToken);
+            var user = await unitOfWork.UserRepository.GetByEmailIdAsync(userName, cancellationToken);
 
             if (user == null)
                 throw new Exception($"Username ({userName}) doesn't exist.");
@@ -103,27 +93,27 @@ namespace eSusInsurers.Services.Implementations
         {
             ArgumentNullException.ThrowIfNull(userName, nameof(userName));
 
-            var user = await _unitOfWork.UserRepository.GetByUserNameAsync(userName, cancellationToken);
+            var user = await unitOfWork.UserRepository.GetByEmailIdAsync(userName, cancellationToken);
 
             if (user == null)
-                throw new Exception($"Username ({userName}) doesn't exist.");
+                throw new NotFoundException($"Username ({userName}) doesn't exist.");
 
             user.Otp = RandomOTP.CreateRandomOTP();
 
-            user.OtpExipiryTime = _dateTime.Now.AddMinutes(5);
+            user.OtpExipiryTime = dateTime.Now.AddMinutes(5);
 
-            var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
+            var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
 
             try
             {
-                await _unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
+                await unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
 
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 await transaction.CommitAsync(cancellationToken);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
 
@@ -140,7 +130,7 @@ namespace eSusInsurers.Services.Implementations
 
             _ = Task.Run(async () =>
             {
-                await _emailService.SendEmailAsync(parameters, AppEvents.SendOtp, new string[] { userName }, null, cancellationToken);
+                await emailService.SendEmailAsync(parameters, AppEvents.SendOtp, new string[] { userName }, null, cancellationToken);
             });
 
             return true;
@@ -152,33 +142,33 @@ namespace eSusInsurers.Services.Implementations
 
             ArgumentNullException.ThrowIfNull(otp, nameof(otp));
 
-            var user = await _unitOfWork.UserRepository.GetByUserNameAsync(userName, cancellationToken);
+            var user = await unitOfWork.UserRepository.GetByEmailIdAsync(userName, cancellationToken);
 
-            if (user == null)
-                throw new Exception($"Username ({userName}) doesn't exist.");
+            if (user is null)
+                throw new NotFoundException($"Username ({userName}) doesn't exist.");
 
-            if (user.OtpExipiryTime < _dateTime.Now)
-                throw new Exception($"Otp has been expired.");
+            if (user.OtpExipiryTime < dateTime.Now)
+                throw new BadRequestException($"Otp has been expired.");
 
             if (user.Otp != otp)
-                throw new Exception($"Invalid Otp.");
+                throw new BadRequestException($"Invalid Otp.");
 
             user.Otp = null;
 
             user.OtpExipiryTime = null;
 
-            var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
+            var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
 
             try
             {
-                await _unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
+                await unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
 
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 await transaction.CommitAsync(cancellationToken);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
 
@@ -188,35 +178,33 @@ namespace eSusInsurers.Services.Implementations
             return user.PasswordSalt;
         }
 
-        public async Task<bool> UpdatePassword(string userName, UpdatePasswordRequest request, CancellationToken cancellationToken)
+        public async Task<bool> ResetPassword(string userName, ResetPasswordRequest request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(userName, nameof(userName));
 
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 
-            var user = await _unitOfWork.UserRepository.GetByUserNameAsync(userName, cancellationToken);
+            var user = await unitOfWork.UserRepository.GetByEmailIdAsync(userName, cancellationToken);
 
             if (user == null)
-                throw new Exception($"Username ({userName}) doesn't exist.");
+                throw new NotFoundException($"Username ({userName}) doesn't exist.");
 
             user.PasswordHash = PasswordHasher.ComputeHash(request.NewPassword, user.PasswordSalt, _pepper, _iteration);
 
-            user.ModifiedBy = user.UserName;
+            user.IsEnforcePassword = false;
 
-            user.ModifiedDate = _dateTime.Now;
-
-            var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
+            var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
 
             try
             {
-                await _unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
+                await unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
 
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 await transaction.CommitAsync(cancellationToken);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
 
@@ -226,11 +214,11 @@ namespace eSusInsurers.Services.Implementations
             return true;
         }
 
-        public async Task<object> Login(LoginRequest request, CancellationToken cancellationToken)
+        public async Task<AuthenticatedResponse> Login(LoginRequest request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 
-            var user = await _unitOfWork.UserRepository.GetByUserNameAsync(request.Username, cancellationToken);
+            var user = await unitOfWork.UserRepository.GetByEmailIdAsync(request.Username, cancellationToken);
 
             if (user == null)
                 throw new UnauthorizedException("Username or password did not match.");
@@ -242,32 +230,32 @@ namespace eSusInsurers.Services.Implementations
 
             var claims = new[]
         {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Role, user.UserType.UserType1),
+            new Claim(ClaimTypes.Name, user.FirstName + " "+user.LastName),
+            new Claim(ClaimTypes.Role, user.Role.RoleName),
         };
-            var accessToken = _tokenService.GenerateAccessToken(claims);
+            var accessToken = tokenService.GenerateAccessToken(claims);
 
-            var refreshToken = _tokenService.GenerateRefreshToken();
+            var refreshToken = tokenService.GenerateRefreshToken();
 
             user.RefreshToken = refreshToken;
 
-            _ = int.TryParse(_configuration["JWT:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
+            _ = int.TryParse(configuration["JWT:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
 
-            user.RefreshTokenExpiryTime = _dateTime.Now.AddDays(refreshTokenValidityInDays);
+            user.RefreshTokenExpiryTime = dateTime.Now.AddDays(refreshTokenValidityInDays);
 
-            user.LastLoggedInDate = _dateTime.Now;
+            user.LastLoggedInDate = dateTime.Now;
 
-            var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
+            var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
 
             try
             {
-                await _unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
+                await unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
 
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 await transaction.CommitAsync(cancellationToken);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
 
@@ -286,10 +274,10 @@ namespace eSusInsurers.Services.Implementations
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 
-            var user = await _unitOfWork.UserRepository.GetByIdAsync(request.UserId, null, false, cancellationToken);
+            var user = await unitOfWork.UserRepository.GetByIdAsync(request.UserId, null, false, cancellationToken);
 
             if (user == null)
-                return new UnauthorizedException("User Id doesn't exist.");
+                return new NotFoundException($"User Id: ({request.UserId}) doesn't exist.");
 
             var passwordHash = PasswordHasher.ComputeHash(request.OldPassword, user.PasswordSalt, _pepper, _iteration);
 
@@ -298,21 +286,17 @@ namespace eSusInsurers.Services.Implementations
 
             user.PasswordHash = PasswordHasher.ComputeHash(request.NewPassword, user.PasswordSalt, _pepper, _iteration);
 
-            user.ModifiedBy = user.UserName;
-
-            user.ModifiedDate = _dateTime.Now;
-
-            var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
+            var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
 
             try
             {
-                await _unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
+                await unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
 
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 await transaction.CommitAsync(cancellationToken);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
 
