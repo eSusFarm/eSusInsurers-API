@@ -16,5 +16,10 @@ namespace eSusInsurers.Infrastructure.Repositories
         {
             return await GetAll(new string[] { "Role", "Insurer" }).FirstOrDefaultAsync(x => x.EmailId == emailId, cancellationToken);
         }
+
+        public async Task<User?> GetByEmailIdNotUserIdAsync(int userId, string emailId, CancellationToken cancellationToken)
+        {
+            return await GetAll(new string[] { "Role", "Insurer" }).FirstOrDefaultAsync(x =>x.Id != userId && x.EmailId == emailId, cancellationToken);
+        }
     }
 }

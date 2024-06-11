@@ -2,6 +2,7 @@
 using eSusInsurers.Domain.Entities;
 using eSusInsurers.Infrastructure.Common;
 using eSusInsurers.Infrastructure.Interfaces;
+using eSusInsurers.Infrastructure.Persistence;
 using eSusInsurers.Infrastructure.Repositories;
 using eSusInsurers.Infrastructure.Services;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +20,8 @@ namespace eSusInsurers.Infrastructure
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
             IConfiguration configuration, IWebHostEnvironment env)
         {
+            services.AddSingleton<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+
             if (!env.IsProduction())
             {
                 services.AddDbContextPool<eSusInsurerContext>((sp, options) =>
