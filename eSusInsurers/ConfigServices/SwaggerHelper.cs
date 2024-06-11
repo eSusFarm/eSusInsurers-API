@@ -1,5 +1,7 @@
-﻿using eSusInsurers.Swagger.OperationFilters;
+﻿using eSusInsurers.Filter;
+using eSusInsurers.Swagger.OperationFilters;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
 namespace eSusInsurers.ConfigServices
@@ -25,7 +27,18 @@ namespace eSusInsurers.ConfigServices
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 swagger.IncludeXmlComments(xmlPath);
 
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Description = "JWT token must be provided",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme
+                });
+
                 swagger.OperationFilter<ParametersOperationFilter>();
+                swagger.OperationFilter<AuthorizeCheckOperationFilter>();
+
             });
 
             services.AddFluentValidationRulesToSwagger();

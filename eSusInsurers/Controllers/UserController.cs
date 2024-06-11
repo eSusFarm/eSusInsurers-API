@@ -3,6 +3,7 @@ using eSusInsurers.Models.Users.ChangePassword;
 using eSusInsurers.Models.Users.Login;
 using eSusInsurers.Models.Users.UpdatePassword;
 using eSusInsurers.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eSusInsurers.Controllers
@@ -11,14 +12,8 @@ namespace eSusInsurers.Controllers
     /// Controller for managing users.
     /// </summary>
     [Route("insurance/users")]
-    public class UserController : BaseController
+    public class UserController(IUserService userService) : BaseController
     {
-        private readonly IUserService _userService;
-        public UserController(IUserService userService)
-        {
-            _userService = userService;
-        }
-
         /// <summary>
         /// User Registration
         /// </summary>
@@ -27,13 +22,14 @@ namespace eSusInsurers.Controllers
         /// </remarks>
         /// <param name="request">Information of the user to register</param>
         /// <response code="201">Indicates the user is successfully created.</response>
+        [Authorize]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Register([FromBody] UserRegisterRequest request)
         {
             try
             {
-                var response = await _userService.Register(request, new CancellationToken());
+                var response = await userService.Register(request, new CancellationToken());
 
                 return new ObjectResult(response) { StatusCode = StatusCodes.Status201Created };
             }
@@ -57,7 +53,7 @@ namespace eSusInsurers.Controllers
         {
             try
             {
-                var response = await _userService.CheckUsername(userName, new CancellationToken());
+                var response = await userService.CheckUsername(userName, new CancellationToken());
                 return Ok(response);
             }
             catch (Exception e)
@@ -80,7 +76,7 @@ namespace eSusInsurers.Controllers
         {
             try
             {
-                var response = await _userService.SendOtp(userName, new CancellationToken());
+                var response = await userService.SendOtp(userName, new CancellationToken());
                 return Ok(response);
             }
             catch (Exception e)
@@ -104,7 +100,7 @@ namespace eSusInsurers.Controllers
         {
             try
             {
-                var response = await _userService.ConfirmOtp(userName, otp, new CancellationToken());
+                var response = await userService.ConfirmOtp(userName, otp, new CancellationToken());
                 return Ok(response);
             }
             catch (Exception e)
@@ -128,7 +124,7 @@ namespace eSusInsurers.Controllers
         {
             try
             {
-                var response = await _userService.UpdatePassword(userName, updatePasswordRequest, new CancellationToken());
+                var response = await userService.UpdatePassword(userName, updatePasswordRequest, new CancellationToken());
                 return Ok(response);
             }
             catch (Exception e)
@@ -151,7 +147,7 @@ namespace eSusInsurers.Controllers
         {
             try
             {
-                var response = await _userService.Login(request, new CancellationToken());
+                var response = await userService.Login(request, new CancellationToken());
                 return Ok(response);
             }
             catch (Exception e)
@@ -168,13 +164,14 @@ namespace eSusInsurers.Controllers
         /// </remarks>
         /// <param name="request">Information of the user to change password</param>
         /// <response code="200">Indicates the user password is successfully updated.</response>
+        [Authorize]
         [HttpPost("change_password")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
             try
             {
-                var response = await _userService.ChangePassword(request, new CancellationToken());
+                var response = await userService.ChangePassword(request, new CancellationToken());
                 return Ok(response);
             }
             catch (Exception e)

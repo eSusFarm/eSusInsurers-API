@@ -2,6 +2,9 @@
 {
     public class ApplicationConstants
     {
+        public const string ascending = " ascending";
+        public const string descending = " descending";
+        public const string sortBy = "SortBy";
         public const string Desc = "desc";
         public const string Asc = "asc";
         public const string OrderByDescending = "OrderByDescending";

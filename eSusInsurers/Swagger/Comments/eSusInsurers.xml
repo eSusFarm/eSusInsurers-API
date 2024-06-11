@@ -111,6 +111,69 @@
             <param name="request">Information of the insurance provider to be created.</param>
             <response code="201">Indicates the insurance provider was successfully created.</response>
         </member>
+        <member name="T:eSusInsurers.Controllers.RoleController">
+            <summary>
+            Controller for roles.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.RoleController.#ctor(eSusInsurers.Services.Interfaces.IRolesService)">
+            <summary>
+            Controller for roles.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.RoleController.GetApplicationMenuItemsMasterList(System.Threading.CancellationToken)">
+            <summary>
+            To get ApplicationMenus, SubMenus and functionalities
+            </summary>
+            <returns>
+            To get ApplicationMenus, SubMenus and functionalities
+            </returns>
+        </member>
+        <member name="M:eSusInsurers.Controllers.RoleController.GetRoles(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.Roles.GetRoles.RoleFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
+            <summary>
+            Get roles
+            </summary>
+            <remarks>
+            Returns a paginated list of roles.
+            </remarks>
+            <param name="pagingOptions">Pagination options for response.</param>
+            <param name="filter">Data filter options.</param>
+            <param name="sort">Data sorting options.</param>
+            <response code="200">Returns a paginated list of roles.</response>
+            <returns>Paginated list of roles.</returns>
+        </member>
+        <member name="M:eSusInsurers.Controllers.RoleController.AddRole(WMS.Models.Roles.RoleRequest)">
+            <summary>
+            Add new role
+            </summary>
+            <remarks>
+            Add new role
+            </remarks>
+            <param name="request">Information of the role to add</param>
+            <response code="201">Indicates the role is successfully created.</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.RoleController.UpdateRole(System.Int32,WMS.Models.Roles.UpdateRole.UpdateRoleRequestModel)">
+            <summary>
+            Update a role
+            </summary>
+            <remarks>
+            Update a role
+            </remarks>
+            <param name="request">role details of the role</param>
+            <param name="roleId">role id of the roles</param>
+            <response code="204">Indicates the role details is updated</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.RoleController.RoleDetails(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Get role details 
+            </summary>
+             /// <remarks>
+            Get role details based on role id.
+            </remarks>
+            <param name="roleId"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
         <member name="T:eSusInsurers.Controllers.TokenController">
             <summary>
             User Token Management
@@ -118,25 +181,29 @@
         </member>
         <member name="M:eSusInsurers.Controllers.TokenController.Refresh(eSusInsurers.Models.Users.RefreshAccessToken.TokenApiModel)">
             <summary>
-            Refresh Access Token
+            Refresh access token
             </summary>
             <remarks>
-            Refresh Access Token
+            Refresh access token
             </remarks>
             <param name="tokenApiModel">Information of the user access token and refresh token</param>
             <response code="200">Indicates the user token refreshed successfully.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.TokenController.Revoke">
             <summary>
-            Refresh Access Token
+            Revoke refresh token
             </summary>
             <remarks>
-            Refresh Access Token
+            Revoke refresh token
             </remarks>
-            <param name="tokenApiModel">Information of the user access token and refresh token</param>
-            <response code="200">Indicates the refresh token is revoked.</response>
+            <response code="204">Indicates the refresh token is revoked.</response>
         </member>
         <member name="T:eSusInsurers.Controllers.UserController">
+            <summary>
+            Controller for managing users.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.UserController.#ctor(eSusInsurers.Services.Interfaces.IUserService)">
             <summary>
             Controller for managing users.
             </summary>
@@ -247,6 +314,63 @@
             Called when an exception occurs during the execution of an action.
             </summary>
             <param name="context">The exception context.</param>
+        </member>
+        <member name="T:eSusInsurers.Filter.AuthorizeCheckOperationFilter">
+            <summary>
+            Authorize Attribute filter
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Middleware.TokenRefreshMiddleware">
+            <summary>
+            Middleware logic for refreshing the token.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Middleware.TokenRefreshMiddleware.#ctor(eSusInsurers.Services.Interfaces.IUserService,Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+            <summary>
+            Middleware logic for refreshing the token.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Middleware.TokenRefreshMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            Method to read the token and update.
+            </summary>
+            <param name="context"></param>
+            <param name="next"></param>
+            <returns></returns>
+        </member>
+        <member name="T:eSusInsurers.Models.Common.PagingOptions">
+            <summary>
+            Paginations options for response.
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.Common.PagingOptions.Page">
+            <summary>
+            Desired page of results.
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:eSusInsurers.Models.Common.PagingOptions.PageSize">
+            <summary>
+            Desired number of results per page.
+            </summary>
+            <example>25</example>
+        </member>
+        <member name="T:eSusInsurers.Models.Common.SortingOptions">
+            <summary>
+            Data sorting options.
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.Common.SortingOptions.SortOn">
+            <summary>
+            The data property to be sorted on.
+            </summary>
+            <example>CreatedDate</example>
+        </member>
+        <member name="P:eSusInsurers.Models.Common.SortingOptions.SortDirection">
+            <summary>
+            The sorting direction that should be applied to the sorted on property.
+            </summary>
+            <example>Ascending</example>
         </member>
         <member name="T:eSusInsurers.Models.InsuranceProviders.CreateInsuranceProvider.CreateInsuranceProviderRequest">
             <summary>
@@ -368,6 +492,16 @@
         <member name="P:eSusInsurers.Models.InsuranceProviders.CreateInsuranceProvider.InsuranceProviderFiles.DocumentData">
             <summary>
             Document Data in Base 64
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Models.Roles.GetRoles.RoleFilterOptions">
+            <summary>
+            Filter options for roles.
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.Roles.GetRoles.RoleFilterOptions.IsActive">
+            <summary>
+            Filter based on active roles.
             </summary>
         </member>
         <member name="T:eSusInsurers.Policy.SnakeCaseNamingPolicy">
