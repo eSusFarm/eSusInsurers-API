@@ -210,13 +210,57 @@
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.Register(eSusInsurers.Models.UserRegisterRequest)">
             <summary>
-            User Registration
+            Add new user
             </summary>
             <remarks>
-            User Registration
+            Add new user
             </remarks>
             <param name="request">Information of the user to register</param>
             <response code="201">Indicates the user is successfully created.</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.UserController.GetUsers(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.Users.GetUsers.UserFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
+            <summary>
+            Get Users
+            </summary>
+            <remarks>
+            Returns a paginated list of users.
+            </remarks>
+            <param name="pagingOptions">Pagination options for response.</param>
+            <param name="filter">Data filter options.</param>
+            <param name="sort">Data sorting options.</param>
+            <response code="200">Returns a paginated list of users.</response>
+            <returns>Paginated list of users.</returns>
+        </member>
+        <member name="M:eSusInsurers.Controllers.UserController.UpdateUser(System.Int32,eSusInsurers.Models.Users.UpdateUser.UpdateUserRequestModel)">
+            <summary>
+            Update a user
+            </summary>
+            <remarks>
+            Update a user
+            </remarks>
+            <param name="request">user details of the user</param>
+            <param name="userId">user id of the user</param>
+            <response code="204">Indicates the user details is updated</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.UserController.DeleteUser(System.Int32)">
+            <summary>
+            Deactivate a user
+            </summary>
+            <remarks>
+            Deactivate a user
+            </remarks>
+            <param name="userId">user id of the user</param>
+            <response code="204">Indicates the user is inactive</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.UserController.ActivateUser(System.Int32)">
+            <summary>
+            Activate a user
+            </summary>
+            <remarks>
+            Activate a user
+            </remarks>
+            <param name="userId">user id of the user</param>
+            <response code="204">Indicates the user is active</response>
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.CheckUsername(System.String)">
             <summary>
@@ -502,6 +546,16 @@
         <member name="P:eSusInsurers.Models.Roles.GetRoles.RoleFilterOptions.IsActive">
             <summary>
             Filter based on active roles.
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.Users.GetUsers.UserFilterOptions.IsActive">
+            <summary>
+            Filter based on active users.
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Models.UserRegisterRequest">
+            <summary>
+            User Register Request
             </summary>
         </member>
         <member name="T:eSusInsurers.Policy.SnakeCaseNamingPolicy">

@@ -1,7 +1,10 @@
 ﻿using eSusInsurers.Models;
+using eSusInsurers.Models.Common;
 using eSusInsurers.Models.Users.ChangePassword;
+using eSusInsurers.Models.Users.GetUsers;
 using eSusInsurers.Models.Users.Login;
 using eSusInsurers.Models.Users.UpdatePassword;
+using eSusInsurers.Models.Users.UpdateUser;
 using eSusInsurers.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,15 +18,52 @@ namespace eSusInsurers.Controllers
     public class UserController(IUserService userService) : BaseController
     {
         /// <summary>
-        /// User Registration
+        /// Get Users
         /// </summary>
         /// <remarks>
-        /// User Registration
+        /// Returns a paginated list of users.
+        /// </remarks>
+        /// <param name="pagingOptions">Pagination options for response.</param>
+        /// <param name="filter">Data filter options.</param>
+        /// <param name="sort">Data sorting options.</param>
+        /// <response code="200">Returns a paginated list of users.</response>
+        /// <returns>Paginated list of users.</returns>
+        [HttpGet, Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetUsersResponse))]
+        public async Task<ActionResult<GetUsersResponse>> GetUsers([FromQuery] PagingOptions pagingOptions = default!,
+           [FromQuery] UserFilterOptions filter = default!,
+           [FromQuery] SortingOptions sort = default!)
+        {
+            try
+            {
+
+                var query = new GetUsersQuery
+                {
+                    pagingOptions = pagingOptions,
+                    filter = filter,
+                    sortingOptions = sort
+                };
+
+                var result = await userService.GetUsers(query, new CancellationToken());
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// Add new user
+        /// </summary>
+        /// <remarks>
+        /// Add new user
         /// </remarks>
         /// <param name="request">Information of the user to register</param>
         /// <response code="201">Indicates the user is successfully created.</response>
         [Authorize]
-        [HttpPost("register")]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Register([FromBody] UserRegisterRequest request)
         {
@@ -32,6 +72,77 @@ namespace eSusInsurers.Controllers
                 var response = await userService.Register(request, new CancellationToken());
 
                 return new ObjectResult(response) { StatusCode = StatusCodes.Status201Created };
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// Update a user
+        /// </summary>
+        /// <remarks>
+        /// Update a user
+        /// </remarks>
+        /// <param name="request">user details of the user</param>
+        /// <param name="userId">user id of the user</param>
+        /// <response code="204">Indicates the user details is updated</response>
+        [HttpPut("{userId}"), Authorize]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateUser(int userId, UpdateUserRequestModel request)
+        {
+            try
+            {
+                await userService.UpdateUser(userId, request, new CancellationToken());
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// Deactivate a user
+        /// </summary>
+        /// <remarks>
+        /// Deactivate a user
+        /// </remarks>
+        /// <param name="userId">user id of the user</param>
+        /// <response code="204">Indicates the user is inactive</response>
+        [HttpDelete("{userId}"), Authorize]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            try
+            {
+                var response = await userService.DeleteUser(userId, new CancellationToken());
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// Activate a user
+        /// </summary>
+        /// <remarks>
+        /// Activate a user
+        /// </remarks>
+        /// <param name="userId">user id of the user</param>
+        /// <response code="204">Indicates the user is active</response>
+        [HttpPut("{userId}/activate"), Authorize]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> ActivateUser(int userId)
+        {
+            try
+            {
+                var response = await userService.ActivateUser(userId, new CancellationToken());
+                return NoContent();
             }
             catch (Exception e)
             {

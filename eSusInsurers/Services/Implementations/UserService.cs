@@ -1,17 +1,25 @@
 ﻿using AutoMapper;
-using EmailService.Interfaces;
+using AutoMapper.QueryableExtensions;
 using eSusInsurers.Common.Exceptions;
+using eSusInsurers.Constants;
 using eSusInsurers.Domain.Entities;
 using eSusInsurers.Helpers;
 using eSusInsurers.Infrastructure.Common;
 using eSusInsurers.Infrastructure.Interfaces;
 using eSusInsurers.Models;
 using eSusInsurers.Models.Common;
+using eSusInsurers.Models.enums;
+using eSusInsurers.Models.Extensions;
+using eSusInsurers.Models.Helpers;
 using eSusInsurers.Models.Users.ChangePassword;
+using eSusInsurers.Models.Users.GetUsers;
 using eSusInsurers.Models.Users.Login;
-using eSusInsurers.Models.Users.RefreshAccessToken;
 using eSusInsurers.Models.Users.UpdatePassword;
+using eSusInsurers.Models.Users.UpdateUser;
+using eSusInsurers.Services.Common;
 using eSusInsurers.Services.Interfaces;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using Claim = System.Security.Claims.Claim;
 
@@ -34,10 +42,10 @@ namespace eSusInsurers.Services.Implementations
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 
-            var user = await unitOfWork.UserRepository.GetByEmailIdAsync(request.UserName, cancellationToken);
+            var user = await unitOfWork.UserRepository.GetByEmailIdAsync(request.EmailId, cancellationToken);
 
             if (user != null)
-                throw new Exception($"Username ({request.UserName}) already exists.");
+                throw new Exception($"Email Id ({request.EmailId}) already exists.");
 
             user = mapper.Map<User>(request);
 
@@ -57,14 +65,14 @@ namespace eSusInsurers.Services.Implementations
 
                 _ = Task.Run(async () =>
                 {
-                    //var parameters = new NotificationContentParameters()
-                    //{
-                    //    EmailId = user.UserName,
-                    //    Password = password,
-                    //    UserName = user.UserName
-                    //};
+                    var parameters = new NotificationContentParameters()
+                    {
+                        EmailId = user.EmailId,
+                        Password = password,
+                        UserName = user.EmailId
+                    };
 
-                    //await emailService.SendEmailAsync(parameters, AppEvents.CreateUser, [user.UserName], null, cancellationToken);
+                    await emailService.SendEmailAsync(parameters, AppEvents.CreateUser, [user.EmailId], null, cancellationToken);
                 });
             }
             catch (Exception)
@@ -87,6 +95,120 @@ namespace eSusInsurers.Services.Implementations
                 throw new Exception($"Username ({userName}) doesn't exist.");
 
             return user.PasswordSalt;
+        }
+
+        public async Task<Models.Common.PagedResult<UserModel>> GetUsers(GetUsersQuery request, CancellationToken cancellationToken)
+        {
+            Dictionary<string, Models.Common.Filter> filters = UsersFilters(request);
+            Expression<Func<User, bool>> predicate = ExpressionBuilder<User>.BuildFilterExpression(filters);
+            Dictionary<string, Models.Common.Filter> paginationFilters = FilterHelper.CreatePaginationFilters(request.pagingOptions);
+            (int PageSize, int Page) paginationParams = FilterHelper.GetPaginationParams(paginationFilters);
+            Dictionary<string, Models.Common.Filter> orderByFilters = FilterHelper.CreateOrderByFilters(request.sortingOptions);
+            var orderByParams = OrderByHelper.GetOrderByParams(orderByFilters);
+
+            var query = unitOfWork.UserRepository.GetAll(
+                   new string[]
+                   {
+                        "Insurer", "Role", "Role", "ReportingToNavigation"
+                   })
+               .Where(predicate)
+               .OrderByDescending(x => x.Id)
+               .ProjectTo<UserModel>(mapper.ConfigurationProvider);
+
+            if (!string.IsNullOrEmpty(orderByParams) && orderByFilters.ContainsKey(ApplicationConstants.sortBy) && orderByFilters[ApplicationConstants.sortBy].Value.ToLower() == "descending")
+            {
+                orderByParams += ApplicationConstants.descending;
+            }
+
+            if (!string.IsNullOrEmpty(orderByParams))
+            {
+                query = query.OrderBy(orderByParams);
+            }
+
+            var users = query.ToPagedResult(paginationParams.Page, paginationParams.PageSize);
+
+            return new Models.Common.PagedResult<UserModel>
+            {
+                PageSize = paginationParams.PageSize,
+                TotalPages = users.TotalPages,
+                TotalRecordCount = users.TotalRecordCount,
+                Records = users.Records,
+                CurrentPage = paginationParams.Page
+            };
+
+        }
+
+        public async Task UpdateUser(int userId, UpdateUserRequestModel request, CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(request, nameof(request));
+
+            ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+
+            var user = await unitOfWork.UserRepository.GetByEmailIdNotUserIdAsync(userId, request.EmailId, cancellationToken);
+
+            if (user != null)
+                throw new Exception($"Email Id ({request.EmailId}) already exists.");
+
+            user = await unitOfWork.UserRepository.GetByIdAsync(userId, null, false, cancellationToken);
+
+            if (user == null)
+                throw new NotFoundException("User Id doesn't exist.");
+
+            var userType = await unitOfWork.RoleRepository.GetByIdAsync(request.RoleId, null, false, cancellationToken);
+
+            if (userType == null)
+                throw new BadRequestException($"User Type Id ({request.RoleId}) doesn't exist.");
+
+            var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
+
+            try
+            {
+                mapper.Map(request, user);
+
+                await unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
+
+                await unitOfWork.SaveChangesAsync(cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+
+                throw;
+            }
+        }
+
+        public async Task<object> DeleteUser(int userId, CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+
+            var user = await unitOfWork.UserRepository.GetByIdAsync(userId, null, false, cancellationToken);
+
+            if (user == null)
+                throw new NotFoundException($"User Id: ({userId}) doesn't exist.");
+
+            user.IsActive = false;
+
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return true;
+        }
+
+        public async Task<object> ActivateUser(int userId, CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+
+            var user = await unitOfWork.UserRepository.GetByIdAsync(userId, null, false, cancellationToken);
+
+            if (user == null)
+                throw new NotFoundException($"User Id: ({userId}) doesn't exist.");
+
+            user.IsActive = true;
+
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return true;
         }
 
         public async Task<bool> SendOtp(string userName, CancellationToken cancellationToken)
@@ -229,10 +351,11 @@ namespace eSusInsurers.Services.Implementations
                 throw new UnauthorizedException("Username or password did not match.");
 
             var claims = new[]
-        {
-            new Claim(ClaimTypes.Name, user.FirstName + " "+user.LastName),
-            new Claim(ClaimTypes.Role, user.Role.RoleName),
-        };
+            {
+                new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
+                    new Claim(ClaimTypes.Email, user.EmailId),
+                new Claim(ClaimTypes.Role, user.Role.RoleName),
+            };
             var accessToken = tokenService.GenerateAccessToken(claims);
 
             var refreshToken = tokenService.GenerateRefreshToken();
@@ -374,5 +497,40 @@ namespace eSusInsurers.Services.Implementations
 
         //    return await _tokenService.RefreshToken(tokenModel, emailId, token, cancellationToken);
         //}
+
+        #region Private Methods
+        private static Dictionary<string, Models.Common.Filter> UsersFilters(GetUsersQuery invQuery)
+        {
+            var inboundDto = invQuery.filter;
+            var filters = new Dictionary<string, Models.Common.Filter>();
+
+            if (inboundDto != null)
+            {
+
+                Filters.AddFilterIfNotEmpty(filters, inboundDto?.UserNameOrEmailId, "FirstName", SearchOperationEnum.Contains);
+
+                Filters.AddFilterIfNotEmpty(filters, inboundDto?.UserNameOrEmailId, "LastName", SearchOperationEnum.Contains);
+
+                Filters.AddFilterIfNotEmpty(filters, inboundDto?.UserNameOrEmailId, "EmailId", SearchOperationEnum.Contains, true);
+
+                if (inboundDto?.IsActive != null)
+                    Filters.AddFilterIfNotEmpty(filters, inboundDto.IsActive == true ? "True" : "False", "IsActive", SearchOperationEnum.Equal);
+
+                Filters.AddFilterIfNotEmpty(filters, inboundDto?.Role, "Role.RoleName", SearchOperationEnum.Equal);
+
+            }
+
+            return filters;
+        }
+
+        private static Dictionary<string, Models.Common.Filter> UserFilterById(long userId)
+        {
+            var filters = new Dictionary<string, Models.Common.Filter>();
+
+            Filters.AddFilterIfValueGreaterThanZero(filters, userId, "Id", SearchOperationEnum.Equal);
+
+            return filters;
+        }
+        #endregion
     }
 }
