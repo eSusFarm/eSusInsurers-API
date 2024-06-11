@@ -25,4 +25,6 @@ public partial class Role : BaseAuditableEntity
     public virtual ICollection<MenuRolesPrivilege> MenuRolesPrivileges { get; set; } = new List<MenuRolesPrivilege>();
 
     public virtual Role ReportingTo { get; set; }
+
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

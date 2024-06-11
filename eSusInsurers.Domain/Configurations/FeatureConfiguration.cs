@@ -8,35 +8,34 @@ using System.Collections.Generic;
 
 namespace eSusInsurers.Domain.Configurations
 {
-    public partial class UserTypesAuConfiguration : IEntityTypeConfiguration<UserTypesAu>
+    public partial class FeatureConfiguration : IEntityTypeConfiguration<Feature>
     {
-        public void Configure(EntityTypeBuilder<UserTypesAu> entity)
+        public void Configure(EntityTypeBuilder<Feature> entity)
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserType__5F3896381492ACEA");
+            entity.HasKey(e => e.Id).HasName("PK__Features__82230BC9A0EFB064");
 
 
-            entity.ToTable("UserTypes_AU");
+            entity.ToTable(tb => tb.HasTrigger("trigger_Features_AU"));
 
-            entity.Property(e => e.Id).HasColumnName("HistoryRowId");
+            entity.Property(e => e.Id).HasColumnName("FeatureId");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            entity.Property(e => e.HistoryCreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.Feature1)
+                .IsRequired()
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("Feature");
             entity.Property(e => e.IsActive);
             entity.Property(e => e.ModifiedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-            entity.Property(e => e.TypeId);
-            entity.Property(e => e.UserType)
-                .IsRequired()
-                .HasMaxLength(200)
-                .IsUnicode(false);
 
             OnConfigurePartial(entity);
         }
 
-        partial void OnConfigurePartial(EntityTypeBuilder<UserTypesAu> entity);
+        partial void OnConfigurePartial(EntityTypeBuilder<Feature> entity);
     }
 }

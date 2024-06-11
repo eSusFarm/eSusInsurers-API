@@ -11,7 +11,7 @@ namespace eSusInsurers.Services.Interfaces
 
         Task<bool> SendOtp(string userName, CancellationToken cancellationToken);
 
-        Task<object> Login(LoginRequest resource, CancellationToken cancellationToken);
+        Task<AuthenticatedResponse> Login(LoginRequest resource, CancellationToken cancellationToken);
 
         Task<object> ChangePassword(ChangePasswordRequest request, CancellationToken cancellationToken);
 
@@ -19,6 +19,6 @@ namespace eSusInsurers.Services.Interfaces
 
         Task<string> ConfirmOtp(string userName, string otp, CancellationToken cancellationToken);
 
-        Task<bool> UpdatePassword(string userName, UpdatePasswordRequest request, CancellationToken cancellationToken);
+        Task<bool> ResetPassword(string userName, ResetPasswordRequest request, CancellationToken cancellationToken);
     }
 }

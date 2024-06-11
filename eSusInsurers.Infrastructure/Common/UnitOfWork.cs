@@ -14,9 +14,7 @@ namespace eSusInsurers.Infrastructure.Common
         private InsuranceProviderDocumentRepository _insuranceProviderDocumentRepository;
         
         private IUserRepository _userRepository;
-        
-        private IUserTypeRepository _userTypeRepository;
-        
+                
         private IEmailTemplateRepository _emailTemplateRepository;
 
         private IRoleRepository _roleRepository;
@@ -55,8 +53,6 @@ namespace eSusInsurers.Infrastructure.Common
         public IInsuranceProviderDocumentRepository InsuranceProviderDocumentRepository => _insuranceProviderDocumentRepository ??= new InsuranceProviderDocumentRepository(_context);
 
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
-
-        public IUserTypeRepository UserTypeRepository => _userTypeRepository ??= new UserTypeRepository(_context);
 
         public IEmailTemplateRepository EmailTemplateRepository => _emailTemplateRepository ??= new EmailTemplateRepository(_context);
 

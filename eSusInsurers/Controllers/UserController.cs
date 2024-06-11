@@ -110,21 +110,21 @@ namespace eSusInsurers.Controllers
         }
 
         /// <summary>
-        /// Update user password after confirmation of otp
+        /// Reset Password
         /// </summary>
         /// <remarks>
-        /// Update user password after confirmation of otp
+        /// Reset Password
         /// </remarks>
-        /// <param name="userName">userName of the user</param>
-        /// <param name="updatePasswordRequest">request for the update password</param>
-        /// <response code="200">Indicates the otp has been updated successfully.</response>
-        [HttpPost("{userName}/update-password")]
+        /// <param name="emailId">email Id of the user</param>
+        /// <param name="request">Information of the user to reset password</param>
+        /// <response code="200">Indicates the user password is successfully updated.</response>
+        [HttpPost("{userName}/password")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdatePassword(string userName, [FromBody] UpdatePasswordRequest updatePasswordRequest)
+        public async Task<IActionResult> ResetPassword(string userName, [FromBody] ResetPasswordRequest resetPasswordRequest)
         {
             try
             {
-                var response = await userService.UpdatePassword(userName, updatePasswordRequest, new CancellationToken());
+                var response = await userService.ResetPassword(userName, resetPasswordRequest, new CancellationToken());
                 return Ok(response);
             }
             catch (Exception e)
@@ -148,6 +148,8 @@ namespace eSusInsurers.Controllers
             try
             {
                 var response = await userService.Login(request, new CancellationToken());
+                Response.Headers.Append("Access-Control-Expose-Headers", "Authorization");
+                Response.Headers.Append("Authorization", response.Token);
                 return Ok(response);
             }
             catch (Exception e)

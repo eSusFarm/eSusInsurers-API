@@ -12,20 +12,36 @@ namespace eSusInsurers.Domain.Configurations
     {
         public void Configure(EntityTypeBuilder<User> entity)
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__1788CC4C236FCDBD");
+            entity.HasKey(e => e.Id).HasName("PK__Users__1788CC4CE0CE872F");
 
-
-            entity.ToTable(tb => tb.HasTrigger("trigger_Users_AU"));
 
             entity.Property(e => e.Id).HasColumnName("UserId");
+            entity.Property(e => e.ContactNumber).HasColumnType("numeric(15, 0)");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            entity.Property(e => e.InsurerUserId);
+            entity.Property(e => e.EmailId)
+                .HasMaxLength(200)
+                .IsUnicode(false);
+            entity.Property(e => e.FirstName)
+                .IsRequired()
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Gender)
+                .IsRequired()
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength();
+            entity.Property(e => e.InsurerId);
             entity.Property(e => e.IsActive);
+            entity.Property(e => e.IsAgent);
             entity.Property(e => e.IsEnforcePassword);
             entity.Property(e => e.LastLoggedInDate).HasColumnType("datetime");
+            entity.Property(e => e.LastName)
+                .IsRequired()
+                .HasMaxLength(100)
+                .IsUnicode(false);
             entity.Property(e => e.ModifiedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -49,19 +65,21 @@ namespace eSusInsurers.Domain.Configurations
             entity.Property(e => e.RefreshTokenExpiryTime)
                 .HasColumnType("datetime")
                 .HasColumnName("RefreshTokenExpiryTime ");
-            entity.Property(e => e.UserName)
-                .IsRequired()
-                .HasMaxLength(100)
-                .IsUnicode(false);
-            entity.Property(e => e.UserTypeId);
+            entity.Property(e => e.ReportingTo);
+            entity.Property(e => e.RoleId);
 
-            entity.HasOne(d => d.InsurerUser).WithMany(p => p.Users)
-                .HasForeignKey(d => d.InsurerUserId)
-                .HasConstraintName("FK_InsurerUsers_Users");
+            entity.HasOne(d => d.Insurer).WithMany(p => p.Users)
+                .HasForeignKey(d => d.InsurerId)
+                .HasConstraintName("FK_Users_InsuranceProviders");
 
-            entity.HasOne(d => d.UserType).WithMany(p => p.Users)
-                .HasForeignKey(d => d.UserTypeId)
-                .HasConstraintName("FK_UserTypesUsers");
+            entity.HasOne(d => d.ReportingToNavigation).WithMany(p => p.InverseReportingToNavigation)
+                .HasForeignKey(d => d.ReportingTo)
+                .HasConstraintName("FK_Users_Users");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Users)
+                .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Users_Roles");
 
             OnConfigurePartial(entity);
         }
