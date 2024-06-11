@@ -11,7 +11,7 @@ namespace eSusInsurers.Controllers
     /// <summary>
     /// Controller for roles.
     /// </summary>
-    //[Authorize]
+    [Authorize]
     [Route("roles")]
     public class RoleController(IRolesService rolesService) : BaseController
     {
