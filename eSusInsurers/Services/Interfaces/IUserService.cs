@@ -31,6 +31,8 @@ namespace eSusInsurers.Services.Interfaces
 
         Task<object> ActivateUser(int userId, CancellationToken cancellationToken);
 
+        Task<UserModel?> GetUserById(long userId, CancellationToken cancellationToken);
 
+        Task UpdateUserProfile(int userId, UpdateUserProfileRequestModel request, CancellationToken cancellationToken);
     }
 }
