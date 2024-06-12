@@ -40,7 +40,7 @@ public partial class User : BaseAuditableEntity
 
     public DateTime? OtpExipiryTime { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public int? ReportingTo { get; set; }
 
