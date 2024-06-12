@@ -208,16 +208,6 @@
             Controller for managing users.
             </summary>
         </member>
-        <member name="M:eSusInsurers.Controllers.UserController.Register(eSusInsurers.Models.UserRegisterRequest)">
-            <summary>
-            Add new user
-            </summary>
-            <remarks>
-            Add new user
-            </remarks>
-            <param name="request">Information of the user to register</param>
-            <response code="201">Indicates the user is successfully created.</response>
-        </member>
         <member name="M:eSusInsurers.Controllers.UserController.GetUsers(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.Users.GetUsers.UserFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
             <summary>
             Get Users
@@ -231,6 +221,27 @@
             <response code="200">Returns a paginated list of users.</response>
             <returns>Paginated list of users.</returns>
         </member>
+        <member name="M:eSusInsurers.Controllers.UserController.GetUserById(System.Int64)">
+            <summary>
+            Get User By Id
+            </summary>
+            <remarks>
+            Returns user details.
+            </remarks>
+            <param name="userId">User id of the user.</param>
+            <response code="200">Returns user details.</response>
+            <returns>Returns user details..</returns>
+        </member>
+        <member name="M:eSusInsurers.Controllers.UserController.Register(eSusInsurers.Models.UserRegisterRequest)">
+            <summary>
+            Add new user
+            </summary>
+            <remarks>
+            Add new user
+            </remarks>
+            <param name="request">Information of the user to register</param>
+            <response code="201">Indicates the user is successfully created.</response>
+        </member>
         <member name="M:eSusInsurers.Controllers.UserController.UpdateUser(System.Int32,eSusInsurers.Models.Users.UpdateUser.UpdateUserRequestModel)">
             <summary>
             Update a user
@@ -241,6 +252,17 @@
             <param name="request">user details of the user</param>
             <param name="userId">user id of the user</param>
             <response code="204">Indicates the user details is updated</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.UserController.UpdateUserProfile(System.Int32,eSusInsurers.Models.Users.UpdateUser.UpdateUserProfileRequestModel)">
+            <summary>
+            Update a user profile
+            </summary>
+            <remarks>
+            Update a user profile
+            </remarks>
+            <param name="request">user details of the user profile</param>
+            <param name="userId">user id of the user profile</param>
+            <response code="204">Indicates the user profile details is updated</response>
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.DeleteUser(System.Int32)">
             <summary>

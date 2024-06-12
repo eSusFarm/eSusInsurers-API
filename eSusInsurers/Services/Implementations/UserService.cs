@@ -138,6 +138,23 @@ namespace eSusInsurers.Services.Implementations
 
         }
 
+        public async Task<UserModel?> GetUserById(long userId, CancellationToken cancellationToken)
+        {
+            Dictionary<string, Models.Common.Filter> filters = UserFilterById(userId);
+            Expression<Func<User, bool>> predicate = ExpressionBuilder<User>.BuildFilterExpression(filters);
+
+            var query = unitOfWork.UserRepository.GetAll(
+                   new string[]
+                   {
+                        "Insurer", "Role", "Role", "ReportingToNavigation"
+                   })
+               .Where(predicate)
+               .OrderByDescending(x => x.Id)
+               .ProjectTo<UserModel>(mapper.ConfigurationProvider);
+
+            return query.AsQueryable().FirstOrDefault();
+        }
+
         public async Task UpdateUser(int userId, UpdateUserRequestModel request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
@@ -158,6 +175,37 @@ namespace eSusInsurers.Services.Implementations
 
             if (userType == null)
                 throw new BadRequestException($"User Type Id ({request.RoleId}) doesn't exist.");
+
+            var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
+
+            try
+            {
+                mapper.Map(request, user);
+
+                await unitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
+
+                await unitOfWork.SaveChangesAsync(cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+
+                throw;
+            }
+        }
+
+        public async Task UpdateUserProfile(int userId, UpdateUserProfileRequestModel request, CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(request, nameof(request));
+
+            ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+
+            var user = await unitOfWork.UserRepository.GetByIdAsync(userId, null, false, cancellationToken);
+
+            if (user == null)
+                throw new NotFoundException("User Id doesn't exist.");
 
             var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
 

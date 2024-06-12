@@ -55,6 +55,31 @@ namespace eSusInsurers.Controllers
         }
 
         /// <summary>
+        /// Get User By Id
+        /// </summary>
+        /// <remarks>
+        /// Returns user details.
+        /// </remarks>
+        /// <param name="userId">User id of the user.</param>
+        /// <response code="200">Returns user details.</response>
+        /// <returns>Returns user details..</returns>
+        [HttpGet("{userId}"), Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserModel))]
+        public async Task<ActionResult<UserModel>> GetUserById(long userId)
+        {
+            try
+            {
+                var result = await userService.GetUserById(userId, new CancellationToken());
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
+        }
+
+        /// <summary>
         /// Add new user
         /// </summary>
         /// <remarks>
@@ -95,6 +120,31 @@ namespace eSusInsurers.Controllers
             try
             {
                 await userService.UpdateUser(userId, request, new CancellationToken());
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// Update a user profile
+        /// </summary>
+        /// <remarks>
+        /// Update a user profile
+        /// </remarks>
+        /// <param name="request">user details of the user profile</param>
+        /// <param name="userId">user id of the user profile</param>
+        /// <response code="204">Indicates the user profile details is updated</response>
+        [HttpPatch("{userId}"), Authorize]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateUserProfile(int userId, UpdateUserProfileRequestModel request)
+        {
+            try
+            {
+                await userService.UpdateUserProfile(userId, request, new CancellationToken());
 
                 return NoContent();
             }
