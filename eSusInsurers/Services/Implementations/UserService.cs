@@ -109,7 +109,7 @@ namespace eSusInsurers.Services.Implementations
             var query = unitOfWork.UserRepository.GetAll(
                    new string[]
                    {
-                        "Insurer", "Role", "Role", "ReportingToNavigation"
+                        "Insurer", "Role", "ReportingToNavigation"
                    })
                .Where(predicate)
                .OrderByDescending(x => x.Id)
@@ -146,7 +146,7 @@ namespace eSusInsurers.Services.Implementations
             var query = unitOfWork.UserRepository.GetAll(
                    new string[]
                    {
-                        "Insurer", "Role", "Role", "ReportingToNavigation"
+                        "Insurer", "Role", "ReportingToNavigation"
                    })
                .Where(predicate)
                .OrderByDescending(x => x.Id)
