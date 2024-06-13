@@ -55,6 +55,7 @@ namespace eSusInsurers.Models.Users.GetUsers
                                 .ForMember(d => d.UserId, opt => opt.MapFrom(c => c.Id))
                                  .ForMember(d => d.Role, opt => opt.MapFrom(c => c.Role.RoleName))
                                  .ForMember(d => d.InsurerName, opt => opt.MapFrom(c => c.Insurer.InsurerName))
+                                 .ForMember(d => d.ReportingToId, opt => opt.MapFrom(c => c.ReportingTo))
                                  .ForMember(d => d.ReportingTo, opt => opt.MapFrom(c => c.ReportingTo.HasValue ? c.ReportingToNavigation.FirstName + " " + c.ReportingToNavigation.LastName : ""));
         }
     }
