@@ -13,6 +13,12 @@ namespace eSusInsurers.Services.Implementations
                 notificationContent = notificationContent.Replace("[index1]", parameters.Index1);
                 notificationContent = notificationContent.Replace("[index2]", parameters.Index2);
                 notificationContent = notificationContent.Replace("[index3]", parameters.Index3);
+                notificationContent = notificationContent.Replace("[url]", parameters.URL);
+                notificationContent = notificationContent.Replace("[username]", parameters.UserName);
+                notificationContent = notificationContent.Replace("[AppName]", parameters.AppName);
+                notificationContent = notificationContent.Replace("[emailId]", parameters.EmailId);
+                notificationContent = notificationContent.Replace("[password]", parameters.Password);
+                notificationContent = notificationContent.Replace("[CompanyName]", parameters.CompanyName);
                 return notificationContent;
             }
             catch
