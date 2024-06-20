@@ -65,7 +65,7 @@ namespace eSusInsurers.Middleware
                 throw new UnauthorizedException();
             }
 
-            return remainingValidity.TotalMinutes < 5;
+            return remainingValidity.TotalMinutes < 60;
         }
 
         private string GetTokenFromRequest(HttpContext context)
