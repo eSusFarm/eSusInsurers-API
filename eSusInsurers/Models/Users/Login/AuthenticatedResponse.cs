@@ -7,7 +7,9 @@
         public string? RefreshToken { get; set; }
         
         public int UserId { get; set; }
-        
+
+        public bool IsEnforcePassword { get; set; }
+
         public List<RolePrivelege> RolePriveleges { get; set; } = new();
 
     }

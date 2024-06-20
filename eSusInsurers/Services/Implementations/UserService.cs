@@ -488,6 +488,7 @@ namespace eSusInsurers.Services.Implementations
                 Token = accessToken,
                 RefreshToken = refreshToken,
                 UserId = user.Id,
+                IsEnforcePassword = user.IsEnforcePassword,
                 RolePriveleges = priveleges
             };
         }
