@@ -69,7 +69,7 @@ namespace eSusInsurers.Services.Implementations
                     {
                         EmailId = user.EmailId,
                         Password = password,
-                        UserName = user.EmailId
+                        UserName = user.FirstName + " " + user.LastName
                     };
 
                     await emailService.SendEmailAsync(parameters, AppEvents.CreateUser, [user.EmailId], null, cancellationToken);
