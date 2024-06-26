@@ -18,10 +18,8 @@ namespace eSusInsurers.Services.Implementations
 {
     public class InsuranceProductService(IUnitOfWork unitOfWork,
                              IConfiguration configuration,
-                             IMapper mapper,
-                             ITokenService tokenService,
-                             IDateTime dateTime,
-                             IEmailService emailService) : IInsuranceProductService
+                             IMapper mapper
+                         ) : IInsuranceProductService
     {
         public async Task<Models.Common.PagedResult<InsuranceProductModel>> GetInsuranceProducts(InsuranceProductQuery request, CancellationToken cancellationToken)
         {

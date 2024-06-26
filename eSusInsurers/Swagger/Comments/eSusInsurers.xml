@@ -100,18 +100,18 @@
             Controller for managing insurance products.
             </summary>
         </member>
-        <member name="M:eSusInsurers.Controllers.InsuranceProductController.GetInsuranceProduct(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.InsuranceProducts.InsuranceProductFilterOption,eSusInsurers.Models.Common.SortingOptions)">
+        <member name="M:eSusInsurers.Controllers.InsuranceProductController.GetInsuranceProducts(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.InsuranceProducts.InsuranceProductFilterOption,eSusInsurers.Models.Common.SortingOptions)">
             <summary>
-            Get Insurance Product
+            Get Insurance Products
             </summary>
             <remarks>
-            Returns a paginated list of insurance product.
+            Returns a paginated list of insurance products.
             </remarks>
             <param name="pagingOptions">Pagination options for response.</param>
-              /// <param name="filter">Data filter options.</param>
+            <param name="filter">Data filter options.</param>
             <param name="sort">Data sorting options.</param>
-            <response code="200">Returns a paginated list of insurance product.</response>
-            <returns>Paginated list of insurance product.</returns>
+            <response code="200">Returns a paginated list of insurance products.</response>
+            <returns>Paginated list of insurance products.</returns>
         </member>
         <member name="T:eSusInsurers.Controllers.InsuranceProviderController">
             <summary>
