@@ -10,7 +10,7 @@ namespace eSusInsurers.Controllers
     /// <summary>
     /// Controller for managing insurance products.
     /// </summary>
-    [Route("insuranceProduct")]
+    [Route("insurance_products")]
     public class InsuranceProductController(IInsuranceProductService insuranceProductService) : BaseController
     {
         /// <summary>

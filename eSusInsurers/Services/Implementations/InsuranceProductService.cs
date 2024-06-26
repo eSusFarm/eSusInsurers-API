@@ -17,7 +17,6 @@ using eSusInsurers.Models.Extensions;
 namespace eSusInsurers.Services.Implementations
 {
     public class InsuranceProductService(IUnitOfWork unitOfWork,
-                             IConfiguration configuration,
                              IMapper mapper
                          ) : IInsuranceProductService
     {
