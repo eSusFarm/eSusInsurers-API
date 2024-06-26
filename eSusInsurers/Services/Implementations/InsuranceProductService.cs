@@ -23,7 +23,7 @@ namespace eSusInsurers.Services.Implementations
                              IDateTime dateTime,
                              IEmailService emailService) : IInsuranceProductService
     {
-        public async Task<Models.Common.PagedResult<InsuranceProductModel>> GetInsuranceProduct(InsuranceProductQuery request, CancellationToken cancellationToken)
+        public async Task<Models.Common.PagedResult<InsuranceProductModel>> GetInsuranceProducts(InsuranceProductQuery request, CancellationToken cancellationToken)
         {
             Dictionary<string, Models.Common.Filter> filters = InsuranceProductFilters(request);
             Expression<Func<InsurancePolicy1, bool>> predicate = ExpressionBuilder<InsurancePolicy1>.BuildFilterExpression(filters);

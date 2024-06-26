@@ -10,24 +10,23 @@ namespace eSusInsurers.Controllers
     /// <summary>
     /// Controller for managing insurance products.
     /// </summary>
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("insuranceProduct")]
-    public class InsuranceProductController(IInsuranceProductService insuranceProduct) : BaseController
+    public class InsuranceProductController(IInsuranceProductService insuranceProductService) : BaseController
     {
         /// <summary>
-        /// Get Insurance Product
+        /// Get Insurance Products
         /// </summary>
         /// <remarks>
-        /// Returns a paginated list of insurance product.
+        /// Returns a paginated list of insurance products.
         /// </remarks>
         /// <param name="pagingOptions">Pagination options for response.</param>
-        ///   /// <param name="filter">Data filter options.</param>
+        /// <param name="filter">Data filter options.</param>
         /// <param name="sort">Data sorting options.</param>
-        /// <response code="200">Returns a paginated list of insurance product.</response>
-        /// <returns>Paginated list of insurance product.</returns>
+        /// <response code="200">Returns a paginated list of insurance products.</response>
+        /// <returns>Paginated list of insurance products.</returns>
         [HttpGet, Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InsuranceProductResponse))]
-        public async Task<ActionResult<InsuranceProductResponse>> GetInsuranceProduct([FromQuery] PagingOptions pagingOptions = default!,
+        public async Task<ActionResult<InsuranceProductResponse>> GetInsuranceProducts([FromQuery] PagingOptions pagingOptions = default!,
               [FromQuery] InsuranceProductFilterOption filter = default!,
            [FromQuery] SortingOptions sort = default!)
         {
@@ -41,7 +40,7 @@ namespace eSusInsurers.Controllers
                     sortingOptions = sort
                 };
 
-                var result = await insuranceProduct.GetInsuranceProduct(query, new CancellationToken());
+                var result = await insuranceProductService.GetInsuranceProducts(query, new CancellationToken());
 
                 return Ok(result);
             }

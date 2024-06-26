@@ -4,6 +4,6 @@ namespace eSusInsurers.Services.Interfaces
 {
     public interface IInsuranceProductService
     {
-        Task<Models.Common.PagedResult<InsuranceProductModel>> GetInsuranceProduct(InsuranceProductQuery request, CancellationToken cancellationToken);
+        Task<Models.Common.PagedResult<InsuranceProductModel>> GetInsuranceProducts(InsuranceProductQuery request, CancellationToken cancellationToken);
     }
 }
