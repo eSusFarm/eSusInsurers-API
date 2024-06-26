@@ -43,6 +43,10 @@ public partial class eSusInsurerContext : DbContext
 
     public virtual DbSet<CropInsuranceAu> CropInsuranceAus { get; set; }
 
+    public virtual DbSet<CropInsuranceCategory> CropInsuranceCategories { get; set; }
+
+    public virtual DbSet<CropInsuranceCategoryAu> CropInsuranceCategoryAus { get; set; }
+
     public virtual DbSet<CropInsurancePremium> CropInsurancePremiums { get; set; }
 
     public virtual DbSet<CropInsurancePremiumsAu> CropInsurancePremiumsAus { get; set; }
@@ -73,9 +77,17 @@ public partial class eSusInsurerContext : DbContext
 
     public virtual DbSet<FunctionalityApprovalProcess> FunctionalityApprovalProcesses { get; set; }
 
+    public virtual DbSet<InsuranceCompany> InsuranceCompanies { get; set; }
+
+    public virtual DbSet<InsuranceCompanyAu> InsuranceCompanyAus { get; set; }
+
     public virtual DbSet<InsurancePoliciesAu> InsurancePoliciesAus { get; set; }
 
     public virtual DbSet<InsurancePolicy> InsurancePolicies { get; set; }
+
+    public virtual DbSet<InsurancePolicy1> InsurancePolicies1 { get; set; }
+
+    public virtual DbSet<InsurancePolicyAu> InsurancePolicyAus { get; set; }
 
     public virtual DbSet<InsurancePremium> InsurancePremia { get; set; }
 
@@ -160,6 +172,8 @@ public partial class eSusInsurerContext : DbContext
         modelBuilder.ApplyConfiguration(new Configurations.CropCategoryConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.CropInsuranceConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.CropInsuranceAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.CropInsuranceCategoryConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.CropInsuranceCategoryAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.CropInsurancePremiumConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.CropInsurancePremiumsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.CropsAuConfiguration());
@@ -175,8 +189,12 @@ public partial class eSusInsurerContext : DbContext
         modelBuilder.ApplyConfiguration(new Configurations.FunctionalitiesAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.FunctionalityConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.FunctionalityApprovalProcessConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsuranceCompanyConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsuranceCompanyAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsurancePoliciesAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsurancePolicyConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsurancePolicy1Configuration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsurancePolicyAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsurancePremiumConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsurancePremiumAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsurancePremiumFrequencyConfiguration());

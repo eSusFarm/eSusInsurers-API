@@ -96,6 +96,7 @@ namespace eSusInsurers
             services.AddTransient<IUpdateNotificationTemplate, UpdateNotificationTemplate>();
             services.AddTransient<IEmailService, Services.Implementations.EmailService>();
             services.AddTransient<IRolesService, RolesService>();
+            services.AddTransient<IInsuranceProductService, InsuranceProductService>();
             services.AddTransient<FireForget>();
 
             return services;
