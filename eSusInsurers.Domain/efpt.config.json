@@ -71,6 +71,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[CropInsuranceCategory]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CropInsuranceCategory_Au]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[CropInsurancePremiums]",
          "ObjectType": 0
       },
@@ -135,11 +143,27 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[InsuranceCompany]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[InsuranceCompany_Au]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[InsurancePolicies]",
          "ObjectType": 0
       },
       {
          "Name": "[dbo].[InsurancePolicies_AU]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[InsurancePolicy]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[InsurancePolicy_Au]",
          "ObjectType": 0
       },
       {

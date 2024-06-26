@@ -35,6 +35,8 @@ namespace eSusInsurers.Infrastructure.Common
 
         private IApplicationSettingsRepository _applicationSettingsRepository;
 
+        private IInsuranceProductRepository _insuranceProductRepository;
+
 
         public UnitOfWork(eSusInsurerContext context)
         {
@@ -73,6 +75,8 @@ namespace eSusInsurers.Infrastructure.Common
         public IFunctionalityApprovalProcessRepository FunctionalityApprovalProcessRepository => _functionalityApprovalProcessRepository ??= new FunctionalityApprovalProcessRepository(_context);
 
         public IApplicationSettingsRepository ApplicationSettingsRepository => _applicationSettingsRepository ??= new ApplicationSettingsRepository(_context);
+
+        public IInsuranceProductRepository InsuranceProductRepository => _insuranceProductRepository ??= new InsuranceProductRepository(_context);
 
         public void SaveChanges()
             => _context.SaveChanges();

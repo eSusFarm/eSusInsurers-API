@@ -90,6 +90,29 @@
             Configures the services for ApplicationServices
             </summary>
         </member>
+        <member name="T:eSusInsurers.Controllers.InsuranceProductController">
+            <summary>
+            Controller for managing insurance products.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.InsuranceProductController.#ctor(eSusInsurers.Services.Interfaces.IInsuranceProductService)">
+            <summary>
+            Controller for managing insurance products.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.InsuranceProductController.GetInsuranceProduct(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.InsuranceProducts.InsuranceProductFilterOption,eSusInsurers.Models.Common.SortingOptions)">
+            <summary>
+            Get Insurance Product
+            </summary>
+            <remarks>
+            Returns a paginated list of insurance product.
+            </remarks>
+            <param name="pagingOptions">Pagination options for response.</param>
+              /// <param name="filter">Data filter options.</param>
+            <param name="sort">Data sorting options.</param>
+            <response code="200">Returns a paginated list of insurance product.</response>
+            <returns>Paginated list of insurance product.</returns>
+        </member>
         <member name="T:eSusInsurers.Controllers.InsuranceProviderController">
             <summary>
             Controller for managing insurance providers.
@@ -437,6 +460,11 @@
             The sorting direction that should be applied to the sorted on property.
             </summary>
             <example>Ascending</example>
+        </member>
+        <member name="P:eSusInsurers.Models.InsuranceProducts.InsuranceProductFilterOption.IsActive">
+            <summary>
+            Filter based on active insurance product.
+            </summary>
         </member>
         <member name="T:eSusInsurers.Models.InsuranceProviders.CreateInsuranceProvider.CreateInsuranceProviderRequest">
             <summary>

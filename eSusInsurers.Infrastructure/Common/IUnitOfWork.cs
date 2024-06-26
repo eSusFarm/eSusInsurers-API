@@ -18,6 +18,7 @@ namespace eSusInsurers.Infrastructure.Common
         IApplicationFunctionalitiesRepository ApplicationFunctionalitiesRepository { get; }
         IFunctionalityApprovalProcessRepository FunctionalityApprovalProcessRepository { get; }
         IApplicationSettingsRepository ApplicationSettingsRepository { get; }
+        IInsuranceProductRepository InsuranceProductRepository { get; }
 
 
         void SaveChanges();
