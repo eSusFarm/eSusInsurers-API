@@ -158,9 +158,9 @@ namespace eSusInsurers.Services
 
             if (inboundDto != null)
             {
-                Filters.AddFilterIfNotEmpty(filters, inboundDto?.Year, "SeasonYear", SearchOperationEnum.Contains);
+                Filters.AddFilterIfNotEmpty(filters, (inboundDto?.Year != null && inboundDto.Year.Count() > 0) ? string.Join(",", inboundDto.Year) : "", "SeasonYear", SearchOperationEnum.LContains);
 
-                Filters.AddFilterIfNotEmpty(filters, inboundDto?.Season, "SeasonName", SearchOperationEnum.Contains);
+                Filters.AddFilterIfNotEmpty(filters, (inboundDto?.Season != null && inboundDto.Season.Count() > 0) ? string.Join(",", inboundDto.Season) : "", "SeasonName", SearchOperationEnum.LContains);
 
                 if (inboundDto?.IsActive != null)
                     Filters.AddFilterIfNotEmpty(filters, inboundDto.IsActive == true ? "True" : "False", "IsActive", SearchOperationEnum.Equal);

@@ -98,6 +98,7 @@ namespace eSusInsurers
             services.AddTransient<IEmailService, Services.Implementations.EmailService>();
             services.AddTransient<IRolesService, RolesService>();
             services.AddTransient<ISeasonService, SeasonService>();
+            services.AddTransient<ISeasonCutOffDateService, SeasonCutOffDateService>();
             services.AddTransient<IInsuranceProductService, InsuranceProductService>();
             services.AddTransient<FireForget>();
 

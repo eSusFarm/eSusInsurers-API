@@ -39,6 +39,8 @@ namespace eSusInsurers.Infrastructure.Common
 
         private ISeasonRepository _seasonRepository;
 
+        private ISeasonCutOffDateRepository _seasonCutOffDateRepository;
+
         public UnitOfWork(eSusInsurerContext context)
         {
             try
@@ -80,6 +82,8 @@ namespace eSusInsurers.Infrastructure.Common
         public IInsuranceProductRepository InsuranceProductRepository => _insuranceProductRepository ??= new InsuranceProductRepository(_context);
 
         public ISeasonRepository SeasonRepository => _seasonRepository ??= new SeasonRepository(_context);
+
+        public ISeasonCutOffDateRepository SeasonCutOffDateRepository => _seasonCutOffDateRepository ??= new SeasonCutOffDateRepository(_context);
 
         public void SaveChanges()
             => _context.SaveChanges();
