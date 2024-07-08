@@ -17,4 +17,6 @@ public partial class SubCounty : BaseAuditableEntity
     public virtual ICollection<Location> Locations { get; set; } = new List<Location>();
 
     public virtual ICollection<LocationsAu> LocationsAus { get; set; } = new List<LocationsAu>();
+
+    public virtual ICollection<Program> Programs { get; set; } = new List<Program>();
 }

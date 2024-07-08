@@ -1,9 +1,7 @@
 ﻿using eSusInsurers.Domain;
-using eSusInsurers.Domain.Entities;
 using eSusInsurers.Infrastructure.Common;
 using eSusInsurers.Infrastructure.Interfaces;
 using eSusInsurers.Infrastructure.Persistence;
-using eSusInsurers.Infrastructure.Repositories;
 using eSusInsurers.Infrastructure.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

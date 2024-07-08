@@ -28,9 +28,5 @@ public partial class Location : BaseAuditableEntity
 
     public virtual Region Region { get; set; }
 
-    public virtual ICollection<Season> Seasons { get; set; } = new List<Season>();
-
-    public virtual ICollection<SeasonsAu> SeasonsAus { get; set; } = new List<SeasonsAu>();
-
     public virtual SubCounty SubCounty { get; set; }
 }

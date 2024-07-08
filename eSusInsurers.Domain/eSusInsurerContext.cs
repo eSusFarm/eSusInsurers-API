@@ -127,6 +127,8 @@ public partial class eSusInsurerContext : DbContext
 
     public virtual DbSet<PremiumPaymentsAu> PremiumPaymentsAus { get; set; }
 
+    public virtual DbSet<Program> Programs { get; set; }
+
     public virtual DbSet<Region> Regions { get; set; }
 
     public virtual DbSet<RegionsAu> RegionsAus { get; set; }
@@ -135,11 +137,7 @@ public partial class eSusInsurerContext : DbContext
 
     public virtual DbSet<Season> Seasons { get; set; }
 
-    public virtual DbSet<SeasonPhase> SeasonPhases { get; set; }
-
-    public virtual DbSet<SeasonPhasesAu> SeasonPhasesAus { get; set; }
-
-    public virtual DbSet<SeasonsAu> SeasonsAus { get; set; }
+    public virtual DbSet<SeasonCutOffDate> SeasonCutOffDates { get; set; }
 
     public virtual DbSet<SubCountiesAu> SubCountiesAus { get; set; }
 
@@ -214,13 +212,12 @@ public partial class eSusInsurerContext : DbContext
         modelBuilder.ApplyConfiguration(new Configurations.PaymentModesAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.PremiumPaymentConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.PremiumPaymentsAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.ProgramConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.RegionConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.RegionsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.RoleConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.SeasonConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.SeasonPhaseConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.SeasonPhasesAuConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.SeasonsAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.SeasonCutOffDateConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.SubCountiesAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.SubCountyConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.SubFunctionalitiesAuConfiguration());

@@ -21,4 +21,6 @@ public partial class Crop : BaseAuditableEntity
     public virtual CropCategory CropCategory { get; set; }
 
     public virtual ICollection<FarmerCrop> FarmerCrops { get; set; } = new List<FarmerCrop>();
+
+    public virtual ICollection<SeasonCutOffDate> SeasonCutOffDates { get; set; } = new List<SeasonCutOffDate>();
 }

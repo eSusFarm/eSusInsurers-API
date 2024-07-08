@@ -16,6 +16,8 @@ public partial class District : BaseAuditableEntity
 
     public virtual ICollection<LocationsAu> LocationsAus { get; set; } = new List<LocationsAu>();
 
+    public virtual ICollection<Program> Programs { get; set; } = new List<Program>();
+
     public virtual Region Region { get; set; }
 
     public virtual ICollection<SubCounty> SubCounties { get; set; } = new List<SubCounty>();

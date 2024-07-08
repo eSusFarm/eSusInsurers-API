@@ -39,6 +39,4 @@ public partial class InsuranceRisk : BaseAuditableEntity
     public virtual ICollection<InsurancePremiumAu> InsurancePremiumAus { get; set; } = new List<InsurancePremiumAu>();
 
     public virtual Location Location { get; set; }
-
-    public virtual Season Season { get; set; }
 }

@@ -53,11 +53,6 @@ namespace eSusInsurers.Domain.Configurations
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Locations_InsuranceRisk_AU");
 
-            entity.HasOne(d => d.Season).WithMany(p => p.InsuranceRiskAus)
-                .HasForeignKey(d => d.SeasonId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Seasons_InsuranceRisk_AU");
-
             OnConfigurePartial(entity);
         }
 
