@@ -35,6 +35,4 @@ public partial class InsuranceRiskAu : BaseAuditableEntity
     public virtual InsurancePolicy InsurancePolicy { get; set; }
 
     public virtual Location Location { get; set; }
-
-    public virtual Season Season { get; set; }
 }

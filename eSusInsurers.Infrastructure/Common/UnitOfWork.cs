@@ -37,6 +37,14 @@ namespace eSusInsurers.Infrastructure.Common
 
         private IInsuranceProductRepository _insuranceProductRepository;
 
+        private ICountriesRepository _countriesRepository;
+
+        private IDistrictRepository _districtRepository;
+
+        private ISubcountiesRepository _subcountiesRepository;
+
+        private IProgramRepository _programRepository;
+
 
         public UnitOfWork(eSusInsurerContext context)
         {
@@ -77,6 +85,14 @@ namespace eSusInsurers.Infrastructure.Common
         public IApplicationSettingsRepository ApplicationSettingsRepository => _applicationSettingsRepository ??= new ApplicationSettingsRepository(_context);
 
         public IInsuranceProductRepository InsuranceProductRepository => _insuranceProductRepository ??= new InsuranceProductRepository(_context);
+
+        public ICountriesRepository CountriesRepository => _countriesRepository ??= new CountriesRepository(_context);
+
+        public IDistrictRepository DistrictRepository => _districtRepository??= new DistrictRepository(_context);
+
+        public ISubcountiesRepository SubcountiesRepository => _subcountiesRepository = new SubcountiesRepository(_context);
+
+        public IProgramRepository ProgramRepository => _programRepository ??= new ProgramsRepository(_context);
 
         public void SaveChanges()
             => _context.SaveChanges();

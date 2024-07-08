@@ -8,21 +8,9 @@ public partial class Season : BaseAuditableEntity
 
     public string SeasonName { get; set; } = null!;
 
-    public DateTime StartDate { get; set; }
+    public string? SeasonYear { get; set; }
 
-    public DateTime EndDate { get; set; }
+    public bool IsActive { get; set; }
 
-    public int? LocationId { get; set; }
-
-    public bool? IsActive { get; set; }
-
-    public virtual ICollection<InsuranceRiskAu> InsuranceRiskAus { get; set; } = new List<InsuranceRiskAu>();
-
-    public virtual ICollection<InsuranceRisk> InsuranceRisks { get; set; } = new List<InsuranceRisk>();
-
-    public virtual Location Location { get; set; }
-
-    public virtual ICollection<SeasonPhase> SeasonPhases { get; set; } = new List<SeasonPhase>();
-
-    public virtual ICollection<SeasonPhasesAu> SeasonPhasesAus { get; set; } = new List<SeasonPhasesAu>();
+    public virtual ICollection<SeasonCutOffDate> SeasonCutOffDates { get; set; } = new List<SeasonCutOffDate>();
 }

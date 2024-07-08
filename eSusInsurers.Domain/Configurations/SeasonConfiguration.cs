@@ -12,32 +12,21 @@ namespace eSusInsurers.Domain.Configurations
     {
         public void Configure(EntityTypeBuilder<Season> entity)
         {
-            entity.HasKey(e => e.Id).HasName("PK__Seasons__C1814E388EA3B892");
+            entity.HasKey(e => e.Id).HasName("PK__Seasons__C1814E3868BF64A5");
 
-
-            entity.ToTable(tb => tb.HasTrigger("trigger_Seasons_AU"));
 
             entity.Property(e => e.Id).HasColumnName("SeasonId");
             entity.Property(e => e.CreatedBy)
-                .HasMaxLength(100)
-                .IsUnicode(false);
+                .IsRequired()
+                .HasMaxLength(100);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            entity.Property(e => e.EndDate).HasColumnType("datetime");
             entity.Property(e => e.IsActive);
-            entity.Property(e => e.LocationId);
-            entity.Property(e => e.ModifiedBy)
-                .HasMaxLength(100)
-                .IsUnicode(false);
+            entity.Property(e => e.ModifiedBy).HasMaxLength(100);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             entity.Property(e => e.SeasonName)
                 .IsRequired()
-                .HasMaxLength(100)
-                .IsUnicode(false);
-            entity.Property(e => e.StartDate).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Location).WithMany(p => p.Seasons)
-                .HasForeignKey(d => d.LocationId)
-                .HasConstraintName("FK_Locations_Seasons");
+                .HasMaxLength(200);
+            entity.Property(e => e.SeasonYear).HasMaxLength(5);
 
             OnConfigurePartial(entity);
         }

@@ -98,6 +98,8 @@ namespace eSusInsurers
             services.AddTransient<IRolesService, RolesService>();
             services.AddTransient<IInsuranceProductService, InsuranceProductService>();
             services.AddTransient<FireForget>();
+            services.AddTransient<ICountriesService, CountriesService>();
+            services.AddTransient<IProgramsService, ProgramService>();
 
             return services;
         }
