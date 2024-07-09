@@ -8,13 +8,13 @@ namespace eSusInsurers.Infrastructure.Common
     public class UnitOfWork : IUnitOfWork
     {
         private readonly eSusInsurerContext _context;
-        
+
         private IInsuranceProviderRepository _insuranceProviderRepository;
-        
+
         private InsuranceProviderDocumentRepository _insuranceProviderDocumentRepository;
-        
+
         private IUserRepository _userRepository;
-                
+
         private IEmailTemplateRepository _emailTemplateRepository;
 
         private IRoleRepository _roleRepository;
@@ -36,6 +36,10 @@ namespace eSusInsurers.Infrastructure.Common
         private IApplicationSettingsRepository _applicationSettingsRepository;
 
         private IInsuranceProductRepository _insuranceProductRepository;
+
+        private ISeasonRepository _seasonRepository;
+
+        private ISeasonCutOffDateRepository _seasonCutOffDateRepository;
 
         private ICountriesRepository _countriesRepository;
 
@@ -85,6 +89,10 @@ namespace eSusInsurers.Infrastructure.Common
         public IApplicationSettingsRepository ApplicationSettingsRepository => _applicationSettingsRepository ??= new ApplicationSettingsRepository(_context);
 
         public IInsuranceProductRepository InsuranceProductRepository => _insuranceProductRepository ??= new InsuranceProductRepository(_context);
+
+        public ISeasonRepository SeasonRepository => _seasonRepository ??= new SeasonRepository(_context);
+
+        public ISeasonCutOffDateRepository SeasonCutOffDateRepository => _seasonCutOffDateRepository ??= new SeasonCutOffDateRepository(_context);
 
         public ICountriesRepository CountriesRepository => _countriesRepository ??= new CountriesRepository(_context);
 

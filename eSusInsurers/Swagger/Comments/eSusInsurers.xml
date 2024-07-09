@@ -307,6 +307,144 @@
             <param name="cancellationToken"></param>
             <returns></returns>
         </member>
+        <member name="T:eSusInsurers.Controllers.SeasonCutOffDatesController">
+            <summary>
+            Controller for seasons.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.#ctor(eSusInsurers.Services.Interfaces.ISeasonCutOffDateService)">
+            <summary>
+            Controller for seasons.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.GetSeasonCutOffDates(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
+            <summary>
+            Get season cutoff dates
+            </summary>
+            <remarks>
+            Returns a paginated list of season cutoff dates.
+            </remarks>
+            <param name="pagingOptions">Pagination options for response.</param>
+            <param name="filter">Data filter options.</param>
+            <param name="sort">Data sorting options.</param>
+            <response code="200">Returns a paginated list of seasons.</response>
+            <returns>Paginated list of season cutoff dates.</returns>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.AddSeasonCutOffDates(System.Collections.Generic.List{eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesRequest})">
+            <summary>
+            Add new season cutoff dates
+            </summary>
+            <remarks>
+            Add new season cutoff dates
+            </remarks>
+            <param name="request">Information of the season cutoff dates to add</param>
+            <response code="201">Indicates the season cutoff dates is successfully created.</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.UpdateSeason(System.Int32,eSusInsurers.Models.SeasonCutOffDate.UpdateSeasonCutOffDatesRequest)">
+            <summary>
+            Update a season cutoff dates
+            </summary>
+            <remarks>
+            Update a season cutoff dates
+            </remarks>
+            <param name="request">season details of the season cutoff dates</param>
+            <param name="seasonCutOffDateId">season id of the seasons cutoff dates</param>
+            <response code="204">Indicates the season cutoff dates details is updated</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.DeleteSeason(System.Int32)">
+            <summary>
+            Deactivate a season cutoff dates
+            </summary>
+            <remarks>
+            Deactivate a season cutoff dates
+            </remarks>
+            <param name="seasonCutOffDateId">Id of the season cutoff dates</param>
+            <response code="204">Indicates the season cutoff dates is inactive</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.ActivateSeason(System.Int32)">
+            <summary>
+            Activate a season cutoff dates
+            </summary>
+            <remarks>
+            Activate a season cutoff dates
+            </remarks>
+            <param name="seasonCutOffDateId">Id of the season cutoff dates</param>
+            <response code="204">Indicates the season cutoff dates is active</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.AddSeasonCutOffDates(eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesRequest)">
+            <summary>
+            Add new season cutoff dates
+            </summary>
+            <remarks>
+            Add new season cutoff dates
+            </remarks>
+            <param name="request">Information of the season cutoff dates to add</param>
+            <response code="201">Indicates the season cutoff dates is successfully created.</response>
+        </member>
+        <member name="T:eSusInsurers.Controllers.SeasonsController">
+            <summary>
+            Controller for seasons.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonsController.#ctor(eSusInsurers.Services.ISeasonService)">
+            <summary>
+            Controller for seasons.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonsController.GetSeasons(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.Seasons.SeasonFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
+            <summary>
+            Get seasons
+            </summary>
+            <remarks>
+            Returns a paginated list of seasons.
+            </remarks>
+            <param name="pagingOptions">Pagination options for response.</param>
+            <param name="filter">Data filter options.</param>
+            <param name="sort">Data sorting options.</param>
+            <response code="200">Returns a paginated list of seasons.</response>
+            <returns>Paginated list of seasons.</returns>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonsController.AddSeason(eSusInsurers.Models.Seasons.SeasonRequest)">
+            <summary>
+            Add new season
+            </summary>
+            <remarks>
+            Add new season
+            </remarks>
+            <param name="request">Information of the season to add</param>
+            <response code="201">Indicates the season is successfully created.</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonsController.UpdateSeason(System.Int32,eSusInsurers.Models.Seasons.UpdateSeasonRequest)">
+            <summary>
+            Update a season
+            </summary>
+            <remarks>
+            Update a season
+            </remarks>
+            <param name="request">season details of the season</param>
+            <param name="seasonId">season id of the seasons</param>
+            <response code="204">Indicates the season details is updated</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonsController.DeleteSeason(System.Int32)">
+            <summary>
+            Deactivate a season
+            </summary>
+            <remarks>
+            Deactivate a season
+            </remarks>
+            <param name="seasonId">Id of the season</param>
+            <response code="204">Indicates the season is inactive</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonsController.ActivateSeason(System.Int32)">
+            <summary>
+            Activate a season
+            </summary>
+            <remarks>
+            Activate a season
+            </remarks>
+            <param name="seasonId">Id of the season</param>
+            <response code="204">Indicates the season is active</response>
+        </member>
         <member name="T:eSusInsurers.Controllers.TokenController">
             <summary>
             User Token Management
@@ -711,6 +849,51 @@
         <member name="P:eSusInsurers.Models.Roles.GetRoles.RoleFilterOptions.IsActive">
             <summary>
             Filter based on active roles.
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions.Region">
+            <summary>
+            Filter based on region of season cutoff dates.
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions.Crop">
+            <summary>
+            Filter based on crop of season cutoff dates.
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions.CropCategory">
+            <summary>
+            Filter based on crop category of season cutoff dates.
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions.Year">
+            <summary>
+            Filter based on year of season cutoff dates.
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions.Season">
+            <summary>
+            Filter based on season of  season cutoff dates.
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions.IsActive">
+            <summary>
+            Filter based on active of season cutoff dates.
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.Seasons.SeasonFilterOptions.Year">
+            <summary>
+            Filter based on active season.
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.Seasons.SeasonFilterOptions.Season">
+            <summary>
+            Filter based on active season.
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.Seasons.SeasonFilterOptions.IsActive">
+            <summary>
+            Filter based on active season.
             </summary>
         </member>
         <member name="P:eSusInsurers.Models.Users.GetUsers.UserFilterOptions.IsActive">
