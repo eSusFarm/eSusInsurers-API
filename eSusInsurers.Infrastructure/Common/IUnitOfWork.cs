@@ -19,6 +19,11 @@ namespace eSusInsurers.Infrastructure.Common
         IFunctionalityApprovalProcessRepository FunctionalityApprovalProcessRepository { get; }
         IApplicationSettingsRepository ApplicationSettingsRepository { get; }
         IInsuranceProductRepository InsuranceProductRepository { get; }
+        ICountriesRepository CountriesRepository { get; }
+        IDistrictRepository DistrictRepository { get; }
+        ISubcountiesRepository SubcountiesRepository { get; }
+        IProgramRepository ProgramRepository { get; }
+
         ISeasonRepository SeasonRepository { get; }
         ISeasonCutOffDateRepository SeasonCutOffDateRepository { get; }
 

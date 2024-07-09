@@ -41,6 +41,15 @@ namespace eSusInsurers.Infrastructure.Common
 
         private ISeasonCutOffDateRepository _seasonCutOffDateRepository;
 
+        private ICountriesRepository _countriesRepository;
+
+        private IDistrictRepository _districtRepository;
+
+        private ISubcountiesRepository _subcountiesRepository;
+
+        private IProgramRepository _programRepository;
+
+
         public UnitOfWork(eSusInsurerContext context)
         {
             try
@@ -84,6 +93,14 @@ namespace eSusInsurers.Infrastructure.Common
         public ISeasonRepository SeasonRepository => _seasonRepository ??= new SeasonRepository(_context);
 
         public ISeasonCutOffDateRepository SeasonCutOffDateRepository => _seasonCutOffDateRepository ??= new SeasonCutOffDateRepository(_context);
+
+        public ICountriesRepository CountriesRepository => _countriesRepository ??= new CountriesRepository(_context);
+
+        public IDistrictRepository DistrictRepository => _districtRepository??= new DistrictRepository(_context);
+
+        public ISubcountiesRepository SubcountiesRepository => _subcountiesRepository = new SubcountiesRepository(_context);
+
+        public IProgramRepository ProgramRepository => _programRepository ??= new ProgramsRepository(_context);
 
         public void SaveChanges()
             => _context.SaveChanges();

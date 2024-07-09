@@ -101,6 +101,8 @@ namespace eSusInsurers
             services.AddTransient<ISeasonCutOffDateService, SeasonCutOffDateService>();
             services.AddTransient<IInsuranceProductService, InsuranceProductService>();
             services.AddTransient<FireForget>();
+            services.AddTransient<ICountriesService, CountriesService>();
+            services.AddTransient<IProgramsService, ProgramService>();
 
             return services;
         }

@@ -90,6 +90,52 @@
             Configures the services for ApplicationServices
             </summary>
         </member>
+        <member name="T:eSusInsurers.Controllers.CountriesController">
+            <summary>
+            Controller for countries.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.CountriesController.#ctor(eSusInsurers.Services.Interfaces.ICountriesService)">
+            <summary>
+            Controller for countries.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.CountriesController.GetRegions(System.Int64)">
+            <summary>
+            Get regions by country Id
+            </summary>
+            <remarks>
+            Returns regions.
+            </remarks>
+            <param name="countryId">Country Id.</param>
+            <response code="200">Returns regions.</response>
+            <returns>Returns regions</returns>
+        </member>
+        <member name="M:eSusInsurers.Controllers.CountriesController.GetDistricts(System.Int64,System.Int64)">
+            <summary>
+            Get districts by region id
+            </summary>
+            <remarks>
+            Returns districts.
+            </remarks>
+            <param name="regionId">Region Id</param>
+            <param name="countryId">Country Id</param>
+            <response code="200">Returns districts.</response>
+            <returns>Returns districts</returns>
+        </member>
+        <member name="M:eSusInsurers.Controllers.CountriesController.GetSubcounties(System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Get subcounties by district id
+            </summary>
+            <remarks>
+            Returns subcounties.
+            </remarks>
+            <param name="regionId">Region Id</param>
+            <param name="countryId">Country Id</param>
+            <param name="districtId">District Id</param>
+            <response code="200">Returns subcounties.</response>
+            <returns>Returns subcounties</returns>
+        </member>
         <member name="T:eSusInsurers.Controllers.InsuranceProductController">
             <summary>
             Controller for managing insurance products.
@@ -133,6 +179,70 @@
             </remarks>
             <param name="request">Information of the insurance provider to be created.</param>
             <response code="201">Indicates the insurance provider was successfully created.</response>
+        </member>
+        <member name="T:eSusInsurers.Controllers.ProgramsController">
+            <summary>
+            Controller for prograns.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.ProgramsController.#ctor(eSusInsurers.Services.Interfaces.IProgramsService)">
+            <summary>
+            Controller for prograns.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.ProgramsController.Getprograms(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.Programs.ProgramFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
+            <summary>
+            Get programs
+            </summary>
+            <remarks>
+            Returns a paginated list of programs.
+            </remarks>
+            <param name="pagingOptions">Pagination options for response.</param>
+            <param name="filter">Data filter options.</param>
+            <param name="sort">Data sorting options.</param>
+            <response code="200">Returns a paginated list of programs.</response>
+            <returns>Paginated list of programs.</returns>
+        </member>
+        <member name="M:eSusInsurers.Controllers.ProgramsController.AddProgram(eSusInsurers.Models.Programs.ProgramRequest)">
+            <summary>
+            Add new program
+            </summary>
+            <remarks>
+            Add new program
+            </remarks>
+            <param name="request">Information of the program to register</param>
+            <response code="201">Indicates the program is successfully created.</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.ProgramsController.UpdateProgram(System.Int32,eSusInsurers.Models.Programs.ProgramRequest)">
+            <summary>
+            Update a program
+            </summary>
+            <remarks>
+            Update a program
+            </remarks>
+            <param name="request">Program details of the program</param>
+            <param name="programId">Program id of the program</param>
+            <response code="204">Indicates the program details is updated</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.ProgramsController.DeleteProgram(System.Int32)">
+            <summary>
+            Deactivate a program
+            </summary>
+            <remarks>
+            Deactivate a program
+            </remarks>
+            <param name="programId">Program id of the program</param>
+            <response code="204">Indicates the program is inactive</response>
+        </member>
+        <member name="M:eSusInsurers.Controllers.ProgramsController.ActivateProgram(System.Int32)">
+            <summary>
+            Activate a program
+            </summary>
+            <remarks>
+            Activate a program
+            </remarks>
+            <param name="programId">Program Id of the program</param>
+            <response code="204">Indicates the program is active</response>
         </member>
         <member name="T:eSusInsurers.Controllers.RoleController">
             <summary>
@@ -724,6 +834,11 @@
         <member name="P:eSusInsurers.Models.InsuranceProviders.CreateInsuranceProvider.InsuranceProviderFiles.DocumentData">
             <summary>
             Document Data in Base 64
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.Programs.ProgramFilterOptions.IsActive">
+            <summary>
+            Filter based on active programs.
             </summary>
         </member>
         <member name="T:eSusInsurers.Models.Roles.GetRoles.RoleFilterOptions">
