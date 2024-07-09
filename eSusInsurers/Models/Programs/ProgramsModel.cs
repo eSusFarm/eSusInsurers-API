@@ -11,11 +11,19 @@ namespace eSusInsurers.Models.Programs
 
         public string ProgramName { get; set; } = null!;
 
+        public int RegionId { get; set; }
+
         public string RegionName { get; set; }
+
+        public int? DistrictId { get; set; }
 
         public string? DistrictName { get; set; }
 
+        public int? SubCountyId { get; set; }
+
         public string? SubCountyName { get; set; }
+
+        public int? ParishId { get; set; }
 
         public string? ParishName { get; set; }
 
