@@ -54,6 +54,19 @@ namespace eSusInsurers.Services.Implementations
             return await query.ToListAsync(cancellationToken);
         }
 
+        public async Task<List<ParishModel>?> GetParishes(long countryId, long regionId, long districtId, long subCountyId, CancellationToken cancellationToken)
+        {
+            Dictionary<string, Models.Common.Filter> filters = ParishFilterById(countryId, regionId, districtId, subCountyId);
+            Expression<Func<Parish, bool>> predicate = ExpressionBuilder<Parish>.BuildFilterExpression(filters);
+
+            var query = unitOfWork.ParishRepository
+                .GetAll(new string[] { "SubCounty", "SubCounty.District", "SubCounty.District.Region" })
+               .Where(predicate)
+               .ProjectTo<ParishModel>(mapper.ConfigurationProvider);
+
+            return await query.ToListAsync(cancellationToken);
+        }
+
         private static Dictionary<string, Models.Common.Filter> RegionFilterById(long countryId)
         {
             var filters = new Dictionary<string, Models.Common.Filter>();
@@ -83,6 +96,21 @@ namespace eSusInsurers.Services.Implementations
             Filters.AddFilterIfValueGreaterThanZero(filters, regionId, "District.RegionId", SearchOperationEnum.Equal);
             
             Filters.AddFilterIfValueGreaterThanZero(filters, districtId, "DistrictId", SearchOperationEnum.Equal);
+
+            return filters;
+        }
+
+        private static Dictionary<string, Models.Common.Filter> ParishFilterById(long countryId, long regionId, long districtId, long subCountyId)
+        {
+            var filters = new Dictionary<string, Models.Common.Filter>();
+
+            Filters.AddFilterIfValueGreaterThanZero(filters, countryId, "SubCounty.District.Region.CountryId", SearchOperationEnum.Equal);
+
+            Filters.AddFilterIfValueGreaterThanZero(filters, regionId, "SubCounty.District.RegionId", SearchOperationEnum.Equal);
+
+            Filters.AddFilterIfValueGreaterThanZero(filters, districtId, "SubCounty.DistrictId", SearchOperationEnum.Equal);
+
+            Filters.AddFilterIfValueGreaterThanZero(filters, subCountyId, "SubCountyId", SearchOperationEnum.Equal);
 
             return filters;
         }

@@ -105,6 +105,8 @@ public partial class eSusInsurerContext : DbContext
 
     public virtual DbSet<InsuranceProvidersAu> InsuranceProvidersAus { get; set; }
 
+    public virtual DbSet<InsuranceRequest> InsuranceRequests { get; set; }
+
     public virtual DbSet<InsuranceRisk> InsuranceRisks { get; set; }
 
     public virtual DbSet<InsuranceRiskAu> InsuranceRiskAus { get; set; }
@@ -118,6 +120,8 @@ public partial class eSusInsurerContext : DbContext
     public virtual DbSet<MenuRolesFunctionality> MenuRolesFunctionalities { get; set; }
 
     public virtual DbSet<MenuRolesPrivilege> MenuRolesPrivileges { get; set; }
+
+    public virtual DbSet<Parish> Parishes { get; set; }
 
     public virtual DbSet<PaymentMode> PaymentModes { get; set; }
 
@@ -201,6 +205,7 @@ public partial class eSusInsurerContext : DbContext
         modelBuilder.ApplyConfiguration(new Configurations.InsuranceProviderDocumentConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsuranceProviderDocumentsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsuranceProvidersAuConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsuranceRequestConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsuranceRiskConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.InsuranceRiskAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.LocationConfiguration());
@@ -208,6 +213,7 @@ public partial class eSusInsurerContext : DbContext
         modelBuilder.ApplyConfiguration(new Configurations.MenuRoleFunctionalityApprovalProcessConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.MenuRolesFunctionalityConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.MenuRolesPrivilegeConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.ParishConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.PaymentModeConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.PaymentModesAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.PremiumPaymentConfiguration());
