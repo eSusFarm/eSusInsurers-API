@@ -22,6 +22,7 @@ namespace eSusInsurers.Infrastructure.Common
         ICountriesRepository CountriesRepository { get; }
         IDistrictRepository DistrictRepository { get; }
         ISubcountiesRepository SubcountiesRepository { get; }
+        IParishRepository ParishRepository { get; }
         IProgramRepository ProgramRepository { get; }
 
         ISeasonRepository SeasonRepository { get; }

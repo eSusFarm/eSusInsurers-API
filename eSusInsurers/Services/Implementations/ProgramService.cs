@@ -32,7 +32,7 @@ namespace eSusInsurers.Services.Implementations
             var query = unitOfWork.ProgramRepository.GetAll(
                 new string[]
                    {
-                        "Region", "District", "SubCounty"
+                        "Region", "District", "SubCounty", "Parish"
                    })
                .Where(predicate)
                .OrderByDescending(x => x.Id)
@@ -65,7 +65,9 @@ namespace eSusInsurers.Services.Implementations
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 
-            var program = await unitOfWork.ProgramRepository.GetByProgarmAndInstitutionNameAsync(request.ProgramName, request.InstitutionName, cancellationToken);
+            var program = await unitOfWork.ProgramRepository.GetAll()
+                .Where(x => x.ProgramName == request.ProgramName)
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (program != null)
                 throw new Exception($"Program Name ({request.ProgramName}) already exists.");
@@ -100,7 +102,7 @@ namespace eSusInsurers.Services.Implementations
             ArgumentNullException.ThrowIfNull(programId, nameof(programId));
 
             var programs = await unitOfWork.ProgramRepository.GetAll()
-                .Where(x => x.ProgramName == request.ProgramName && x.InstitutionName == request.InstitutionName)
+                .Where(x => x.ProgramName == request.ProgramName)
                 .ToListAsync(cancellationToken);
 
             if (programs.Any(x => x.Id != programId))
@@ -168,15 +170,15 @@ namespace eSusInsurers.Services.Implementations
             if (inboundDto != null)
             {
 
-                Filters.AddFilterIfNotEmpty(filters, inboundDto?.ProgramOrInstitutionName, "ProgramName", SearchOperationEnum.Contains);
+                Filters.AddFilterIfNotEmpty(filters, inboundDto?.ProgramName, "ProgramName", SearchOperationEnum.Contains);
 
-                Filters.AddFilterIfNotEmpty(filters, inboundDto?.ProgramOrInstitutionName, "InstitutionName", SearchOperationEnum.Contains);
+                Filters.AddFilterIfNotEmpty(filters, inboundDto?.RegionName, "Region.RegionName", SearchOperationEnum.Contains);
 
-                Filters.AddFilterIfNotEmpty(filters, inboundDto?.RegionName, "Region.RegionName", SearchOperationEnum.Contains, true);
+                Filters.AddFilterIfNotEmpty(filters, inboundDto?.DistrictName, "District.DistrictName", SearchOperationEnum.Contains);
 
-                Filters.AddFilterIfNotEmpty(filters, inboundDto?.DistrictName, "District.DistrictName", SearchOperationEnum.Contains, true);
+                Filters.AddFilterIfNotEmpty(filters, inboundDto?.SubCountyName, "SubCounty.SubCountyName", SearchOperationEnum.Contains);
 
-                Filters.AddFilterIfNotEmpty(filters, inboundDto?.SubCountyName, "SubCounty.SubCountyName", SearchOperationEnum.Contains, true);
+                Filters.AddFilterIfNotEmpty(filters, inboundDto?.ParishName, "Parish.ParishName", SearchOperationEnum.Contains);
 
                 if (inboundDto?.IsActive != null)
                     Filters.AddFilterIfNotEmpty(filters, inboundDto.IsActive == true ? "True" : "False", "IsActive", SearchOperationEnum.Equal);

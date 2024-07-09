@@ -199,6 +199,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[InsuranceRequests]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[InsuranceRisk]",
          "ObjectType": 0
       },
@@ -224,6 +228,10 @@
       },
       {
          "Name": "[dbo].[MenuRolesPrivileges]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Parishes]",
          "ObjectType": 0
       },
       {

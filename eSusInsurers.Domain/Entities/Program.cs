@@ -8,8 +8,6 @@ public partial class Program : BaseAuditableEntity
 
     public string ProgramName { get; set; } = null!;
 
-    public string InstitutionName { get; set; } = null!;
-
     public int RegionId { get; set; }
 
     public int? DistrictId { get; set; }
@@ -18,7 +16,11 @@ public partial class Program : BaseAuditableEntity
 
     public bool IsActive { get; set; }
 
+    public int? ParishId { get; set; }
+
     public virtual District District { get; set; }
+
+    public virtual Parish Parish { get; set; }
 
     public virtual Region Region { get; set; }
 

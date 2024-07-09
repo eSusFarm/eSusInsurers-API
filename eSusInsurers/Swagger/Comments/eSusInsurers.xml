@@ -136,6 +136,20 @@
             <response code="200">Returns subcounties.</response>
             <returns>Returns subcounties</returns>
         </member>
+        <member name="M:eSusInsurers.Controllers.CountriesController.GetParishes(System.Int64,System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Get parishes by subcounty id
+            </summary>
+            <remarks>
+            Returns parishes.
+            </remarks>
+            <param name="regionId">Region Id</param>
+            <param name="countryId">Country Id</param>
+            <param name="districtId">District Id</param>
+            <param name="subcountyId">Subcounty Id</param>
+            <response code="200">Returns parishes.</response>
+            <returns>Returns parishes</returns>
+        </member>
         <member name="T:eSusInsurers.Controllers.InsuranceProductController">
             <summary>
             Controller for managing insurance products.

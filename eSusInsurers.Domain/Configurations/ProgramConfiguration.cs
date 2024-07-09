@@ -21,12 +21,10 @@ namespace eSusInsurers.Domain.Configurations
                 .HasMaxLength(100);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.DistrictId);
-            entity.Property(e => e.InstitutionName)
-                .IsRequired()
-                .HasMaxLength(500);
             entity.Property(e => e.IsActive);
             entity.Property(e => e.ModifiedBy).HasMaxLength(100);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ParishId);
             entity.Property(e => e.ProgramName)
                 .IsRequired()
                 .HasMaxLength(500);
@@ -34,6 +32,8 @@ namespace eSusInsurers.Domain.Configurations
             entity.Property(e => e.SubCountyId);
 
             entity.HasOne(d => d.District).WithMany(p => p.Programs).HasForeignKey(d => d.DistrictId);
+
+            entity.HasOne(d => d.Parish).WithMany(p => p.Programs).HasForeignKey(d => d.ParishId);
 
             entity.HasOne(d => d.Region).WithMany(p => p.Programs)
                 .HasForeignKey(d => d.RegionId)

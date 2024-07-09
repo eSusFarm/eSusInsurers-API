@@ -47,6 +47,8 @@ namespace eSusInsurers.Infrastructure.Common
 
         private ISubcountiesRepository _subcountiesRepository;
 
+        public IParishRepository _parishRepository;
+
         private IProgramRepository _programRepository;
 
 
@@ -99,6 +101,8 @@ namespace eSusInsurers.Infrastructure.Common
         public IDistrictRepository DistrictRepository => _districtRepository??= new DistrictRepository(_context);
 
         public ISubcountiesRepository SubcountiesRepository => _subcountiesRepository = new SubcountiesRepository(_context);
+
+        public IParishRepository ParishRepository => _parishRepository = new ParishRepository(_context);
 
         public IProgramRepository ProgramRepository => _programRepository ??= new ProgramsRepository(_context);
 

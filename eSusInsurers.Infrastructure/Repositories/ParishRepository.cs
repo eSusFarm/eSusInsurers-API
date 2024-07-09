@@ -5,11 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eSusInsurers.Infrastructure.Repositories
 {
-    public class ProgramsRepository : Repository<Program>, IProgramRepository
+    public class ParishRepository : Repository<Parish>, IParishRepository
     {
-        public ProgramsRepository(DbContext context) : base(context)
+        public ParishRepository(DbContext context) : base(context)
         {
-            
         }
     }
 }
