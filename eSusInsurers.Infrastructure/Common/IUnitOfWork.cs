@@ -19,7 +19,8 @@ namespace eSusInsurers.Infrastructure.Common
         IFunctionalityApprovalProcessRepository FunctionalityApprovalProcessRepository { get; }
         IApplicationSettingsRepository ApplicationSettingsRepository { get; }
         IInsuranceProductRepository InsuranceProductRepository { get; }
-
+        ISeasonRepository SeasonRepository { get; }
+        ISeasonCutOffDateRepository SeasonCutOffDateRepository { get; }
 
         void SaveChanges();
         Task SaveChangesAsync(CancellationToken cancellationToken);

@@ -243,6 +243,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Programs]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Regions]",
          "ObjectType": 0
       },
@@ -255,19 +259,11 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[SeasonPhases]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SeasonPhases_AU]",
+         "Name": "[dbo].[SeasonCutOffDates]",
          "ObjectType": 0
       },
       {
          "Name": "[dbo].[Seasons]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Seasons_AU]",
          "ObjectType": 0
       },
       {
