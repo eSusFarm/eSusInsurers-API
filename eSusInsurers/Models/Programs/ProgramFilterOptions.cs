@@ -7,9 +7,7 @@
         /// </summary>
         public bool? IsActive { get; set; }
 
-        public string? Programs { get; set; }
-
-        public string? Institutions { get; set; }
+        public string? ProgramOrInstitutionName { get; set; }
 
         public string? RegionName { get; set; }
 

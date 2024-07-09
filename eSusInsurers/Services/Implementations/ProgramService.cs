@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using eSusInsurers.Common.Exceptions;
 using eSusInsurers.Constants;
 using eSusInsurers.Infrastructure.Common;
 using eSusInsurers.Infrastructure.Interfaces;
@@ -9,24 +10,14 @@ using eSusInsurers.Models.Helpers;
 using eSusInsurers.Models.Programs;
 using eSusInsurers.Services.Common;
 using eSusInsurers.Services.Interfaces;
-using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
-using eSusInsurers.Common.Exceptions;
-using eSusInsurers.Domain.Entities;
-using WMS.Models.Roles;
-using eSusInsurers.Models.Users.UpdateUser;
-using eSusInsurers.Helpers;
-using eSusInsurers.Models.Common;
-using eSusInsurers.Models;
+using System.Linq.Expressions;
 
 namespace eSusInsurers.Services.Implementations
 {
     public class ProgramService(IUnitOfWork unitOfWork,
-                             IConfiguration configuration,
-                             IMapper mapper,
-                             ITokenService tokenService,
-                             IDateTime dateTime,
-                             IEmailService emailService) : IProgramsService
+                             IMapper mapper) : IProgramsService
     {
 
         public async Task<Models.Common.PagedResult<ProgramsModel>> GetPrograms(GetProgramsQuery request, CancellationToken cancellationToken)
@@ -102,13 +93,20 @@ namespace eSusInsurers.Services.Implementations
             return true;
         }
 
-        public async Task UpdateProgram(int progarm_Id, ProgramRequest request, CancellationToken cancellationToken)
+        public async Task UpdateProgram(int programId, ProgramRequest request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 
-            ArgumentNullException.ThrowIfNull(progarm_Id, nameof(progarm_Id));
+            ArgumentNullException.ThrowIfNull(programId, nameof(programId));
 
-            var program = await unitOfWork.ProgramRepository.GetByIdAsync(progarm_Id, null, false, cancellationToken);
+            var programs = await unitOfWork.ProgramRepository.GetAll()
+                .Where(x => x.ProgramName == request.ProgramName && x.InstitutionName == request.InstitutionName)
+                .ToListAsync(cancellationToken);
+
+            if (programs.Any(x => x.Id != programId))
+                throw new BadRequestException("Program Name and Institution Name already exists.");
+
+            var program = await unitOfWork.ProgramRepository.GetByIdAsync(programId, cancellationToken: cancellationToken);
 
             if (program == null)
                 throw new NotFoundException("Program Id doesn't exist.");
@@ -125,7 +123,7 @@ namespace eSusInsurers.Services.Implementations
 
                 await transaction.CommitAsync(cancellationToken);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
 
@@ -133,36 +131,32 @@ namespace eSusInsurers.Services.Implementations
             }
         }
 
-        public async Task<object> DeleteProgram(int program_Id, CancellationToken cancellationToken)
+        public async Task DeleteProgram(int programId, CancellationToken cancellationToken)
         {
-            ArgumentNullException.ThrowIfNull(program_Id, nameof(program_Id));
+            ArgumentNullException.ThrowIfNull(programId, nameof(programId));
 
-            var program = await unitOfWork.ProgramRepository.GetByIdAsync(program_Id, null, false, cancellationToken);
+            var program = await unitOfWork.ProgramRepository.GetByIdAsync(programId, cancellationToken: cancellationToken);
 
             if (program == null)
-                throw new NotFoundException($"Program Id: ({program_Id}) doesn't exist.");
+                throw new NotFoundException($"Program Id: ({programId}) doesn't exist.");
 
             program.IsActive = false;
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-
-            return true;
         }
 
-        public async Task<object> ActivateProgram(int program_Id, CancellationToken cancellationToken)
+        public async Task ActivateProgram(int programId, CancellationToken cancellationToken)
         {
-            ArgumentNullException.ThrowIfNull(program_Id, nameof(program_Id));
+            ArgumentNullException.ThrowIfNull(programId, nameof(programId));
 
-            var program = await unitOfWork.ProgramRepository.GetByIdAsync(program_Id, null, false, cancellationToken);
+            var program = await unitOfWork.ProgramRepository.GetByIdAsync(programId, cancellationToken: cancellationToken);
 
             if (program == null)
-                throw new NotFoundException($"Program Id: ({program_Id}) doesn't exist.");
+                throw new NotFoundException($"Program Id: ({programId}) doesn't exist.");
 
             program.IsActive = true;
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-
-            return true;
         }
 
 
@@ -174,9 +168,9 @@ namespace eSusInsurers.Services.Implementations
             if (inboundDto != null)
             {
 
-                Filters.AddFilterIfNotEmpty(filters, inboundDto?.Programs, "ProgramName", SearchOperationEnum.Contains);
+                Filters.AddFilterIfNotEmpty(filters, inboundDto?.ProgramOrInstitutionName, "ProgramName", SearchOperationEnum.Contains);
 
-                Filters.AddFilterIfNotEmpty(filters, inboundDto?.Institutions, "InstitutionName", SearchOperationEnum.Contains);
+                Filters.AddFilterIfNotEmpty(filters, inboundDto?.ProgramOrInstitutionName, "InstitutionName", SearchOperationEnum.Contains);
 
                 Filters.AddFilterIfNotEmpty(filters, inboundDto?.RegionName, "Region.RegionName", SearchOperationEnum.Contains, true);
 
@@ -186,7 +180,6 @@ namespace eSusInsurers.Services.Implementations
 
                 if (inboundDto?.IsActive != null)
                     Filters.AddFilterIfNotEmpty(filters, inboundDto.IsActive == true ? "True" : "False", "IsActive", SearchOperationEnum.Equal);
-
 
             }
 

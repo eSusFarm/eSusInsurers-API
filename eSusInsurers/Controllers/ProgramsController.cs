@@ -1,13 +1,8 @@
-﻿using eSusInsurers.Models;
-using eSusInsurers.Models.Common;
+﻿using eSusInsurers.Models.Common;
 using eSusInsurers.Models.Programs;
-using eSusInsurers.Models.Users.GetUsers;
-using eSusInsurers.Models.Users.UpdateUser;
-using eSusInsurers.Services.Implementations;
 using eSusInsurers.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WMS.Models.Roles;
 
 namespace eSusInsurers.Controllers
 {
@@ -62,8 +57,7 @@ namespace eSusInsurers.Controllers
         /// </remarks>
         /// <param name="request">Information of the program to register</param>
         /// <response code="201">Indicates the program is successfully created.</response>
-        [Authorize]
-        [HttpPost]
+        [HttpPost, Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> AddProgram([FromBody] ProgramRequest request)
         {
@@ -86,16 +80,16 @@ namespace eSusInsurers.Controllers
         /// <remarks>
         /// Update a program
         /// </remarks>
-        /// <param name="request">program details of the program</param>
-        /// <param name="program_id">program_id of the program</param>
+        /// <param name="request">Program details of the program</param>
+        /// <param name="programId">Program id of the program</param>
         /// <response code="204">Indicates the program details is updated</response>
-        [HttpPut("{program_id}"), Authorize]
+        [HttpPut("{programId}"), Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> UpdateProgram(int program_id, ProgramRequest request)
+        public async Task<IActionResult> UpdateProgram(int programId, ProgramRequest request)
         {
             try
             {
-                await programsService.UpdateProgram(program_id, request, new CancellationToken());
+                await programsService.UpdateProgram(programId, request, new CancellationToken());
 
                 return NoContent();
             }
@@ -111,15 +105,15 @@ namespace eSusInsurers.Controllers
         /// <remarks>
         /// Deactivate a program
         /// </remarks>
-        /// <param name="program_id">program_id of the program</param>
+        /// <param name="programId">Program id of the program</param>
         /// <response code="204">Indicates the program is inactive</response>
-        [HttpDelete("{program_id}"), Authorize]
+        [HttpDelete("{programId}"), Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> DeleteProgram(int program_id)
+        public async Task<IActionResult> DeleteProgram(int programId)
         {
             try
             {
-                var response = await programsService.DeleteProgram(program_id, new CancellationToken());
+                await programsService.DeleteProgram(programId, new CancellationToken());
                 return NoContent();
             }
             catch (Exception e)
@@ -135,15 +129,15 @@ namespace eSusInsurers.Controllers
         /// <remarks>
         /// Activate a program
         /// </remarks>
-        /// <param name="program_id">program_id of the program</param>
+        /// <param name="programId">Program Id of the program</param>
         /// <response code="204">Indicates the program is active</response>
-        [HttpPut("{program_id}/activate"), Authorize]
+        [HttpPut("{programId}/activate"), Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> ActivateProgram(int program_id)
+        public async Task<IActionResult> ActivateProgram(int programId)
         {
             try
             {
-                var response = await programsService.ActivateProgram(program_id, new CancellationToken());
+                await programsService.ActivateProgram(programId, new CancellationToken());
                 return NoContent();
             }
             catch (Exception e)

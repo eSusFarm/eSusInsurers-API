@@ -17,68 +17,72 @@ namespace eSusInsurers.Services.Implementations
                              IMapper mapper
                             ) : ICountriesService
     {
-        public async Task<List<RegionModel>?> GetRegions(long country_id, CancellationToken cancellationToken)
+        public async Task<List<RegionModel>?> GetRegions(long countryId, CancellationToken cancellationToken)
         {
-            Dictionary<string, Models.Common.Filter> filters = RegionFilterById(country_id);
+            Dictionary<string, Models.Common.Filter> filters = RegionFilterById(countryId);
             Expression<Func<Region, bool>> predicate = ExpressionBuilder<Region>.BuildFilterExpression(filters);
 
             var query = unitOfWork.CountriesRepository.GetAll()
                .Where(predicate)
-               .OrderByDescending(x => x.Id)
                .ProjectTo<RegionModel>(mapper.ConfigurationProvider);
 
             return  await query.ToListAsync(cancellationToken);
         }
 
-        public async Task <List<DistrictModel>?> GetDistricts(long region_id ,CancellationToken cancellationToken)
+        public async Task <List<DistrictModel>?> GetDistricts(long countryId, long regionId, CancellationToken cancellationToken)
         {
-            Dictionary<string, Models.Common.Filter> filters = DistrictFilterById(region_id);
+            Dictionary<string, Models.Common.Filter> filters = DistrictFilterById(countryId, regionId);
             Expression<Func<District, bool>> predicate = ExpressionBuilder<District>.BuildFilterExpression(filters);
 
-            var query = unitOfWork.DistrictRepository.GetAll()
+            var query = unitOfWork.DistrictRepository.GetAll(new string[] { "Region" })
                .Where(predicate)
-               .OrderByDescending(x => x.Id)
                .ProjectTo<DistrictModel>(mapper.ConfigurationProvider);
 
             return await query.ToListAsync(cancellationToken);
         }
 
-        public async Task<List<SubCountiesModel>?> GetSubcounties(long district_id, CancellationToken cancellationToken)
+        public async Task<List<SubCountiesModel>?> GetSubcounties(long countryId, long regionId, long districtId, CancellationToken cancellationToken)
         {
-            Dictionary<string, Models.Common.Filter> filters = SubcountyFilterById(district_id);
+            Dictionary<string, Models.Common.Filter> filters = SubcountyFilterById(countryId, regionId, districtId);
             Expression<Func<SubCounty, bool>> predicate = ExpressionBuilder<SubCounty>.BuildFilterExpression(filters);
 
-            var query = unitOfWork.SubcountiesRepository.GetAll()
+            var query = unitOfWork.SubcountiesRepository
+                .GetAll(new string[] { "District", "District.Region" })
                .Where(predicate)
-               .OrderByDescending(x => x.Id)
                .ProjectTo<SubCountiesModel>(mapper.ConfigurationProvider);
 
             return await query.ToListAsync(cancellationToken);
         }
 
-        private static Dictionary<string, Models.Common.Filter> RegionFilterById(long country_id)
+        private static Dictionary<string, Models.Common.Filter> RegionFilterById(long countryId)
         {
             var filters = new Dictionary<string, Models.Common.Filter>();
 
-            Filters.AddFilterIfValueGreaterThanZero(filters, country_id, "Id", SearchOperationEnum.Equal);
+            Filters.AddFilterIfValueGreaterThanZero(filters, countryId, "CountryId", SearchOperationEnum.Equal);
 
             return filters;
         }
 
-        private static Dictionary<string, Models.Common.Filter> DistrictFilterById(long region_id)
+        private static Dictionary<string, Models.Common.Filter> DistrictFilterById(long countryId, long regionId)
         {
             var filters = new Dictionary<string, Models.Common.Filter>();
 
-            Filters.AddFilterIfValueGreaterThanZero(filters, region_id, "RegionId", SearchOperationEnum.Equal);
+            Filters.AddFilterIfValueGreaterThanZero(filters, countryId, "Region.CountryId", SearchOperationEnum.Equal);
+
+            Filters.AddFilterIfValueGreaterThanZero(filters, regionId, "RegionId", SearchOperationEnum.Equal);
 
             return filters;
         }
 
-        private static Dictionary<string, Models.Common.Filter> SubcountyFilterById(long district_id)
+        private static Dictionary<string, Models.Common.Filter> SubcountyFilterById(long countryId, long regionId, long districtId)
         {
             var filters = new Dictionary<string, Models.Common.Filter>();
 
-            Filters.AddFilterIfValueGreaterThanZero(filters, district_id, "DistrictId", SearchOperationEnum.Equal);
+            Filters.AddFilterIfValueGreaterThanZero(filters, countryId, "District.Region.CountryId", SearchOperationEnum.Equal);
+            
+            Filters.AddFilterIfValueGreaterThanZero(filters, regionId, "District.RegionId", SearchOperationEnum.Equal);
+            
+            Filters.AddFilterIfValueGreaterThanZero(filters, districtId, "DistrictId", SearchOperationEnum.Equal);
 
             return filters;
         }

@@ -13,9 +13,7 @@ namespace eSusInsurers.Models.Countries
         public void Mapping(Profile profile)
         {
             profile.CreateMap<SubCounty, SubCountiesModel>()
-                                .ForMember(d => d.SubCountyId, opt => opt.MapFrom(c => c.Id))
-                                 .ForMember(d => d.SubCountyName, opt => opt.MapFrom(c => c.SubCountyName))
-                                 .ForMember(d => d.DistrictId, opt => opt.MapFrom(c => c.DistrictId));
+                                .ForMember(d => d.SubCountyId, opt => opt.MapFrom(c => c.Id));
         }
     }
 }

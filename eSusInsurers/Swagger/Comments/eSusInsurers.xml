@@ -102,34 +102,37 @@
         </member>
         <member name="M:eSusInsurers.Controllers.CountriesController.GetRegions(System.Int64)">
             <summary>
-            Get Regions By Country_id
+            Get regions by country Id
             </summary>
             <remarks>
-            Returns Regions.
+            Returns regions.
             </remarks>
-            <param name="country_id">country id.</param>
+            <param name="countryId">Country Id.</param>
             <response code="200">Returns regions.</response>
             <returns>Returns regions</returns>
         </member>
-        <member name="M:eSusInsurers.Controllers.CountriesController.GetDistricts(System.Int64)">
+        <member name="M:eSusInsurers.Controllers.CountriesController.GetDistricts(System.Int64,System.Int64)">
             <summary>
-            Get Districts By region_id
+            Get districts by region id
             </summary>
             <remarks>
-            Returns Districts.
+            Returns districts.
             </remarks>
-            <param name="region_id">Region_id</param>
+            <param name="regionId">Region Id</param>
+            <param name="countryId">Country Id</param>
             <response code="200">Returns districts.</response>
             <returns>Returns districts</returns>
         </member>
-        <member name="M:eSusInsurers.Controllers.CountriesController.GetSubcounties(System.Int64)">
+        <member name="M:eSusInsurers.Controllers.CountriesController.GetSubcounties(System.Int64,System.Int64,System.Int64)">
             <summary>
-            Get subcounties By district_id
+            Get subcounties by district id
             </summary>
             <remarks>
             Returns subcounties.
             </remarks>
-            <param name="district_id">district_id</param>
+            <param name="regionId">Region Id</param>
+            <param name="countryId">Country Id</param>
+            <param name="districtId">District Id</param>
             <response code="200">Returns subcounties.</response>
             <returns>Returns subcounties</returns>
         </member>
@@ -217,8 +220,8 @@
             <remarks>
             Update a program
             </remarks>
-            <param name="request">program details of the program</param>
-            <param name="program_id">program_id of the program</param>
+            <param name="request">Program details of the program</param>
+            <param name="programId">Program id of the program</param>
             <response code="204">Indicates the program details is updated</response>
         </member>
         <member name="M:eSusInsurers.Controllers.ProgramsController.DeleteProgram(System.Int32)">
@@ -228,7 +231,7 @@
             <remarks>
             Deactivate a program
             </remarks>
-            <param name="program_id">program_id of the program</param>
+            <param name="programId">Program id of the program</param>
             <response code="204">Indicates the program is inactive</response>
         </member>
         <member name="M:eSusInsurers.Controllers.ProgramsController.ActivateProgram(System.Int32)">
@@ -238,7 +241,7 @@
             <remarks>
             Activate a program
             </remarks>
-            <param name="program_id">program_id of the program</param>
+            <param name="programId">Program Id of the program</param>
             <response code="204">Indicates the program is active</response>
         </member>
         <member name="T:eSusInsurers.Controllers.RoleController">

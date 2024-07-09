@@ -5,8 +5,8 @@ namespace eSusInsurers.Services.Interfaces
 {
     public interface ICountriesService
     {
-        Task<List<RegionModel>?> GetRegions(long country_id, CancellationToken cancellationToken);
-        Task<List<DistrictModel>?> GetDistricts(long region_id, CancellationToken cancellationToken);
-        Task<List<SubCountiesModel>?> GetSubcounties(long region_id, CancellationToken cancellationToken); 
+        Task<List<RegionModel>?> GetRegions(long countryId, CancellationToken cancellationToken);
+        Task<List<DistrictModel>?> GetDistricts(long countryId, long regionId, CancellationToken cancellationToken);
+        Task<List<SubCountiesModel>?> GetSubcounties(long countryId, long regionId, long districtId, CancellationToken cancellationToken); 
     }
 }
