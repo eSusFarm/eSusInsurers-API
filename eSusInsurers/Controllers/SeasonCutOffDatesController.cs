@@ -62,7 +62,7 @@ namespace eSusInsurers.Controllers
         /// <response code="200">Returns a list of seasons cutoff dates by seasonCutOffDateId.</response>
         [HttpGet("{seasonCutOffDateId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SeasonCutOffDatesModel))]
-        public async Task<ActionResult<SeasonCutOffDatesModel>> GetSeasonById(int seasonCutOffDateId)
+        public async Task<ActionResult<SeasonCutOffDatesModel>> GetSeasonCutOffDatesById(int seasonCutOffDateId)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace eSusInsurers.Controllers
         /// <response code="204">Indicates the season cutoff dates details is updated</response>
         [HttpPut("{seasonCutOffDateId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> UpdateSeason(int seasonCutOffDateId, [FromBody] UpdateSeasonCutOffDatesRequest request)
+        public async Task<IActionResult> UpdateSeasonCutOffDates(int seasonCutOffDateId, [FromBody] UpdateSeasonCutOffDatesRequest request)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace eSusInsurers.Controllers
         /// <response code="204">Indicates the season cutoff dates is inactive</response>
         [HttpDelete("{seasonCutOffDateId}"), Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> DeleteSeason(int seasonCutOffDateId)
+        public async Task<IActionResult> DeleteSeasonCutOffDates(int seasonCutOffDateId)
         {
             try
             {
@@ -182,7 +182,7 @@ namespace eSusInsurers.Controllers
         /// <response code="201">Indicates the season cutoff dates is successfully created.</response>
         [HttpPost("existence_check")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> AddSeasonCutOffDates([FromBody] SeasonCutOffDatesRequest request)
+        public async Task<IActionResult> SeasonCutOffDatesExistenceCheck([FromBody] SeasonCutOffDatesRequest request)
         {
             try
             {

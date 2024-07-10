@@ -384,7 +384,7 @@
             <response code="200">Returns a paginated list of seasons.</response>
             <returns>Paginated list of season cutoff dates.</returns>
         </member>
-        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.GetSeasonById(System.Int32)">
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.GetSeasonCutOffDatesById(System.Int32)">
             <summary>
             Get seasons cutoff dates by seasonCutOffDateId
             </summary>
@@ -404,7 +404,7 @@
             <param name="request">Information of the season cutoff dates to add</param>
             <response code="201">Indicates the season cutoff dates is successfully created.</response>
         </member>
-        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.UpdateSeason(System.Int32,eSusInsurers.Models.SeasonCutOffDate.UpdateSeasonCutOffDatesRequest)">
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.UpdateSeasonCutOffDates(System.Int32,eSusInsurers.Models.SeasonCutOffDate.UpdateSeasonCutOffDatesRequest)">
             <summary>
             Update a season cutoff dates
             </summary>
@@ -415,7 +415,7 @@
             <param name="seasonCutOffDateId">season id of the seasons cutoff dates</param>
             <response code="204">Indicates the season cutoff dates details is updated</response>
         </member>
-        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.DeleteSeason(System.Int32)">
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.DeleteSeasonCutOffDates(System.Int32)">
             <summary>
             Deactivate a season cutoff dates
             </summary>
@@ -435,7 +435,7 @@
             <param name="seasonCutOffDateId">Id of the season cutoff dates</param>
             <response code="204">Indicates the season cutoff dates is active</response>
         </member>
-        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.AddSeasonCutOffDates(eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesRequest)">
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.SeasonCutOffDatesExistenceCheck(eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesRequest)">
             <summary>
             Add new season cutoff dates
             </summary>
