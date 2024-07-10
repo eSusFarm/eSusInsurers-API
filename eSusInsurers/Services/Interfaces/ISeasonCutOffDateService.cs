@@ -10,5 +10,6 @@ namespace eSusInsurers.Services.Interfaces
         Task<bool> DeleteSeasonCutOffDates(int seasonCutOffDateId, CancellationToken cancellationToken);
         Task<bool> ActivateSeasonCutOffDates(int seasonCutOffDateId, CancellationToken cancellationToken);
         Task<bool> SeasonCutOffDatesExistenceCheck(SeasonCutOffDatesRequest request, CancellationToken cancellationToken);
+        Task<SeasonCutOffDatesModel?> GetSeasonCutOffDatesById(int seasonCutOffDateId, CancellationToken cancellationToken);
     }
 }

@@ -31,5 +31,10 @@ namespace eSusInsurers.Services.Common
                 UseOrLogic = useOrLogic
             };
         }
+
+        internal static void AddFilterIfNotEmpty(Dictionary<string, Models.Common.Filter> filters, int cropCategoryId, string v, SearchOperationEnum equal)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
