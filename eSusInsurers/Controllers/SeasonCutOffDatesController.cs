@@ -1,4 +1,5 @@
-﻿using eSusInsurers.Models.Common;
+﻿using eSusInsurers.Domain.Entities;
+using eSusInsurers.Models.Common;
 using eSusInsurers.Models.SeasonCutOffDate;
 using eSusInsurers.Models.Seasons;
 using eSusInsurers.Services.Interfaces;
@@ -42,6 +43,30 @@ namespace eSusInsurers.Controllers
                 };
 
                 var result = await seasonCutOffDateService.GetSeasonCutOffDates(query, new CancellationToken());
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// Get seasons cutoff dates by seasonCutOffDateId
+        /// </summary>
+        /// <remarks>
+        /// Returns a list of seasons cutoff dates by seasonCutOffDateId.
+        /// </remarks>
+        /// <param name="seasonCutOffDateId"></param>
+        /// <response code="200">Returns a list of seasons cutoff dates by seasonCutOffDateId.</response>
+        [HttpGet("seasonCutOffDateId")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SeasonCutOffDatesModel))]
+        public async Task<ActionResult<SeasonCutOffDatesModel>> GetSeasonById(int seasonCutOffDateId)
+        {
+            try
+            {
+                var result = await seasonCutOffDateService.GetSeasonCutOffDatesById(seasonCutOffDateId, new CancellationToken());
 
                 return Ok(result);
             }

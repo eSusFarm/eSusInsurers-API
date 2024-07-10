@@ -12,11 +12,24 @@ using System.Linq.Expressions;
 using System.Linq.Dynamic.Core;
 using eSusInsurers.Models.enums;
 using eSusInsurers.Common.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace eSusInsurers.Services.Implementations
 {
     public class SeasonCutOffDateService(IUnitOfWork unitOfWork, IMapper mapper) : ISeasonCutOffDateService
     {
+        public async Task<SeasonCutOffDatesModel?> GetSeasonCutOffDatesById(int seasonCutOffDateId, CancellationToken cancellationToken)
+        {
+            Dictionary<string, Models.Common.Filter> filters = SeasonCutOffDatesFiltersById(seasonCutOffDateId);
+            Expression<Func<SeasonCutOffDate, bool>> predicate = ExpressionBuilder<SeasonCutOffDate>.BuildFilterExpression(filters);
+
+            var query = unitOfWork.SeasonCutOffDateRepository.GetAll()
+               .Where(predicate)
+               .ProjectTo<SeasonCutOffDatesModel>(mapper.ConfigurationProvider);
+
+            return await query.FirstOrDefaultAsync(cancellationToken);
+        }
+
         public async Task<Models.Common.PagedResult<SeasonCutOffDatesModel>> GetSeasonCutOffDates(GetSeasonCutOffDatesQuery request, CancellationToken cancellationToken)
         {
             Dictionary<string, Models.Common.Filter> filters = SeasonCutOffDatesFilters(request);
@@ -186,6 +199,15 @@ namespace eSusInsurers.Services.Implementations
                     Filters.AddFilterIfNotEmpty(filters, inboundDto.IsActive == true ? "True" : "False", "IsActive", SearchOperationEnum.Equal);
 
             }
+
+            return filters;
+        }
+
+        private static Dictionary<string, Models.Common.Filter> SeasonCutOffDatesFiltersById(int seasonCutOffDateId)
+        {
+            var filters = new Dictionary<string, Models.Common.Filter>();
+
+            Filters.AddFilterIfValueGreaterThanZero(filters, seasonCutOffDateId, "Id", SearchOperationEnum.Equal);
 
             return filters;
         }

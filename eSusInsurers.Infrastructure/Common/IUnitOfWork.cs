@@ -24,9 +24,10 @@ namespace eSusInsurers.Infrastructure.Common
         ISubcountiesRepository SubcountiesRepository { get; }
         IParishRepository ParishRepository { get; }
         IProgramRepository ProgramRepository { get; }
-
         ISeasonRepository SeasonRepository { get; }
         ISeasonCutOffDateRepository SeasonCutOffDateRepository { get; }
+        ICropRepository CropRepository { get; }
+        ICropCategoryRepository CropCategoryRepository { get; }
 
         void SaveChanges();
         Task SaveChangesAsync(CancellationToken cancellationToken);
