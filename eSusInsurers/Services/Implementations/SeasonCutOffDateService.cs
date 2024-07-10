@@ -75,7 +75,7 @@ namespace eSusInsurers.Services.Implementations
 
             foreach (var season in request)
             {
-                var seasonCutOffDates = await unitOfWork.SeasonCutOffDateRepository.GetBySeasonCutOffDateAsync(season.SeasonId, season.RegionId, season.CropCategoryId, season.CropId, season.StartDate, season.EndDate, cancellationToken);
+                var seasonCutOffDates = await unitOfWork.SeasonCutOffDateRepository.GetBySeasonCutOffDateAsync(season.SeasonId, season.RegionId, season.CropCategoryId, season.CropId, cancellationToken);
 
                 if (seasonCutOffDates != null)
                     throw new BadRequestException($"Request already exists.");
@@ -106,7 +106,7 @@ namespace eSusInsurers.Services.Implementations
         public async Task<bool> SeasonCutOffDatesExistenceCheck(SeasonCutOffDatesRequest request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
-            var seasonCutOffDates = await unitOfWork.SeasonCutOffDateRepository.GetBySeasonCutOffDateAsync(request.SeasonId, request.RegionId, request.CropCategoryId, request.CropId, request.StartDate, request.EndDate, cancellationToken);
+            var seasonCutOffDates = await unitOfWork.SeasonCutOffDateRepository.GetBySeasonCutOffDateAsync(request.SeasonId, request.RegionId, request.CropCategoryId, request.CropId, cancellationToken);
 
             if (seasonCutOffDates != null)
                 throw new BadRequestException($"Request already exists.");
@@ -120,7 +120,7 @@ namespace eSusInsurers.Services.Implementations
             var seasonCutOffDates = await unitOfWork.SeasonCutOffDateRepository.GetByIdAsync(seasonCutOffDateId, null, false, cancellationToken);
             if (seasonCutOffDates == null)
                 throw new NotFoundException("Season CutOff Date Id doesn't exist.");
-            var seasonCutOffDate = await unitOfWork.SeasonCutOffDateRepository.GetBySeasonCutOffDateAsync(seasonCutOffDateId, request.SeasonId, request.RegionId, request.CropCategoryId, request.CropId, request.StartDate, request.EndDate, cancellationToken);
+            var seasonCutOffDate = await unitOfWork.SeasonCutOffDateRepository.GetBySeasonCutOffDateAsync(seasonCutOffDateId, request.SeasonId, request.RegionId, request.CropCategoryId, request.CropId, cancellationToken);
 
 
             if (seasonCutOffDate != null)
@@ -130,9 +130,9 @@ namespace eSusInsurers.Services.Implementations
 
             try
             {
-                mapper.Map(request, seasonCutOffDate);
+                mapper.Map(request, seasonCutOffDates);
 
-                await unitOfWork.SeasonCutOffDateRepository.UpdateAsync(seasonCutOffDate, cancellationToken);
+                await unitOfWork.SeasonCutOffDateRepository.UpdateAsync(seasonCutOffDates, cancellationToken);
 
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
@@ -149,7 +149,7 @@ namespace eSusInsurers.Services.Implementations
         {
             ArgumentNullException.ThrowIfNull(seasonCutOffDateId, nameof(seasonCutOffDateId));
 
-            var seasonCutOffDates = await unitOfWork.SeasonRepository.GetByIdAsync(seasonCutOffDateId, null, false, cancellationToken);
+            var seasonCutOffDates = await unitOfWork.SeasonCutOffDateRepository.GetByIdAsync(seasonCutOffDateId, null, false, cancellationToken);
 
             if (seasonCutOffDates == null)
                 throw new NotFoundException($"Season CutOff Date Id: ({seasonCutOffDateId}) doesn't exist.");
@@ -165,7 +165,7 @@ namespace eSusInsurers.Services.Implementations
         {
             ArgumentNullException.ThrowIfNull(seasonCutOffDateId, nameof(seasonCutOffDateId));
 
-            var seasonCutOffDates = await unitOfWork.SeasonRepository.GetByIdAsync(seasonCutOffDateId, null, false, cancellationToken);
+            var seasonCutOffDates = await unitOfWork.SeasonCutOffDateRepository.GetByIdAsync(seasonCutOffDateId, null, false, cancellationToken);
 
             if (seasonCutOffDates == null)
                 throw new NotFoundException($"Season CutOff Date Id: ({seasonCutOffDateId}) doesn't exist.");
