@@ -149,7 +149,7 @@ namespace eSusInsurers.Services.Implementations
         {
             ArgumentNullException.ThrowIfNull(seasonCutOffDateId, nameof(seasonCutOffDateId));
 
-            var seasonCutOffDates = await unitOfWork.SeasonRepository.GetByIdAsync(seasonCutOffDateId, null, false, cancellationToken);
+            var seasonCutOffDates = await unitOfWork.SeasonCutOffDateRepository.GetByIdAsync(seasonCutOffDateId, null, false, cancellationToken);
 
             if (seasonCutOffDates == null)
                 throw new NotFoundException($"Season CutOff Date Id: ({seasonCutOffDateId}) doesn't exist.");
@@ -165,7 +165,7 @@ namespace eSusInsurers.Services.Implementations
         {
             ArgumentNullException.ThrowIfNull(seasonCutOffDateId, nameof(seasonCutOffDateId));
 
-            var seasonCutOffDates = await unitOfWork.SeasonRepository.GetByIdAsync(seasonCutOffDateId, null, false, cancellationToken);
+            var seasonCutOffDates = await unitOfWork.SeasonCutOffDateRepository.GetByIdAsync(seasonCutOffDateId, null, false, cancellationToken);
 
             if (seasonCutOffDates == null)
                 throw new NotFoundException($"Season CutOff Date Id: ({seasonCutOffDateId}) doesn't exist.");
