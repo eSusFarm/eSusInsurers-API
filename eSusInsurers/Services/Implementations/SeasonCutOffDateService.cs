@@ -130,9 +130,9 @@ namespace eSusInsurers.Services.Implementations
 
             try
             {
-                mapper.Map(request, seasonCutOffDate);
+                mapper.Map(request, seasonCutOffDates);
 
-                await unitOfWork.SeasonCutOffDateRepository.UpdateAsync(seasonCutOffDate, cancellationToken);
+                await unitOfWork.SeasonCutOffDateRepository.UpdateAsync(seasonCutOffDates, cancellationToken);
 
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 

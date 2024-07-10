@@ -19,7 +19,7 @@ namespace eSusInsurers.Models.SeasonCutOffDate
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<SeasonCutOffDatesRequest, Domain.Entities.SeasonCutOffDate>()
+            profile.CreateMap<UpdateSeasonCutOffDatesRequest, Domain.Entities.SeasonCutOffDate>()
                 .ForMember(x => x.IsActive, opt => opt.MapFrom(c => true));
         }
     }
