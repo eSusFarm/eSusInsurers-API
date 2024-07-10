@@ -20,7 +20,7 @@ namespace eSusInsurers.Controllers
         /// </remarks>
         /// <param name="cropCategoryId"></param>
         /// <response code="200">Returns a list of crops by cropCategoryId.</response>
-        [HttpGet("cropCategoryId")]
+        [HttpGet("{cropCategoryId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CropModel))]
         public async Task<ActionResult<CropModel>> GetCropsByCropCategoryId(int cropCategoryId)
         {
