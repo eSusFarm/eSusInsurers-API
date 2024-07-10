@@ -57,7 +57,7 @@ namespace eSusInsurers.Controllers
         /// </remarks>
         /// <param name="year"></param>
         /// <response code="200">Returns a list of seasons by year.</response>
-        [HttpGet("year")]
+        [HttpGet("{year}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SeasonModel))]
         public async Task<ActionResult<SeasonModel>> GetSeasonByYear(string year)
         {

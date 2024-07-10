@@ -60,7 +60,7 @@ namespace eSusInsurers.Controllers
         /// </remarks>
         /// <param name="seasonCutOffDateId"></param>
         /// <response code="200">Returns a list of seasons cutoff dates by seasonCutOffDateId.</response>
-        [HttpGet("seasonCutOffDateId")]
+        [HttpGet("{seasonCutOffDateId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SeasonCutOffDatesModel))]
         public async Task<ActionResult<SeasonCutOffDatesModel>> GetSeasonById(int seasonCutOffDateId)
         {
