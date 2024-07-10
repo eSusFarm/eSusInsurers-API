@@ -14,7 +14,7 @@ public partial class CropsAu : BaseAuditableEntity
 
     public int? CropCategoryId { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public decimal MinOrderQuantity { get; set; }
 

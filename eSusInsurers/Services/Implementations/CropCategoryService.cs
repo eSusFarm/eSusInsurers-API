@@ -30,7 +30,7 @@ namespace eSusInsurers.Services
         {
             var filters = new Dictionary<string, Models.Common.Filter>();
 
-            //Filters.AddFilterIfNotEmpty(filters, "True", "IsActive", SearchOperationEnum.Equal);
+            Filters.AddFilterIfNotEmpty(filters, "True", "IsActive", SearchOperationEnum.Equal);
 
             return filters;
         } 

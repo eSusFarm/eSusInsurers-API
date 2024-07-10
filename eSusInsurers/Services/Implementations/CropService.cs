@@ -20,7 +20,7 @@ namespace eSusInsurers.Services
             Expression<Func<Crop, bool>> predicate = ExpressionBuilder<Crop>.BuildFilterExpression(filters);
 
             var query = unitOfWork.CropRepository.GetAll()
-               .Where(predicate)
+               .Where(predicate).Where(x=>x.CropCategoryId == cropCategoryId)
                .ProjectTo<CropModel>(mapper.ConfigurationProvider);
 
             return await query.ToListAsync(cancellationToken);
