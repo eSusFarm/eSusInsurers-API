@@ -150,6 +150,26 @@
             <response code="200">Returns parishes.</response>
             <returns>Returns parishes</returns>
         </member>
+        <member name="T:eSusInsurers.Controllers.InsuranceCompanyController">
+            <summary>
+            Controller for insurance companies.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.InsuranceCompanyController.#ctor(eSusInsurers.Services.Interfaces.IInsuranceCompanyService)">
+            <summary>
+            Controller for insurance companies.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.InsuranceCompanyController.GetInsuranceCompanies">
+            <summary>
+            Get insurance companies
+            </summary>
+            <remarks>
+            Returns insurance companies.
+            </remarks>
+            <response code="200">Returns insurance companies.</response>
+            <returns>Returns insurance companies</returns>
+        </member>
         <member name="T:eSusInsurers.Controllers.InsuranceProductController">
             <summary>
             Controller for managing insurance products.

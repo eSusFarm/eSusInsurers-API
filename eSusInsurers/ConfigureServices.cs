@@ -103,6 +103,7 @@ namespace eSusInsurers
             services.AddTransient<FireForget>();
             services.AddTransient<ICountriesService, CountriesService>();
             services.AddTransient<IProgramsService, ProgramService>();
+            services.AddTransient<IInsuranceCompanyService, InsuranceCompanyService>();
 
             return services;
         }

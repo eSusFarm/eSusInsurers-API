@@ -24,6 +24,7 @@ namespace eSusInsurers.Infrastructure.Common
         ISubcountiesRepository SubcountiesRepository { get; }
         IParishRepository ParishRepository { get; }
         IProgramRepository ProgramRepository { get; }
+        IInsuranceCompanyRepository InsuranceCompanyRepository { get; }
 
         ISeasonRepository SeasonRepository { get; }
         ISeasonCutOffDateRepository SeasonCutOffDateRepository { get; }

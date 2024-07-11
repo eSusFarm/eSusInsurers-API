@@ -51,6 +51,7 @@ namespace eSusInsurers.Infrastructure.Common
 
         private IProgramRepository _programRepository;
 
+        private IInsuranceCompanyRepository _insuranceCompanyRepository;
 
         public UnitOfWork(eSusInsurerContext context)
         {
@@ -105,6 +106,8 @@ namespace eSusInsurers.Infrastructure.Common
         public IParishRepository ParishRepository => _parishRepository = new ParishRepository(_context);
 
         public IProgramRepository ProgramRepository => _programRepository ??= new ProgramsRepository(_context);
+
+        public IInsuranceCompanyRepository InsuranceCompanyRepository => _insuranceCompanyRepository ??= new InsuranceCompanyRepository(_context);
 
         public void SaveChanges()
             => _context.SaveChanges();

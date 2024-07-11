@@ -180,6 +180,14 @@ namespace eSusInsurers.Services.Implementations
 
                 Filters.AddFilterIfNotEmpty(filters, inboundDto?.ParishName, "Parish.ParishName", SearchOperationEnum.Contains);
 
+                Filters.AddFilterIfValueGreaterThanZero(filters, inboundDto?.RegionId, "RegionId", SearchOperationEnum.Equal);
+
+                Filters.AddFilterIfValueGreaterThanZero(filters, inboundDto?.DistrictId, "DistrictId", SearchOperationEnum.Equal);
+
+                Filters.AddFilterIfValueGreaterThanZero(filters, inboundDto?.SubcountyId, "SubCountyId", SearchOperationEnum.Equal);
+
+                Filters.AddFilterIfValueGreaterThanZero(filters, inboundDto?.ParishId, "ParishId", SearchOperationEnum.Equal);
+
                 if (inboundDto?.IsActive != null)
                     Filters.AddFilterIfNotEmpty(filters, inboundDto.IsActive == true ? "True" : "False", "IsActive", SearchOperationEnum.Equal);
 
