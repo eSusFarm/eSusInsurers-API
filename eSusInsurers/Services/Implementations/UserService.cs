@@ -45,7 +45,7 @@ namespace eSusInsurers.Services.Implementations
             var user = await unitOfWork.UserRepository.GetByEmailIdAsync(request.EmailId, cancellationToken);
 
             if (user != null)
-                throw new Exception($"Email Id ({request.EmailId}) already exists.");
+                throw new Exception($"({request.EmailId}) already exists.");
 
             user = mapper.Map<User>(request);
 
