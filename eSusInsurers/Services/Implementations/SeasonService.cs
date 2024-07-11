@@ -9,13 +9,26 @@ using eSusInsurers.Models.Extensions;
 using eSusInsurers.Models.Helpers;
 using eSusInsurers.Models.Seasons;
 using eSusInsurers.Services.Common;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 
 namespace eSusInsurers.Services
 {
     public class SeasonService(IUnitOfWork unitOfWork, IMapper mapper) : ISeasonService
-    {
+    {       
+        public async Task<List<SeasonModel>?> GetSeasonByYear(string year, CancellationToken cancellationToken)
+        {
+            Dictionary<string, Models.Common.Filter> filters = SeasonsFilterByYear(year);
+            Expression<Func<Season, bool>> predicate = ExpressionBuilder<Season>.BuildFilterExpression(filters);
+
+            var query = unitOfWork.SeasonRepository.GetAll()
+               .Where(predicate)
+               .ProjectTo<SeasonModel>(mapper.ConfigurationProvider);
+
+            return await query.ToListAsync(cancellationToken);
+        }
+
         public async Task<Models.Common.PagedResult<SeasonModel>> GetSeasons(GetSeasonQuery request, CancellationToken cancellationToken)
         {
             Dictionary<string, Models.Common.Filter> filters = SeasonsFilters(request);
@@ -169,6 +182,17 @@ namespace eSusInsurers.Services
 
             return filters;
         }
+
+        private static Dictionary<string, Models.Common.Filter> SeasonsFilterByYear(string year)
+        {
+            var filters = new Dictionary<string, Models.Common.Filter>();
+
+            Filters.AddFilterIfNotEmpty(filters, "True", "IsActive", SearchOperationEnum.Equal);
+
+            Filters.AddFilterIfNotEmpty(filters, (year != null && year.Count() > 0) ? string.Join(",", year) : "", "SeasonYear", SearchOperationEnum.LContains);
+
+            return filters;
+        }     
         #endregion
     }
 }

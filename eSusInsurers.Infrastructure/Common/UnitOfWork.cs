@@ -51,7 +51,11 @@ namespace eSusInsurers.Infrastructure.Common
 
         private IProgramRepository _programRepository;
 
+        public ICropRepository _cropRepository;
         private IInsuranceCompanyRepository _insuranceCompanyRepository;
+
+        private ICropCategoryRepository _cropCategoryRepository;
+
 
         public UnitOfWork(eSusInsurerContext context)
         {
@@ -106,6 +110,10 @@ namespace eSusInsurers.Infrastructure.Common
         public IParishRepository ParishRepository => _parishRepository = new ParishRepository(_context);
 
         public IProgramRepository ProgramRepository => _programRepository ??= new ProgramsRepository(_context);
+
+        public ICropRepository CropRepository => _cropRepository = new CropRepository(_context);
+
+        public ICropCategoryRepository CropCategoryRepository => _cropCategoryRepository ??= new CropCategoryRepository(_context);
 
         public IInsuranceCompanyRepository InsuranceCompanyRepository => _insuranceCompanyRepository ??= new InsuranceCompanyRepository(_context);
 

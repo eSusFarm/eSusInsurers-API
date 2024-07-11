@@ -50,6 +50,30 @@ namespace eSusInsurers.Controllers
         }
 
         /// <summary>
+        /// Get seasons by year
+        /// </summary>
+        /// <remarks>
+        /// Returns a list of seasons by year.
+        /// </remarks>
+        /// <param name="year"></param>
+        /// <response code="200">Returns a list of seasons by year.</response>
+        [HttpGet("{year}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SeasonModel))]
+        public async Task<ActionResult<SeasonModel>> GetSeasonByYear(string year)
+        {
+            try
+            {
+                var result = await seasonsService.GetSeasonByYear(year, new CancellationToken());
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
+        }   
+
+        /// <summary>
         /// Add new season
         /// </summary>
         /// <remarks>

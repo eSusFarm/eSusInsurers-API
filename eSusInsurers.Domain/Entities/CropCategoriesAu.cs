@@ -12,7 +12,7 @@ public partial class CropCategoriesAu : BaseAuditableEntity
 
     public string CropCategoryName { get; set; } = null!;
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public int? ParentCategoryId { get; set; }
 

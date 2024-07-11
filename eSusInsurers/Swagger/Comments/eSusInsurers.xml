@@ -150,6 +150,46 @@
             <response code="200">Returns parishes.</response>
             <returns>Returns parishes</returns>
         </member>
+        <member name="T:eSusInsurers.Controllers.CropCategoriesController">
+            <summary>
+            Controller for cropcategories.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.CropCategoriesController.#ctor(eSusInsurers.Services.ICropCategoryService)">
+            <summary>
+            Controller for cropcategories.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.CropCategoriesController.GetCropCategories">
+            <summary>
+            Get crop categories
+            </summary>
+            <remarks>
+            Returns crop categories.
+            </remarks>
+            <response code="200">Returns crop categories.</response>
+            <returns>Returns crop categories</returns>
+        </member>
+        <member name="T:eSusInsurers.Controllers.CropsController">
+            <summary>
+            Controller for crops.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.CropsController.#ctor(eSusInsurers.Services.ICropService)">
+            <summary>
+            Controller for crops.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.CropsController.GetCropsByCropCategoryId(System.Int32)">
+            <summary>
+            Get crops by cropCategoryId
+            </summary>
+            <remarks>
+            Returns a list of crops by cropCategoryId
+            </remarks>
+            <param name="cropCategoryId"></param>
+            <response code="200">Returns a list of crops by cropCategoryId.</response>
+        </member>
         <member name="T:eSusInsurers.Controllers.InsuranceCompanyController">
             <summary>
             Controller for insurance companies.
@@ -364,6 +404,16 @@
             <response code="200">Returns a paginated list of seasons.</response>
             <returns>Paginated list of season cutoff dates.</returns>
         </member>
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.GetSeasonCutOffDatesById(System.Int32)">
+            <summary>
+            Get seasons cutoff dates by seasonCutOffDateId
+            </summary>
+            <remarks>
+            Returns a list of seasons cutoff dates by seasonCutOffDateId.
+            </remarks>
+            <param name="seasonCutOffDateId"></param>
+            <response code="200">Returns a list of seasons cutoff dates by seasonCutOffDateId.</response>
+        </member>
         <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.AddSeasonCutOffDates(System.Collections.Generic.List{eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesRequest})">
             <summary>
             Add new season cutoff dates
@@ -374,7 +424,7 @@
             <param name="request">Information of the season cutoff dates to add</param>
             <response code="201">Indicates the season cutoff dates is successfully created.</response>
         </member>
-        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.UpdateSeason(System.Int32,eSusInsurers.Models.SeasonCutOffDate.UpdateSeasonCutOffDatesRequest)">
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.UpdateSeasonCutOffDates(System.Int32,eSusInsurers.Models.SeasonCutOffDate.UpdateSeasonCutOffDatesRequest)">
             <summary>
             Update a season cutoff dates
             </summary>
@@ -385,7 +435,7 @@
             <param name="seasonCutOffDateId">season id of the seasons cutoff dates</param>
             <response code="204">Indicates the season cutoff dates details is updated</response>
         </member>
-        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.DeleteSeason(System.Int32)">
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.DeleteSeasonCutOffDates(System.Int32)">
             <summary>
             Deactivate a season cutoff dates
             </summary>
@@ -405,7 +455,7 @@
             <param name="seasonCutOffDateId">Id of the season cutoff dates</param>
             <response code="204">Indicates the season cutoff dates is active</response>
         </member>
-        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.AddSeasonCutOffDates(eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesRequest)">
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.SeasonCutOffDatesExistenceCheck(eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesRequest)">
             <summary>
             Add new season cutoff dates
             </summary>
@@ -437,6 +487,16 @@
             <param name="sort">Data sorting options.</param>
             <response code="200">Returns a paginated list of seasons.</response>
             <returns>Paginated list of seasons.</returns>
+        </member>
+        <member name="M:eSusInsurers.Controllers.SeasonsController.GetSeasonByYear(System.String)">
+            <summary>
+            Get seasons by year
+            </summary>
+            <remarks>
+            Returns a list of seasons by year.
+            </remarks>
+            <param name="year"></param>
+            <response code="200">Returns a list of seasons by year.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonsController.AddSeason(eSusInsurers.Models.Seasons.SeasonRequest)">
             <summary>
