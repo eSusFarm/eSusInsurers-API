@@ -72,7 +72,7 @@ namespace eSusInsurers.Controllers
         /// <param name="districtId">District Id</param>
         /// <response code="200">Returns subcounties.</response>
         /// <returns>Returns subcounties</returns>
-        [HttpGet("{countryId}/regions/{regionId}/districts{districtId}/subcounties"), Authorize]
+        [HttpGet("{countryId}/regions/{regionId}/districts/{districtId}/subcounties"), Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<SubCountiesModel>))]
         public async Task<ActionResult<List<SubCountiesModel>>> GetSubcounties(long countryId, long regionId, long districtId)
         {
@@ -99,7 +99,7 @@ namespace eSusInsurers.Controllers
         /// <param name="subcountyId">Subcounty Id</param>
         /// <response code="200">Returns parishes.</response>
         /// <returns>Returns parishes</returns>
-        [HttpGet("{countryId}/regions/{regionId}/districts{districtId}/subcounties/{subcountyId}/parishes"), Authorize]
+        [HttpGet("{countryId}/regions/{regionId}/districts/{districtId}/subcounties/{subcountyId}/parishes"), Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ParishModel>))]
         public async Task<ActionResult<List<ParishModel>>> GetParishes(long countryId, long regionId, long districtId, long subcountyId)
         {

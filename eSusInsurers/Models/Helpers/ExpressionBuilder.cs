@@ -33,7 +33,7 @@ namespace eSusInsurers.Models.Helpers
                     }
                 }
 
-                var constant = Expression.Constant(filterValue);
+                var constant = Expression.Constant(filterValue, propertyType);
                 Expression? equality = null;
 
                 if (filter.Value.Operation == SearchOperationEnum.Equal)
@@ -110,6 +110,11 @@ namespace eSusInsurers.Models.Helpers
                 var property = currentType.GetProperty(propName) ?? throw new ArgumentException(
                         $"Property '{propName}' not found on type '{currentType.FullName}'.");
                 currentType = property.PropertyType;
+            }
+
+            if (currentType.IsGenericType && currentType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                currentType = Nullable.GetUnderlyingType(currentType);
             }
 
             return currentType;

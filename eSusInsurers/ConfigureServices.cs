@@ -105,6 +105,7 @@ namespace eSusInsurers
             services.AddTransient<IProgramsService, ProgramService>();
             services.AddTransient<ICropCategoryService, CropCategoryService>();
             services.AddTransient<ICropService, CropService>();
+            services.AddTransient<IInsuranceCompanyService, InsuranceCompanyService>();
 
             return services;
         }
