@@ -9,129 +9,119 @@ using eSusInsurers.Infrastructure.Common;
 using eSusInsurers.Models.InsuranceProviders.CreateInsuranceProvider;
 using eSusInsurers.Services.Interfaces;
 
-namespace eSusInsurers.Services.Implementations
+namespace eSusInsurers.Services.Implementations;
+
+public class InsuranceProviderService : IInsuranceProviderService
 {
-    public class InsuranceProviderService : IInsuranceProviderService
+    private readonly IAzureFileStorageConnection _azureFileStorageConnection;
+    private readonly IInternaleSusFarmService _internaleSusFarmService;
+    private readonly ILoggerContext<InsuranceProvider> _logger;
+    private readonly IMapper _mapper;
+    public IUnitOfWork _unitOfWork;
+
+
+    public InsuranceProviderService(IUnitOfWork unitOfWork
+        , IMapper mapper
+        , IAzureFileStorageConnection azureFileStorageConnection
+        , ILoggerContext<InsuranceProvider> logger
+        , IInternaleSusFarmService internaleSusFarmService)
     {
-        public IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly IInternaleSusFarmService _internaleSusFarmService;
-        private readonly IAzureFileStorageConnection _azureFileStorageConnection;
-        private readonly ILoggerContext<InsuranceProvider> _logger;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+        _azureFileStorageConnection = azureFileStorageConnection;
+        _logger = logger;
+        _internaleSusFarmService = internaleSusFarmService;
+    }
 
+    public async Task<CreateInsuranceProviderResponse> CreateInsuranceProvider(CreateInsuranceProviderRequest request,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request, nameof(request));
 
+        // var getprovinces = await _internaleSusFarmService.GetProvinceSummary(cancellationToken);
 
-        public InsuranceProviderService(IUnitOfWork unitOfWork
-                                      , IMapper mapper
-                                      , IAzureFileStorageConnection azureFileStorageConnection
-                                      , ILoggerContext<InsuranceProvider> logger
-                                      , IInternaleSusFarmService internaleSusFarmService)
+        var insuranceProvider = _mapper.Map<InsuranceProvider>(request);
+
+        insuranceProvider.CreatedDate = DateTime.UtcNow;
+
+        insuranceProvider.ModifiedDate = DateTime.UtcNow;
+
+        using var transaction = _unitOfWork.BeginTransaction();
+
+        try
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _azureFileStorageConnection = azureFileStorageConnection;
-            _logger = logger;
-            _internaleSusFarmService = internaleSusFarmService;
-        }
+            await _unitOfWork.InsuranceProviderRepository.AddAsync(insuranceProvider, cancellationToken);
 
-        public async Task<CreateInsuranceProviderResponse> CreateInsuranceProvider(CreateInsuranceProviderRequest request, CancellationToken cancellationToken)
-        {
-            ArgumentNullException.ThrowIfNull(request, nameof(request));
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            // var getprovinces = await _internaleSusFarmService.GetProvinceSummary(cancellationToken);
-
-            var insuranceProvider = _mapper.Map<InsuranceProvider>(request);
-
-            insuranceProvider.CreatedDate = DateTime.UtcNow;
-
-            insuranceProvider.ModifiedDate = DateTime.UtcNow;
-
-            using var transaction = _unitOfWork.BeginTransaction();
-
-            try
+            if (request.InsuranceProviderFiles?.Count() > 0)
             {
+                var insuranceProviderDocuments =
+                    await UploadInsuranceProviderFiles(request.InsuranceProviderFiles.ToList(), insuranceProvider);
 
-                await _unitOfWork.InsuranceProviderRepository.AddAsync(insuranceProvider, cancellationToken);
-
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-                if (request.InsuranceProviderFiles?.Count() > 0)
+                if (insuranceProviderDocuments.Count > 0)
                 {
-                    var insuranceProviderDocuments = await UploadInsuranceProviderFiles(request.InsuranceProviderFiles.ToList(), insuranceProvider);
+                    await _unitOfWork.InsuranceProviderDocumentRepository.AddRangeAsync(insuranceProviderDocuments,
+                        cancellationToken);
 
-                    if (insuranceProviderDocuments.Count > 0)
-                    {
-                        await _unitOfWork.InsuranceProviderDocumentRepository.AddRangeAsync(insuranceProviderDocuments, cancellationToken);
-
-                        await _unitOfWork.SaveChangesAsync(cancellationToken);
-                    }
-                }
-
-                await transaction.CommitAsync(cancellationToken);
-
-                return new CreateInsuranceProviderResponse()
-                {
-                    InsuranceProviderId = insuranceProvider.Id,
-                    Success = true
-                };
-            }
-            catch (Exception ex)
-            {
-                await _logger.LogErrorAsync(insuranceProvider, ex, ApplicationConstants.CommorError, cancellationToken);
-
-                await transaction.RollbackAsync(cancellationToken);
-
-                return new CreateInsuranceProviderResponse()
-                {
-                    Success = false,
-                    FailureReason = ex.Message
-                };
-            }
-        }
-
-        private async Task<List<InsuranceProviderDocument>> UploadInsuranceProviderFiles(List<InsuranceProviderFiles> InsuranceProviderFiles, InsuranceProvider insuranceProvider)
-        {
-
-            List<InsuranceProviderDocument> insuranceProviderDocuments = new List<InsuranceProviderDocument>();
-
-            try
-            {
-
-                foreach (var file in InsuranceProviderFiles)
-                {
-                    if (file.DocumentData != null)
-                    {
-                        AzureDocument document = new AzureDocument();
-                        document.DocumentName = $"{insuranceProvider.Id}_{file.DocumentName}";
-                        document.DocumentData = Convert.FromBase64String(file.DocumentData);
-                        document.MainDirectory = ApplicationConstants.AzureMainDirectory;
-                        document.ChildDirectory = insuranceProvider.Id.ToString();
-
-                        var documentPath = await _azureFileStorageConnection.UploadInsuranceProviderFiles(document);
-
-                        if (documentPath != null)
-                        {
-                            InsuranceProviderDocument insuranceProviderDocument = new InsuranceProviderDocument();
-                            insuranceProviderDocument.InsurerId = insuranceProvider.Id;
-                            insuranceProviderDocument.DocumentName = file.DocumentName;
-                            insuranceProviderDocument.DocumentPath = documentPath;
-                            insuranceProviderDocument.IsActive = true;
-                            insuranceProviderDocument.CreatedBy = insuranceProviderDocument.ModifiedBy = insuranceProvider.InsurerName;
-                            insuranceProviderDocument.CreatedDate = DateTime.UtcNow;
-                            insuranceProviderDocument.ModifiedDate = DateTime.UtcNow;
-
-                            insuranceProviderDocuments.Add(insuranceProviderDocument);
-                        }
-
-                    }
+                    await _unitOfWork.SaveChangesAsync(cancellationToken);
                 }
             }
-            catch (Exception ex)
+
+            await transaction.CommitAsync(cancellationToken);
+
+            return new CreateInsuranceProviderResponse
             {
-                throw;
+                InsuranceProviderId = insuranceProvider.Id,
+                Success = true
+            };
+        }
+        catch (Exception ex)
+        {
+            await _logger.LogErrorAsync(insuranceProvider, ex, ApplicationConstants.CommorError, cancellationToken);
+
+            await transaction.RollbackAsync(cancellationToken);
+
+            return new CreateInsuranceProviderResponse
+            {
+                Success = false,
+                FailureReason = ex.Message
+            };
+        }
+    }
+
+    private async Task<List<InsuranceProviderDocument>> UploadInsuranceProviderFiles(
+        List<InsuranceProviderFiles> InsuranceProviderFiles, InsuranceProvider insuranceProvider)
+    {
+        List<InsuranceProviderDocument> insuranceProviderDocuments = new();
+
+        foreach (var file in InsuranceProviderFiles)
+            if (file.DocumentData != null)
+            {
+                var document = new AzureDocument();
+                document.DocumentName = $"{insuranceProvider.Id}_{file.DocumentName}";
+                document.DocumentData = Convert.FromBase64String(file.DocumentData);
+                document.MainDirectory = ApplicationConstants.AzureMainDirectory;
+                document.ChildDirectory = insuranceProvider.Id.ToString();
+
+                var documentPath = await _azureFileStorageConnection.UploadInsuranceProviderFiles(document);
+
+                if (documentPath != null)
+                {
+                    var insuranceProviderDocument = new InsuranceProviderDocument();
+                    insuranceProviderDocument.InsurerId = insuranceProvider.Id;
+                    insuranceProviderDocument.DocumentName = file.DocumentName;
+                    insuranceProviderDocument.DocumentPath = documentPath;
+                    insuranceProviderDocument.IsActive = true;
+                    insuranceProviderDocument.CreatedBy =
+                        insuranceProviderDocument.ModifiedBy = insuranceProvider.InsurerName;
+                    insuranceProviderDocument.CreatedDate = DateTime.UtcNow;
+                    insuranceProviderDocument.ModifiedDate = DateTime.UtcNow;
+
+                    insuranceProviderDocuments.Add(insuranceProviderDocument);
+                }
             }
 
-            return insuranceProviderDocuments;
-        }
+        return insuranceProviderDocuments;
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace eSusInsurers.Models.Users.UpdatePassword
+﻿namespace eSusInsurers.Models.Users.UpdatePassword;
+
+public class ResetPasswordRequest
 {
-    public class ResetPasswordRequest
-    {
-        public string NewPassword { get; set; }
-    }
+    public string NewPassword { get; set; }
 }

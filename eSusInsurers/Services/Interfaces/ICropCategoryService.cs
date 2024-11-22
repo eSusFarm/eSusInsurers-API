@@ -1,9 +1,8 @@
 ﻿using eSusInsurers.Models;
 
-namespace eSusInsurers.Services
+namespace eSusInsurers.Services;
+
+public interface ICropCategoryService
 {
-    public interface ICropCategoryService
-    {
-        Task<List<CropCategoryModel>?> GetCropCategories(CancellationToken cancellationToken);
-    }
+    Task<List<CropCategoryModel>?> GetCropCategories(CancellationToken cancellationToken);
 }

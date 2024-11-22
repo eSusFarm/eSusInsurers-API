@@ -1,39 +1,36 @@
-﻿using eSusInsurers.Models.Countries;
-using eSusInsurers.Models.InsuranceCompany;
-using eSusInsurers.Services.Implementations;
+﻿using eSusInsurers.Models.InsuranceCompany;
 using eSusInsurers.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eSusInsurers.Controllers
+namespace eSusInsurers.Controllers;
+
+/// <summary>
+///     Controller for insurance companies.
+/// </summary>
+[Route("insurance_companies")]
+public class InsuranceCompanyController(IInsuranceCompanyService insuranceCompanyService) : BaseController
 {
     /// <summary>
-    /// Controller for insurance companies.
+    ///     Get insurance companies
     /// </summary>
-    [Route("insurance_companies")]
-    public class InsuranceCompanyController(IInsuranceCompanyService insuranceCompanyService) : BaseController
+    /// <remarks>
+    ///     Returns insurance companies.
+    /// </remarks>
+    /// <response code="200">Returns insurance companies.</response>
+    /// <returns>Returns insurance companies</returns>
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<InsuranceCompanyModel>))]
+    public async Task<ActionResult<List<InsuranceCompanyModel>>> GetInsuranceCompanies()
     {
-        /// <summary>
-        /// Get insurance companies
-        /// </summary>
-        /// <remarks>
-        /// Returns insurance companies.
-        /// </remarks>
-        /// <response code="200">Returns insurance companies.</response>
-        /// <returns>Returns insurance companies</returns>
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<InsuranceCompanyModel>))]
-        public async Task<ActionResult<List<InsuranceCompanyModel>>> GetInsuranceCompanies()
+        try
         {
-            try
-            {
-                var result = await insuranceCompanyService.GetCompanies(new CancellationToken());
+            var result = await insuranceCompanyService.GetCompanies(new CancellationToken());
 
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { ErrorMessage = e.Message });
-            }
+            return Ok(result);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new { ErrorMessage = e.Message });
         }
     }
 }

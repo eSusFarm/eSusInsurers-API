@@ -1,7 +1,5 @@
-﻿namespace eSusInsurers.Common.Exceptions
+﻿namespace eSusInsurers.Common.Exceptions;
+
+public class ForbiddenAccessException : Exception
 {
-    public class ForbiddenAccessException : Exception
-    {
-        public ForbiddenAccessException() : base() { }
-    }
 }

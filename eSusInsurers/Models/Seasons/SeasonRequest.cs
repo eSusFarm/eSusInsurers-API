@@ -1,20 +1,18 @@
 ﻿using AutoMapper;
 using eSusInsurers.Common.Mappings;
 using eSusInsurers.Domain.Entities;
-using WMS.Models.Roles;
 
-namespace eSusInsurers.Models.Seasons
+namespace eSusInsurers.Models.Seasons;
+
+public class SeasonRequest : IMapFrom<Season>
 {
-    public class SeasonRequest : IMapFrom<Season>
+    public string SeasonName { get; set; } = null!;
+
+    public string SeasonYear { get; set; } = null!;
+
+    public void Mapping(Profile profile)
     {
-        public string SeasonName { get; set; } = null!;
-
-        public string SeasonYear { get; set; } = null!;
-
-        public void Mapping(Profile profile)
-        {
-            profile.CreateMap<SeasonRequest, Season>()
-                .ForMember(x => x.IsActive, opt => opt.MapFrom(c => true));
-        }
+        profile.CreateMap<SeasonRequest, Season>()
+            .ForMember(x => x.IsActive, opt => opt.MapFrom(c => true));
     }
 }

@@ -2,43 +2,42 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace eSusInsurers.Filter
+namespace eSusInsurers.Filter;
+
+/// <summary>
+///     Authorize Attribute filter
+/// </summary>
+public class AuthorizeCheckOperationFilter : IOperationFilter
 {
-    /// <summary>
-    /// Authorize Attribute filter
-    /// </summary>
-    public class AuthorizeCheckOperationFilter : IOperationFilter
+    public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        if (context.MethodInfo.DeclaringType is null)
+            return;
+
+        var hasAuthorize = context.MethodInfo.DeclaringType.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any()
+                           || context.MethodInfo.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any();
+
+        if (hasAuthorize)
         {
-            if (context.MethodInfo.DeclaringType is null)
-                return;
+            operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
+            // operation.Responses.Add("403", new OpenApiResponse { Description = "Forbidden" });
 
-            var hasAuthorize = context.MethodInfo.DeclaringType.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any()
-                        || context.MethodInfo.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any();
-
-            if (hasAuthorize)
+            var jwtBearerScheme = new OpenApiSecurityScheme
             {
-                operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
-                // operation.Responses.Add("403", new OpenApiResponse { Description = "Forbidden" });
-
-                var jwtBearerScheme = new OpenApiSecurityScheme
+                Reference = new OpenApiReference
                 {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
-                };
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            };
 
-                operation.Security = new List<OpenApiSecurityRequirement>
+            operation.Security = new List<OpenApiSecurityRequirement>
             {
-                new OpenApiSecurityRequirement
+                new()
                 {
                     [jwtBearerScheme] = Array.Empty<string>()
                 }
             };
-            }
         }
     }
 }
