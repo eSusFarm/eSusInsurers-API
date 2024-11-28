@@ -190,6 +190,14 @@
             <param name="cropCategoryId"></param>
             <response code="200">Returns a list of crops by cropCategoryId.</response>
         </member>
+        <member name="T:eSusInsurers.Controllers.EsusFarmPolicyController">
+            <summary>
+            Controller for policy creation on blockchain.
+            </summary>
+            <remarks>
+            Returns an object of type EsusFarmPolicyRequestDto.
+            </remarks>
+        </member>
         <member name="T:eSusInsurers.Controllers.InsuranceCompanyController">
             <summary>
             Controller for insurance companies.

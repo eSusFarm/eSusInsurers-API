@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace eSusInsurers.Domain.Models;
+
+public partial class Functionality : BaseAuditableEntity
+{
+
+    public int FeatureId { get; set; }
+
+    public string Functionality1 { get; set; } = null!;
+
+    public bool? IsActive { get; set; }
+
+    public virtual Feature Feature { get; set; } = null!;
+
+    public virtual ICollection<SubFunctionality> SubFunctionalities { get; set; } = new List<SubFunctionality>();
+
+    public virtual ICollection<SubFunctionalitiesAu> SubFunctionalitiesAus { get; set; } = new List<SubFunctionalitiesAu>();
+}
