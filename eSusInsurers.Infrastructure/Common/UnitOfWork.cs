@@ -56,6 +56,7 @@ namespace eSusInsurers.Infrastructure.Common
 
         private ICropCategoryRepository _cropCategoryRepository;
 
+        private IInsuranceRequestsRepository _insuranceRequestsRepository;
 
         public UnitOfWork(eSusInsurerContext context)
         {
@@ -114,6 +115,7 @@ namespace eSusInsurers.Infrastructure.Common
         public ICropRepository CropRepository => _cropRepository = new CropRepository(_context);
 
         public ICropCategoryRepository CropCategoryRepository => _cropCategoryRepository ??= new CropCategoryRepository(_context);
+        public IInsuranceRequestsRepository InsuranceRequestsRepository => _insuranceRequestsRepository ??= new InsuranceRequestsRepository(_context);
 
         public IInsuranceCompanyRepository InsuranceCompanyRepository => _insuranceCompanyRepository ??= new InsuranceCompanyRepository(_context);
 

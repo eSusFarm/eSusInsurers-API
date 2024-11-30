@@ -93,6 +93,7 @@ namespace eSusInsurers
             //Register services
             services.AddTransient(typeof(IInsuranceProviderService), typeof(InsuranceProviderService));
             services.AddTransient(typeof(IUserService), typeof(UserService));
+            services.AddTransient(typeof(IInsuranceRequestsService), typeof(InsuranceRequestsService));
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IUpdateNotificationTemplate, UpdateNotificationTemplate>();
             services.AddTransient<IEmailService, Services.Implementations.EmailService>();
