@@ -2,10 +2,13 @@
 
 ## Table of Contents
 - [Overview](#esusfarm-crop-insurance-management-with-etherisc-blockchain-integration-and-aic)
+- [Contributing](CONTRIBUTING.md)
+- [Project Charter](PROJECT_CHARTER.md)
 - [Architecture](#architecture)
 - [ASP.NET Core Features](#aspnet-core-features)
 - [.NET Core API Configuration](#net-core-api-configuration)
 
+  
 ## Overview
 1. eSusfarm will receive crop monitoring index insurance details data from AIC through an API, ensuring seamless integration of information.
 2. Upon receiving the data, eSusfarm will post it onto the Etherisc blockchain, ensuring the integrity and immutability of the information.
