@@ -1,0 +1,776 @@
+Index: Tests/eSusInsurers.Tests/Services/EmailServiceTests.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>namespace eSusInsurers.Tests.Services;\n\npublic class EmailServiceTests\n{\n    \n}
+===================================================================
+diff --git a/Tests/eSusInsurers.Tests/Services/EmailServiceTests.cs b/Tests/eSusInsurers.Tests/Services/EmailServiceTests.cs
+--- a/Tests/eSusInsurers.Tests/Services/EmailServiceTests.cs	(revision 7bc6b7538944b0435a86683470d2bf7d5f98f621)
++++ b/Tests/eSusInsurers.Tests/Services/EmailServiceTests.cs	(date 1732263904051)
+@@ -1,6 +1,88 @@
+-namespace eSusInsurers.Tests.Services;
++using EmailService.Interfaces;
++using EmailService.Models;
++using eSusInsurers.Domain.Entities;
++using eSusInsurers.Helpers;
++using eSusInsurers.Infrastructure.Common;
++using eSusInsurers.Models.Common;
++using eSusInsurers.Services.Implementations;
++using eSusInsurers.Services.Interfaces;
++using FakeItEasy;
++using FluentAssertions;
++using Microsoft.AspNetCore.Http;
++using Xunit;
+ 
+-public class EmailServiceTests
+-{
+-    
++namespace eSusInsurers.Tests.Services
++{
++   public class EmailServiceTests
++   {
++       private readonly IEmailSender _emailSender;
++       private readonly FireForget _fireForget;
++       private readonly IUnitOfWork _unitOfWork;
++       private readonly IUpdateNotificationTemplate _updateTemplate;
++       private readonly eSusInsurers.Services.Implementations.EmailService _emailService;
++
++       public EmailServiceTests()
++       {
++           _emailSender = A.Fake<IEmailSender>();
++           _fireForget = A.Fake<FireForget>();
++           _unitOfWork = A.Fake<IUnitOfWork>();
++           _updateTemplate = A.Fake<IUpdateNotificationTemplate>();
++
++           _emailService = new eSusInsurers.Services.Implementations.EmailService(
++               _updateTemplate,
++               _emailSender,
++               _unitOfWork, 
++               _fireForget);
++
++           // Setup FireForget to execute the action immediately for testing
++           A.CallTo(() => _fireForget.Execute<IUnitOfWork>(A<Func<IUnitOfWork, Task>>.Ignored))
++               .Invokes((Func<IUnitOfWork, Task> action) => action(_unitOfWork));
++       }
++
++
++       [Fact]
++       public async Task SendEmailAsync_WithAttachments_SendsEmailWithAttachments()
++       {
++           // Arrange
++           var parameters = new NotificationContentParameters();
++           var eventName = "test_event";
++           var toAddress = new[] { "test@example.com" };
++           var attachments = A.Fake<IFormFileCollection>();
++           var template = new EmailTemplate 
++           { 
++               MailSubject = "Test Subject",
++               MailContent = "Test Content"
++           };
++
++           A.CallTo(() => _unitOfWork.EmailTemplateRepository.GetByEventNameAsync(eventName, A<CancellationToken>._))
++               .Returns(template);
++
++           // Act
++           await _emailService.SendEmailAsync(parameters, eventName, toAddress, attachments);
++
++           // Assert
++           A.CallTo(() => _emailSender.SendEmailAsync(A<Message>.That.Matches(m => 
++               m.Attachments == attachments)))
++               .MustHaveHappenedOnceExactly();
++       }
++
++       [Fact]
++       public async Task SendEmailAsync_WithNonExistentTemplate_DoesNotSendEmail()
++       {
++           // Arrange
++           var parameters = new NotificationContentParameters();
++           var eventName = "non_existent_event";
++           var toAddress = new[] { "test@example.com" };
++
++           A.CallTo(() => _unitOfWork.EmailTemplateRepository.GetByEventNameAsync(eventName, A<CancellationToken>._))
++               .Returns((EmailTemplate)null);
++
++           // Act
++           await _emailService.SendEmailAsync(parameters, eventName, toAddress);
++
++           // Assert
++           A.CallTo(() => _emailSender.SendEmailAsync(A<Message>._))
++               .MustNotHaveHappened();
++       }
++   }
+ }
+\ No newline at end of file
+Index: Tests/eSusInsurers.Tests/Services/TokenServiceTests.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>namespace eSusInsurers.Tests.Services;\n\npublic class TokenServiceTests\n{\n    \n}
+===================================================================
+diff --git a/Tests/eSusInsurers.Tests/Services/TokenServiceTests.cs b/Tests/eSusInsurers.Tests/Services/TokenServiceTests.cs
+--- a/Tests/eSusInsurers.Tests/Services/TokenServiceTests.cs	(revision 7bc6b7538944b0435a86683470d2bf7d5f98f621)
++++ b/Tests/eSusInsurers.Tests/Services/TokenServiceTests.cs	(date 1732263904066)
+@@ -1,6 +1,184 @@
+-namespace eSusInsurers.Tests.Services;
++using System.IdentityModel.Tokens.Jwt;
++using System.Security.Claims;
++using System.Text;
++using eSusInsurers.Common.Exceptions;
++using eSusInsurers.Domain.Entities;
++using eSusInsurers.Infrastructure.Common;
++using eSusInsurers.Models.Users.Login;
++using eSusInsurers.Models.Users.RefreshAccessToken;
++using eSusInsurers.Services.Implementations;
++using FakeItEasy;
++using FluentAssertions;
++using Microsoft.EntityFrameworkCore.Storage;
++using Microsoft.Extensions.Configuration;
++using Microsoft.IdentityModel.Tokens;
++using Xunit;
++using Claim = System.Security.Claims.Claim;
+ 
+-public class TokenServiceTests
+-{
+-    
++namespace eSusInsurers.Tests.Services
++{
++   public class TokenServiceTests
++   {
++       private readonly IUnitOfWork _fakeUnitOfWork;
++       private readonly IConfiguration _fakeConfiguration;
++       private readonly TokenService _tokenService;
++       private readonly IDbContextTransaction _fakeTransaction;
++
++       public TokenServiceTests()
++       {
++           _fakeUnitOfWork = A.Fake<IUnitOfWork>();
++           _fakeConfiguration = A.Fake<IConfiguration>();
++           _fakeTransaction = A.Fake<IDbContextTransaction>();
++           _tokenService = new TokenService(_fakeUnitOfWork, _fakeConfiguration);
++
++           // Setup basic configuration
++           A.CallTo(() => _fakeConfiguration["JWT:Secret"]).Returns("256-bit-secret-key-here");
++           A.CallTo(() => _fakeConfiguration["JWT:TokenValidityInMinutes"]).Returns("60");
++           A.CallTo(() => _fakeConfiguration["JWT:RefreshTokenValidityInDays"]).Returns("7");
++           A.CallTo(() => _fakeConfiguration["JWT:ValidAudience"]).Returns("test-audience");
++           A.CallTo(() => _fakeConfiguration["JWT:ValidIssuer"]).Returns("test-issuer");
++
++           A.CallTo(() => _fakeUnitOfWork.BeginTransactionAsync(A<CancellationToken>._))
++               .Returns(_fakeTransaction);
++       }
++
++       [Fact]
++       public void GenerateAccessToken_WithValidClaims_ReturnsValidToken()
++       {
++           // Arrange
++           var claims = new List<Claim>
++           {
++               new Claim(ClaimTypes.Name, "test@example.com"),
++               new Claim(ClaimTypes.Role, "Admin")
++           };
++
++           // Act
++           var token = _tokenService.GenerateAccessToken(claims);
++
++           // Assert
++           token.Should().NotBeNullOrEmpty();
++           var tokenHandler = new JwtSecurityTokenHandler();
++           var decodedToken = tokenHandler.ReadJwtToken(token);
++           decodedToken.Claims.Should().Contain(c => c.Value == "test@example.com");
++           decodedToken.Claims.Should().Contain(c => c.Value == "Admin");
++       }
++
++       [Fact]
++       public void GenerateRefreshToken_ReturnsValidToken()
++       {
++           // Act
++           var refreshToken = _tokenService.GenerateRefreshToken();
++
++           // Assert
++           refreshToken.Should().NotBeNullOrEmpty();
++           refreshToken.Length.Should().BeGreaterThan(32); // Base64 encoded 32 bytes
++       }
++
++       [Fact]
++       public void GetPrincipalFromExpiredToken_WithValidToken_ReturnsPrincipal()
++       {
++           // Arrange
++           var claims = new List<Claim>
++           {
++               new Claim(ClaimTypes.Name, "test@example.com")
++           };
++           var token = _tokenService.GenerateAccessToken(claims);
++
++           // Act
++           var principal = _tokenService.GetPrincipalFromExpiredToken(token);
++
++           // Assert
++           principal.Should().NotBeNull();
++           principal.Identity.Name.Should().Be("test@example.com");
++       }
++
++       [Fact]
++       public async Task RefreshToken_WithValidTokens_ReturnsNewTokens()
++       {
++           // Arrange
++           var user = new User 
++           { 
++               EmailId = "test@example.com",
++               RefreshToken = "valid-refresh-token",
++               RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(1)
++           };
++
++           var tokenApiModel = new TokenApiModel
++           {
++               AccessToken = _tokenService.GenerateAccessToken(new[] { new Claim(ClaimTypes.Name, user.EmailId) }),
++               RefreshToken = user.RefreshToken
++           };
++
++           A.CallTo(() => _fakeUnitOfWork.UserRepository.GetByEmailIdAsync(user.EmailId, A<CancellationToken>._))
++               .Returns(user);
++
++           // Act
++           var result = await _tokenService.RefreshToken(tokenApiModel);
++
++           // Assert
++           result.Should().NotBeNull();
++           result.Should().BeOfType<AuthenticatedResponse>();
++           var response = result as AuthenticatedResponse;
++           response.Token.Should().NotBeNullOrEmpty();
++           response.RefreshToken.Should().NotBeNullOrEmpty();
++           
++           A.CallTo(() => _fakeTransaction.CommitAsync(A<CancellationToken>._))
++               .MustHaveHappenedOnceExactly();
++       }
++
++       [Fact]
++       public async Task RefreshToken_WithExpiredRefreshToken_ThrowsBadRequestException()
++       {
++           // Arrange
++           var user = new User 
++           { 
++               EmailId = "test@example.com",
++               RefreshToken = "valid-refresh-token",
++               RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(-1) // Expired
++           };
++
++           var tokenApiModel = new TokenApiModel
++           {
++               AccessToken = _tokenService.GenerateAccessToken(new[] { new Claim(ClaimTypes.Name, user.EmailId) }),
++               RefreshToken = user.RefreshToken
++           };
++
++           A.CallTo(() => _fakeUnitOfWork.UserRepository.GetByEmailIdAsync(user.EmailId, A<CancellationToken>._))
++               .Returns(user);
++
++           // Act & Assert
++           await _tokenService.Invoking(x => x.RefreshToken(tokenApiModel))
++               .Should().ThrowAsync<BadRequestException>();
++       }
++
++       [Fact]
++       public async Task RevokeToken_WithValidUser_RevokesToken()
++       {
++           // Arrange
++           var user = new User { EmailId = "test@example.com", RefreshToken = "token" };
++           A.CallTo(() => _fakeUnitOfWork.UserRepository.GetByEmailIdAsync(user.EmailId, A<CancellationToken>._))
++               .Returns(user);
++
++           // Act
++           var result = await _tokenService.RevokeToken(user.EmailId);
++
++           // Assert
++           result.Should().BeTrue();
++           user.RefreshToken.Should().BeNull();
++           A.CallTo(() => _fakeTransaction.CommitAsync(A<CancellationToken>._))
++               .MustHaveHappenedOnceExactly();
++       }
++
++       [Fact]
++       public async Task RevokeToken_WithInvalidUser_ThrowsBadRequestException()
++       {
++           // Arrange
++           A.CallTo(() => _fakeUnitOfWork.UserRepository.GetByEmailIdAsync(A<string>._, A<CancellationToken>._))
++               .Returns((User)null);
++
++           // Act & Assert
++           await _tokenService.Invoking(x => x.RevokeToken("invalid@example.com"))
++               .Should().ThrowAsync<BadRequestException>();
++       }
++   }
+ }
+\ No newline at end of file
+Index: Tests/eSusInsurers.Tests/middleware/TokenRefreshMiddleWareTests.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>namespace eSusInsurers.Tests.middleware;\n\npublic class TokenRefreshMiddleWareTests\n{\n    \n}
+===================================================================
+diff --git a/Tests/eSusInsurers.Tests/middleware/TokenRefreshMiddleWareTests.cs b/Tests/eSusInsurers.Tests/middleware/TokenRefreshMiddleWareTests.cs
+--- a/Tests/eSusInsurers.Tests/middleware/TokenRefreshMiddleWareTests.cs	(revision 7bc6b7538944b0435a86683470d2bf7d5f98f621)
++++ b/Tests/eSusInsurers.Tests/middleware/TokenRefreshMiddleWareTests.cs	(date 1732263904080)
+@@ -1,6 +1,117 @@
+-namespace eSusInsurers.Tests.middleware;
++using System.IdentityModel.Tokens.Jwt;
++using eSusInsurers.Common.Exceptions;
++using eSusInsurers.Middleware;
++using eSusInsurers.Services.Interfaces;
++using FakeItEasy;
++using FluentAssertions;
++using Microsoft.AspNetCore.Http;
++using Xunit;
++
++namespace eSusInsurers.Tests.Middleware
++{
++   public class TokenRefreshMiddlewareTests
++   {
++       private readonly IUserService _userService;
++       private readonly IHttpContextAccessor _httpContextAccessor;
++       private readonly TokenRefreshMiddleware _middleware;
++       private readonly HttpContext _httpContext;
++       private readonly RequestDelegate _next;
++
++       public TokenRefreshMiddlewareTests()
++       {
++           _userService = A.Fake<IUserService>();
++           _httpContextAccessor = A.Fake<IHttpContextAccessor>();
++           _httpContext = new DefaultHttpContext();
++           _next = A.Fake<RequestDelegate>();
++
++           _middleware = new TokenRefreshMiddleware(_userService, _httpContextAccessor);
++       }
++
++       private void SetupValidToken(int expiryMinutes = 120)
++       {
++           var token = CreateJwtToken(DateTime.UtcNow.AddMinutes(expiryMinutes));
++           _httpContext.Request.Headers["Authorization"] = $"Bearer {token}";
++       }
++
++       private string CreateJwtToken(DateTime expiryTime)
++       {
++           var token = new JwtSecurityToken(
++               expires: expiryTime,
++               claims: new List<System.Security.Claims.Claim>()
++           );
++           return new JwtSecurityTokenHandler().WriteToken(token);
++       }
+ 
+-public class TokenRefreshMiddleWareTests
+-{
+-    
++       [Fact]
++       public async Task InvokeAsync_WithNoToken_CallsNextDelegate()
++       {
++           // Arrange
++           _httpContext.Request.Headers["Authorization"] = string.Empty;
++
++           // Act
++           await _middleware.InvokeAsync(_httpContext, _next);
++
++           // Assert
++           A.CallTo(() => _next(_httpContext)).MustHaveHappenedOnceExactly();
++       }
++
++       [Fact]
++       public async Task InvokeAsync_WithValidTokenNotNearingExpiry_DoesNotRefreshToken()
++       {
++           // Arrange
++           SetupValidToken(120); // Token expires in 120 minutes
++
++           // Act
++           await _middleware.InvokeAsync(_httpContext, _next);
++
++           // Assert
++           _httpContext.Response.Headers.Should().NotContainKey("X-Token-Refreshed");
++           A.CallTo(() => _next(_httpContext)).MustHaveHappenedOnceExactly();
++       }
++
++       [Fact]
++       public async Task InvokeAsync_WithTokenNearingExpiry_RefreshesToken()
++       {
++           // Arrange
++           SetupValidToken(30); // Token expires in 30 minutes
++
++           // Act
++           await _middleware.InvokeAsync(_httpContext, _next);
++
++           // Assert
++           _httpContext.Response.Headers["X-Token-Refreshed"].ToString().Should().Be("True");
++           _httpContext.Response.Headers["Access-Control-Expose-Headers"].Should().Contain("Authorization");
++           A.CallTo(() => _next(_httpContext)).MustHaveHappenedOnceExactly();
++       }
++
++       [Fact]
++       public async Task InvokeAsync_WithExpiredToken_ReturnsUnauthorized()
++       {
++           // Arrange
++           SetupValidToken(-30); // Token expired 30 minutes ago
++
++           // Act
++           await _middleware.InvokeAsync(_httpContext, _next);
++
++           // Assert
++           _httpContext.Response.StatusCode.Should().Be(StatusCodes.Status401Unauthorized);
++           _httpContext.Response.ContentType.Should().Be("text/plain");
++           A.CallTo(() => _next(_httpContext)).MustNotHaveHappened();
++       }
++
++       [Fact]
++       public async Task InvokeAsync_WithInvalidToken_ReturnsUnauthorized()
++       {
++           // Arrange
++           _httpContext.Request.Headers["Authorization"] = "Bearer invalid_token";
++
++           // Act
++           await _middleware.InvokeAsync(_httpContext, _next);
++
++           // Assert
++           _httpContext.Response.StatusCode.Should().Be(StatusCodes.Status401Unauthorized);
++           _httpContext.Response.ContentType.Should().Be("text/plain");
++           A.CallTo(() => _next(_httpContext)).MustNotHaveHappened();
++       }
++   }
+ }
+\ No newline at end of file
+Index: Tests/eSusInsurers.Tests/Services/CountriesServiceTest.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>namespace eSusInsurers.Tests.Services;\n\npublic class CountriesServiceTest\n{\n    \n}
+===================================================================
+diff --git a/Tests/eSusInsurers.Tests/Services/CountriesServiceTest.cs b/Tests/eSusInsurers.Tests/Services/CountriesServiceTest.cs
+--- a/Tests/eSusInsurers.Tests/Services/CountriesServiceTest.cs	(revision 7bc6b7538944b0435a86683470d2bf7d5f98f621)
++++ b/Tests/eSusInsurers.Tests/Services/CountriesServiceTest.cs	(date 1732263904102)
+@@ -1,6 +1,180 @@
++using AutoMapper;
++using eSusInsurers.Domain.Entities;
++using eSusInsurers.Infrastructure.Common;
++using eSusInsurers.Infrastructure.Interfaces;
++using eSusInsurers.Models.Countries;
++using eSusInsurers.Services.Implementations;
++using Microsoft.EntityFrameworkCore;
++using MockQueryable.Moq;
++using Moq;
++using Xunit;
++
+ namespace eSusInsurers.Tests.Services;
+ 
+-public class CountriesServiceTest
++public class CountriesServiceTests
+ {
+-    
++    private readonly Mock<IUnitOfWork> _unitOfWork;
++    private readonly Mock<IMapper> _mapper;
++    private readonly CountriesService _service;
++    private readonly Mock<ICountriesRepository> _countriesRepository;
++    private readonly Mock<IDistrictRepository> _districtRepository;
++    private readonly Mock<ISubcountiesRepository> _subcountiesRepository;
++    private readonly Mock<IParishRepository> _parishRepository;
++
++    public CountriesServiceTests()
++    {
++        _unitOfWork = new Mock<IUnitOfWork>();
++        _mapper = new Mock<IMapper>();
++        _countriesRepository = new Mock<ICountriesRepository>();
++        _districtRepository = new Mock<IDistrictRepository>();
++        _subcountiesRepository = new Mock<ISubcountiesRepository>();
++        _parishRepository = new Mock<IParishRepository>();
++
++        _unitOfWork.Setup(x => x.CountriesRepository).Returns(_countriesRepository.Object);
++        _unitOfWork.Setup(x => x.DistrictRepository).Returns(_districtRepository.Object);
++        _unitOfWork.Setup(x => x.SubcountiesRepository).Returns(_subcountiesRepository.Object);
++        _unitOfWork.Setup(x => x.ParishRepository).Returns(_parishRepository.Object);
++
++        _service = new CountriesService(_unitOfWork.Object, _mapper.Object);
++    }
++
++    [Fact]
++    public async Task GetRegions_WithValidCountryId_ReturnsRegionsList()
++    {
++        // Arrange
++        int countryId = 1;
++        var regions = new List<Region>
++        {
++            new() { Id = 1, CountryId = countryId, RegionName = "Region 1" },
++            new() { Id = 2, CountryId = countryId, RegionName = "Region 2" }
++        };
++
++        var mock = regions.AsQueryable().BuildMockDbSet();
++        _countriesRepository.Setup(x => x.GetAll(null, false)).Returns(mock.Object.AsQueryable());
++        
++        _mapper.Setup(m => m.ConfigurationProvider).Returns(new MapperConfiguration(cfg => 
++        {
++            cfg.CreateMap<Region, RegionModel>()
++                .ForMember(d => d.RegionId, opt => opt.MapFrom(s => s.Id));
++        }));
++
++        // Act
++        var result = await _service.GetRegions(countryId, CancellationToken.None);
++
++        // Assert
++        Assert.NotNull(result);
++        _countriesRepository.Verify(x => x.GetAll(null, false), Times.Once());
++    }
++
++    [Fact]
++    public async Task GetDistricts_WithValidIds_ReturnsDistrictsList()
++    {
++        // Arrange
++        int countryId = 1;
++        int regionId = 1;
++        var districts = new List<District>
++        {
++            new() { Id = 1, RegionId = regionId, DistrictName = "District 1", Region = new Region { CountryId = countryId } },
++            new() { Id = 2, RegionId = regionId, DistrictName = "District 2", Region = new Region { CountryId = countryId } }
++        };
++
++        var mock = districts.AsQueryable().BuildMockDbSet();
++        _districtRepository.Setup(x => x.GetAll(null, false)).Returns(mock.Object.AsQueryable());
++
++        _mapper.Setup(m => m.ConfigurationProvider).Returns(new MapperConfiguration(cfg => 
++        {
++            cfg.CreateMap<District, DistrictModel>()
++                .ForMember(d => d.DistrictId, opt => opt.MapFrom(s => s.Id));
++        }));
++
++        // Act
++        var result = await _service.GetDistricts(countryId, regionId, CancellationToken.None);
++
++        // Assert
++        Assert.NotNull(result);
++        _districtRepository.Verify(x => x.GetAll(null, false), Times.Once());
++    }
++
++    [Fact]
++    public async Task GetSubcounties_WithValidIds_ReturnsSubcountiesList()
++    {
++        // Arrange
++        int countryId = 1;
++        int regionId = 1;
++        int districtId = 1;
++        var subcounties = new List<SubCounty>
++        {
++            new() 
++            { 
++                Id = 1, 
++                DistrictId = districtId, 
++                SubCountyName = "SubCounty 1",
++                District = new District 
++                { 
++                    RegionId = regionId,
++                    Region = new Region { CountryId = countryId } 
++                }
++            }
++        };
++
++        var mock = subcounties.AsQueryable().BuildMockDbSet();
++        _subcountiesRepository.Setup(x => x.GetAll(null, false)).Returns(mock.Object.AsQueryable());
++
++        _mapper.Setup(m => m.ConfigurationProvider).Returns(new MapperConfiguration(cfg => 
++        {
++            cfg.CreateMap<SubCounty, SubCountiesModel>()
++                .ForMember(d => d.SubCountyId, opt => opt.MapFrom(s => s.Id));
++        }));
++
++        // Act
++        var result = await _service.GetSubcounties(countryId, regionId, districtId, CancellationToken.None);
++
++        // Assert
++        Assert.NotNull(result);
++        _subcountiesRepository.Verify(x => x.GetAll(null, false), Times.Once());
++    }
++
++    [Fact]
++    public async Task GetParishes_WithValidIds_ReturnsParishesList()
++    {
++        // Arrange
++        int countryId = 1;
++        int regionId = 1;
++        int districtId = 1;
++        int subCountyId = 1;
++        var parishes = new List<Parish>
++        {
++            new() 
++            { 
++                Id = 1,
++                ParishName = "Parish 1",
++                SubCountyId = subCountyId,
++                SubCounty = new SubCounty 
++                { 
++                    DistrictId = districtId,
++                    District = new District 
++                    { 
++                        RegionId = regionId,
++                        Region = new Region { CountryId = countryId } 
++                    }
++                }
++            }
++        };
++
++        var mock = parishes.AsQueryable().BuildMockDbSet();
++        _parishRepository.Setup(x => x.GetAll(null, false)).Returns(mock.Object.AsQueryable());
++
++        _mapper.Setup(m => m.ConfigurationProvider).Returns(new MapperConfiguration(cfg => 
++        {
++            cfg.CreateMap<Parish, ParishModel>()
++                .ForMember(d => d.ParishId, opt => opt.MapFrom(s => s.Id));
++        }));
++
++        // Act
++        var result = await _service.GetParishes(countryId, regionId, districtId, subCountyId, CancellationToken.None);
++
++        // Assert
++        Assert.NotNull(result);
++        _parishRepository.Verify(x => x.GetAll(null, false), Times.Once());
++    }
+ }
+\ No newline at end of file
+Index: Tests/eSusInsurers.Tests/Controllers/CountriesControllerTests.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>namespace eSusInsurers.Tests.Controllers;\n\npublic class CountriesControllerTests\n{\n    \n}
+===================================================================
+diff --git a/Tests/eSusInsurers.Tests/Controllers/CountriesControllerTests.cs b/Tests/eSusInsurers.Tests/Controllers/CountriesControllerTests.cs
+--- a/Tests/eSusInsurers.Tests/Controllers/CountriesControllerTests.cs	(revision 7bc6b7538944b0435a86683470d2bf7d5f98f621)
++++ b/Tests/eSusInsurers.Tests/Controllers/CountriesControllerTests.cs	(date 1732263904118)
+@@ -1,6 +1,139 @@
+-namespace eSusInsurers.Tests.Controllers;
++using eSusInsurers.Controllers;
++using eSusInsurers.Models.Countries;
++using eSusInsurers.Services.Interfaces;
++using FakeItEasy;
++using FluentAssertions;
++using Microsoft.AspNetCore.Mvc;
++using Xunit;
+ 
+-public class CountriesControllerTests
+-{
+-    
++namespace eSusInsurers.Tests.Controllers
++{
++   public class CountriesControllerTests
++   {
++       private readonly ICountriesService _countriesService;
++       private readonly CountriesController _controller;
++
++       public CountriesControllerTests()
++       {
++           _countriesService = A.Fake<ICountriesService>();
++           _controller = new CountriesController(_countriesService);
++       }
++
++       [Fact]
++       public async Task GetRegions_WhenSuccessful_ReturnsOkWithRegions()
++       {
++           // Arrange
++           long countryId = 1;
++           var expectedRegions = new List<RegionModel>
++           {
++               new() { RegionId = 1, RegionName = "East" },
++               new() { RegionId = 2, RegionName = "West" }
++           };
++
++           A.CallTo(() => _countriesService.GetRegions(countryId, A<CancellationToken>._))
++               .Returns(expectedRegions);
++
++           // Act
++           var result = await _controller.GetRegions(countryId);
++
++           // Assert
++           var okResult = result.Result.Should().BeOfType<OkObjectResult>().Subject;
++           var regions = okResult.Value.Should().BeAssignableTo<List<RegionModel>>().Subject;
++           regions.Should().BeEquivalentTo(expectedRegions);
++       }
++
++       [Fact]
++       public async Task GetRegions_WhenExceptionOccurs_ReturnsBadRequest()
++       {
++           // Arrange
++           long countryId = 1;
++           var expectedException = new Exception("Test error");
++
++           A.CallTo(() => _countriesService.GetRegions(countryId, A<CancellationToken>._))
++               .Throws(expectedException);
++
++           // Act
++           var result = await _controller.GetRegions(countryId);
++
++           // Assert
++           var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
++           var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
++           error.Should().NotBeNull();
++       }
++
++       [Fact]
++       public async Task GetDistricts_WhenSuccessful_ReturnsOkWithDistricts()
++       {
++           // Arrange
++           long countryId = 1;
++           long regionId = 1;
++           var expectedDistricts = new List<DistrictModel>
++           {
++               new() { DistrictId = 1, DistrictName = "District1" },
++               new() { DistrictId = 2, DistrictName = "District2" }
++           };
++
++           A.CallTo(() => _countriesService.GetDistricts(countryId, regionId, A<CancellationToken>._))
++               .Returns(expectedDistricts);
++
++           // Act
++           var result = await _controller.GetDistricts(countryId, regionId);
++
++           // Assert
++           var okResult = result.Result.Should().BeOfType<OkObjectResult>().Subject;
++           var districts = okResult.Value.Should().BeAssignableTo<List<DistrictModel>>().Subject;
++           districts.Should().BeEquivalentTo(expectedDistricts);
++       }
++
++       [Fact]
++       public async Task GetSubcounties_WhenSuccessful_ReturnsOkWithSubcounties()
++       {
++           // Arrange
++           long countryId = 1;
++           long regionId = 1;
++           long districtId = 1;
++           var expectedSubcounties = new List<SubCountiesModel>
++           {
++               new() { SubCountyId = 1, SubCountyName = "Subcounty1" },
++               new() { SubCountyId = 2, SubCountyName = "Subcounty2" }
++           };
++
++           A.CallTo(() => _countriesService.GetSubcounties(countryId, regionId, districtId, A<CancellationToken>._))
++               .Returns(expectedSubcounties);
++
++           // Act
++           var result = await _controller.GetSubcounties(countryId, regionId, districtId);
++
++           // Assert
++           var okResult = result.Result.Should().BeOfType<OkObjectResult>().Subject;
++           var subcounties = okResult.Value.Should().BeAssignableTo<List<SubCountiesModel>>().Subject;
++           subcounties.Should().BeEquivalentTo(expectedSubcounties);
++       }
++
++       [Fact]
++       public async Task GetParishes_WhenSuccessful_ReturnsOkWithParishes()
++       {
++           // Arrange
++           long countryId = 1;
++           long regionId = 1;
++           long districtId = 1;
++           long subcountyId = 1;
++           var expectedParishes = new List<ParishModel>
++           {
++               new() { ParishId = 1, ParishName = "Parish1" },
++               new() { ParishId = 2, ParishName = "Parish2" }
++           };
++
++           A.CallTo(() => _countriesService.GetParishes(countryId, regionId, districtId, subcountyId, A<CancellationToken>._))
++               .Returns(expectedParishes);
++
++           // Act
++           var result = await _controller.GetParishes(countryId, regionId, districtId, subcountyId);
++
++           // Assert
++           var okResult = result.Result.Should().BeOfType<OkObjectResult>().Subject;
++           var parishes = okResult.Value.Should().BeAssignableTo<List<ParishModel>>().Subject;
++           parishes.Should().BeEquivalentTo(expectedParishes);
++       }
++   }
+ }
+\ No newline at end of file
