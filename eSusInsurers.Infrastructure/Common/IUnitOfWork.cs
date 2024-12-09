@@ -31,6 +31,8 @@ namespace eSusInsurers.Infrastructure.Common
         ICropRepository CropRepository { get; }
         ICropCategoryRepository CropCategoryRepository { get; }
         IEsusFarmPolicyRepository EsusFarmPolicyRepository { get; }
+        
+        IInsuranceRequestsRepository InsuranceRequestsRepository { get; }
 
         void SaveChanges();
         Task SaveChangesAsync(CancellationToken cancellationToken);

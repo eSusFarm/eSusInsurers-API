@@ -262,6 +262,29 @@
             <param name="request">Information of the insurance provider to be created.</param>
             <response code="201">Indicates the insurance provider was successfully created.</response>
         </member>
+        <member name="T:eSusInsurers.Controllers.InsuranceRequestsController">
+            <summary>
+            Controller for Insurance Requests
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.InsuranceRequestsController.#ctor(eSusInsurers.Services.Interfaces.IInsuranceRequestsService)">
+            <summary>
+            Controller for Insurance Requests
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.InsuranceRequestsController.GetUsers(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.InsuranceRequestFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
+            <summary>
+            Get Insurance Requests
+            </summary>
+            <remarks>
+            Returns a paginated list of insurance requests.
+            </remarks>
+            <param name="pagingOptions">Pagination options for response.</param>
+            <param name="filter">Data filter options.</param>
+            <param name="sort">Data sorting options.</param>
+            <response code="200">Returns a paginated list of users.</response>
+            <returns>Paginated list of users.</returns>
+        </member>
         <member name="T:eSusInsurers.Controllers.ProgramsController">
             <summary>
             Controller for prograns.
@@ -938,6 +961,57 @@
             Document Data in Base 64
             </summary>
         </member>
+        <member name="T:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetinsuranceRequestsQuery">
+            <summary>
+            GetinsuranceRequestsQuery
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetinsuranceRequestsQuery.pagingOptions">
+            <summary>
+            pagingOptions
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetinsuranceRequestsQuery.filter">
+            <summary>
+            InsuranceRequestFilterOptions
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetinsuranceRequestsQuery.sortingOptions">
+            <summary>
+            SortingOptions
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetInsuranceRequestsResponse">
+            <summary>
+            GetInsuranceRequestsResponse
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetInsuranceRequestsResponse.InsuranceRequests">
+            <summary>
+            InsuranceRequests
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.InsuranceRequestFilterOptions">
+            <summary>
+            Insurance Filter Options
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.InsuranceRequestFilterOptions.IsActive">
+            <summary>
+            Filter based on active users.
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.InsuranceRequestModel">
+            <summary>
+            Insurance Requests Model
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.InsuranceRequestModel.Mapping(AutoMapper.Profile)">
+            <summary>
+            
+            </summary>
+            <param name="profile"></param>
+        </member>
         <member name="P:eSusInsurers.Models.Programs.ProgramFilterOptions.IsActive">
             <summary>
             Filter based on active programs.
@@ -1019,6 +1093,39 @@
             </summary>
             <param name="name">input to convert</param>
             <returns>snake_case format of input</returns>
+        </member>
+        <member name="T:eSusInsurers.Services.Implementations.InsuranceRequestsService">
+            <summary>
+            InsuranceRequestsService
+            </summary>
+            <param name="unitOfWork"></param>
+            <param name="configuration"></param>
+            <param name="mapper"></param>
+            <param name="tokenService"></param>
+            <param name="dateTime"></param>
+        </member>
+        <member name="M:eSusInsurers.Services.Implementations.InsuranceRequestsService.#ctor(eSusInsurers.Infrastructure.Common.IUnitOfWork,Microsoft.Extensions.Configuration.IConfiguration,AutoMapper.IMapper,eSusInsurers.Services.Interfaces.ITokenService,eSusInsurers.Infrastructure.Interfaces.IDateTime)">
+            <summary>
+            InsuranceRequestsService
+            </summary>
+            <param name="unitOfWork"></param>
+            <param name="configuration"></param>
+            <param name="mapper"></param>
+            <param name="tokenService"></param>
+            <param name="dateTime"></param>
+        </member>
+        <member name="T:eSusInsurers.Services.Interfaces.IInsuranceRequestsService">
+            <summary>
+            Service that handles the insurance requests data.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Services.Interfaces.IInsuranceRequestsService.GetInsuranceRequests(eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetinsuranceRequestsQuery,System.Threading.CancellationToken)">
+            <summary>
+            GetInsuranceRequests
+            </summary>
+            <param name="request"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
         </member>
         <member name="T:eSusInsurers.Swagger.OperationFilters.ParametersOperationFilter">
             <summary>
