@@ -1,14 +1,14 @@
-namespace eSusInsurers.Models.Etherisc.Config;
+namespace eSusInsurers.Models.Etherisc.Policy;
 
-public class ConfigRequest
+public class Configuration
 {
     public Boolean isValid    { get; set; }
     public String name  { get; set; }
-    public long year  { get; set; }
+    public int year  { get; set; }
     public String startOfSeason  { get; set; }
     public String endOfSeason  { get; set; }
     public int seasonDays  { get; set; }
-    public double franchise  { get; set; }
+    public int franchise  { get; set; }
     public long updatedAt  { get; set; }
-    public long createdAt  { get; set; }
+    public long createddAt  { get; set; }
 }

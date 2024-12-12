@@ -198,6 +198,18 @@
             Returns an object of type EsusFarmPolicyRequestDto.
             </remarks>
         </member>
+        <member name="T:eSusInsurers.Controllers.EtheriscController">
+            <summary>
+            Create Etherisc Policy
+            </summary>
+            <param name="etheriscService"></param>
+        </member>
+        <member name="M:eSusInsurers.Controllers.EtheriscController.#ctor(eSusInsurers.Services.Interfaces.IEtheriscService)">
+            <summary>
+            Create Etherisc Policy
+            </summary>
+            <param name="etheriscService"></param>
+        </member>
         <member name="T:eSusInsurers.Controllers.InsuranceCompanyController">
             <summary>
             Controller for insurance companies.
@@ -834,6 +846,26 @@
             </summary>
             <example>Ascending</example>
         </member>
+        <member name="T:eSusInsurers.Models.Etherisc.Config.ConfigResponse">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Models.Etherisc.Location.LocationRequest">
+            <summary>
+            Etherisc Location Request Body
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Models.Etherisc.Policy.AddPolicyRequest">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.Etherisc.Policy.AddPolicyRequest.PolicyNumber">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:eSusInsurers.Models.InsuranceProducts.InsuranceProductFilterOption.IsActive">
             <summary>
             Filter based on active insurance product.
@@ -1093,6 +1125,15 @@
             </summary>
             <param name="name">input to convert</param>
             <returns>snake_case format of input</returns>
+        </member>
+        <member name="M:eSusInsurers.Services.Implementations.EtheriscService.AddPolicy(eSusInsurers.Models.Etherisc.Policy.AddPolicyRequest,System.Threading.CancellationToken)">
+            <summary>
+            Create new Etherisc Policy.
+            </summary>
+            <param name="request"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
         </member>
         <member name="T:eSusInsurers.Services.Implementations.InsuranceRequestsService">
             <summary>

@@ -33,6 +33,7 @@ namespace eSusInsurers.Infrastructure.Common
         IEsusFarmPolicyRepository EsusFarmPolicyRepository { get; }
         
         IInsuranceRequestsRepository InsuranceRequestsRepository { get; }
+        IEtheriscPolicyRepository EtheriscPolicyRepository { get; }
 
         void SaveChanges();
         Task SaveChangesAsync(CancellationToken cancellationToken);

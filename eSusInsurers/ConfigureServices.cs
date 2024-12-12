@@ -111,6 +111,7 @@ namespace eSusInsurers
             services.AddTransient<ICropCategoryService, CropCategoryService>();
             services.AddTransient<ICropService, CropService>();
             services.AddTransient<IInsuranceCompanyService, InsuranceCompanyService>();
+            services.AddTransient<IEtheriscService, EtheriscService>();
             services.AddTransient<IEsusFarmPolicyService, EsusFarmPolicyService>();
 
             return services;
