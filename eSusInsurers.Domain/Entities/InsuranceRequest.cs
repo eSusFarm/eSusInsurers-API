@@ -43,4 +43,7 @@ public partial class InsuranceRequest : BaseAuditableEntity
     public bool? IsRequestSubmitted { get; set; }
 
     public bool IsActive { get; set; }
+    public virtual InsuranceRequest ReportingToNavigation { get; set; }
+    public virtual ICollection<InsuranceRequest> InverseReportingToNavigation { get; set; } = new List<InsuranceRequest>();
+
 }

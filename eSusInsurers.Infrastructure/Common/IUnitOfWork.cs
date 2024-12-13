@@ -30,6 +30,8 @@ namespace eSusInsurers.Infrastructure.Common
         ISeasonCutOffDateRepository SeasonCutOffDateRepository { get; }
         ICropRepository CropRepository { get; }
         ICropCategoryRepository CropCategoryRepository { get; }
+        
+        IInsuranceRequestsRepository InsuranceRequestsRepository { get; }
 
         void SaveChanges();
         Task SaveChangesAsync(CancellationToken cancellationToken);
