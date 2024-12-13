@@ -157,6 +157,9 @@ public partial class eSusInsurerContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<EsusFarmPolicy> EsusFarmPolicy { get; set; }
+    public virtual DbSet<EtheriscPolicy> EtheriscPolicy { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new Configurations.AppEventConfiguration());

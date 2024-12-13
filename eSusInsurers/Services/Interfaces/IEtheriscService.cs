@@ -1,10 +1,12 @@
+using eSusInsurers.Domain.Entities;
 using eSusInsurers.Models.Etherisc;
+using eSusInsurers.Models.Etherisc.Policy;
 
 namespace eSusInsurers.Services.Interfaces
 {
     public interface IEtheriscService
     {
-        Task<long> AddPolicy(AddPolicyRequest request, CancellationToken cancellationToken);
+        Task<AddPolicyResponse> AddPolicy(AddPolicyRequest request, CancellationToken cancellationToken);
     }
 }
 

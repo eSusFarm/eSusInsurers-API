@@ -7,16 +7,16 @@ namespace eSusInsurers.Models.Etherisc.Location
     /// </summary>
     public class LocationRequest
     {
-        private String country { get; set; }
-        private String zone { get; set; }
-        private String district { get; set; }
-        private String subCountry { get; set; }
-        private String village { get; set; }
-        private long latitude { get; set; }
-        private long longitude { get; set; }
-        private String openstreetmap { get; set; }
-        private String coordinatesLevel { get; set; }
-        private String onchainId { get; set; }
+        public String country { get; set; }
+        public String zone { get; set; }
+        public String district { get; set; }
+        public String subcounty { get; set; }
+        public String village { get; set; }
+        public double latitude { get; set; }
+        public double longitude { get; set; }
+        public String openstreetmap { get; set; }
+        public String coordinatesLevel { get; set; }
+        public String onchainId { get; set; }
     }  
 }
 

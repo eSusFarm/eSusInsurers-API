@@ -2,12 +2,12 @@ namespace eSusInsurers.Models.Etherisc.Person;
 
 public class PersonResponse
 {
-    private String externalId { get; set; }
-    private String firstName { get; set; }
-    private String gender { get; set; }
-    private String id { get; set; }
-    private String lastName { get; set; }
-    private String locationId { get; set; }
-    private String mobilePhone { get; set; }
-    private String wallet { get; set; }
+    public String externalId { get; set; }
+    public String firstName { get; set; }
+    public String gender { get; set; }
+    public String id { get; set; }
+    public String lastName { get; set; }
+    public String locationId { get; set; }
+    public String mobilePhone { get; set; }
+    public String wallet { get; set; }
 }

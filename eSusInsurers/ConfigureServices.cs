@@ -85,6 +85,10 @@ namespace eSusInsurers
 
                 services.AddSingleton(logger);
             });
+            services.AddHttpClient<IEsusFarmPolicyService, EsusFarmPolicyService>(client =>
+            {
+                client.BaseAddress = new Uri("https://api.esusfarm.etherisc.com/");
+            });
 
             services.AddScoped(typeof(ILoggerContext<>), typeof(LoggerContext<>));
 
@@ -107,6 +111,8 @@ namespace eSusInsurers
             services.AddTransient<ICropCategoryService, CropCategoryService>();
             services.AddTransient<ICropService, CropService>();
             services.AddTransient<IInsuranceCompanyService, InsuranceCompanyService>();
+            services.AddTransient<IEtheriscService, EtheriscService>();
+            services.AddTransient<IEsusFarmPolicyService, EsusFarmPolicyService>();
 
             return services;
         }
