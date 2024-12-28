@@ -1,25 +1,21 @@
-﻿namespace eSusInsurers.Models.Common
+﻿namespace eSusInsurers.Models.Common;
+
+public class PagedResult<T>
 {
-    public class PagedResult<T>
-    {
-        public int CurrentPage { get; set; } = 1;
-        public int PageSize { get; set; } = 25;
-        public int TotalPages { get; set; }
-        public int TotalRecordCount { get; set; }
-        public List<T> Records { get; set; } = new();
+    public int CurrentPage { get; set; } = 1;
+    public int PageSize { get; set; } = 25;
+    public int TotalPages { get; set; }
+    public int TotalRecordCount { get; set; }
+    public List<T> Records { get; set; } = new();
 
 
-        public static PagedResult<T> Empty
+    public static PagedResult<T> Empty =>
+        new()
         {
-            get =>
-                new PagedResult<T>
-                {
-                    CurrentPage = 1,
-                    PageSize = 25,
-                    Records = new List<T>(),
-                    TotalPages = 1,
-                    TotalRecordCount = 0,
-                };
-        }
-    }
+            CurrentPage = 1,
+            PageSize = 25,
+            Records = new List<T>(),
+            TotalPages = 1,
+            TotalRecordCount = 0
+        };
 }

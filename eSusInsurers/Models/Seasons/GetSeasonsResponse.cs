@@ -1,9 +1,8 @@
 ﻿using eSusInsurers.Models.Common;
 
-namespace eSusInsurers.Models.Seasons
+namespace eSusInsurers.Models.Seasons;
+
+public class GetSeasonsResponse
 {
-    public class GetSeasonsResponse
-    {
-        public PagedResult<SeasonModel> Roles { get; set; } = PagedResult<SeasonModel>.Empty;
-    }
+    public PagedResult<SeasonModel> Roles { get; set; } = PagedResult<SeasonModel>.Empty;
 }

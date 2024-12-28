@@ -1,15 +1,13 @@
-﻿namespace eSusInsurers.Common.Exceptions
-{
-    public class ModelBinderException : Exception
-    {
-        public ModelBinderException()
-            : base()
-        {
-        }
+﻿namespace eSusInsurers.Common.Exceptions;
 
-        public ModelBinderException(string message)
-            : base(message)
-        {
-        }
+public class ModelBinderException : Exception
+{
+    public ModelBinderException()
+    {
+    }
+
+    public ModelBinderException(string message)
+        : base(message)
+    {
     }
 }

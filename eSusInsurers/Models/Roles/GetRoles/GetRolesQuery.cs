@@ -1,11 +1,10 @@
 ﻿using eSusInsurers.Models.Common;
 
-namespace eSusInsurers.Models.Roles.GetRoles
+namespace eSusInsurers.Models.Roles.GetRoles;
+
+public class GetRolesQuery
 {
-    public class GetRolesQuery
-    {
-        public PagingOptions pagingOptions { get; set; }
-        public RoleFilterOptions? filter { get; set; }
-        public SortingOptions? sortingOptions { get; set; }
-    }
+    public PagingOptions pagingOptions { get; set; }
+    public RoleFilterOptions? filter { get; set; }
+    public SortingOptions? sortingOptions { get; set; }
 }

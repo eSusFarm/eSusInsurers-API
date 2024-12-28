@@ -1,9 +1,8 @@
 ﻿using eSusInsurers.Models.Common;
 
-namespace eSusInsurers.Models.SeasonCutOffDate
+namespace eSusInsurers.Models.SeasonCutOffDate;
+
+public class GetSeasonCutOffDatesResponse
 {
-    public class GetSeasonCutOffDatesResponse
-    {
-        public PagedResult<SeasonCutOffDatesModel> Roles { get; set; } = PagedResult<SeasonCutOffDatesModel>.Empty;
-    }
+    public PagedResult<SeasonCutOffDatesModel> Roles { get; set; } = PagedResult<SeasonCutOffDatesModel>.Empty;
 }
