@@ -20,8 +20,6 @@ build_script:
   - dotnet build -c Release
 test_script:
   - dotnet tool install --global coveralls.net
-  - dotnet tool install coveralls.net
-  - dotnet tool restore
   - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
   - csmacnz.Coveralls --opencover -i /Tests/eSusInsurers.Tests/coverage.opencover.xml --useRelativePaths
 
