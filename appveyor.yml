@@ -20,8 +20,6 @@ build_script:
   - dotnet build -c Release
 test_script:
 - ps: >-
-    .\src\packages\OpenCover.4.7.1221\tools\OpenCover.Console.exe -register:user -target:xunit.console.clr4.exe "-targetargs:""src\GameOfLife.xUnit.Tests\bin\$env:CONFIGURATION\eSusInsurers.Tests.dll"" /noshadow /appveyor" -filter:"+[eSusInsurers*]*" -output:opencoverCoverage.xml
-
-    $coveralls = (Resolve-Path "src/packages/coveralls.net.*/tools/csmacnz.coveralls.exe").ToString()
-
-    & $coveralls --opencover -i opencoverCoverage.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
+    dotnet test /p:CollectCoverage=true
+    dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+    csmacnz.Coveralls --opencover -i ./Tests/eSusInsurers.Tests/coverage.opencover.xml --useRelativePaths
