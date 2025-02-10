@@ -23,5 +23,5 @@ test_script:
   - dotnet tool install coveralls.net
   - dotnet tool restore
   - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-  - csmacnz.Coveralls --opencover -i /eSusInsurers-API/Tests/eSusInsurers.Tests/coverage.opencover.xml --useRelativePaths
+  - csmacnz.Coveralls --opencover -i /Tests/eSusInsurers.Tests/coverage.opencover.xml --useRelativePaths
 
