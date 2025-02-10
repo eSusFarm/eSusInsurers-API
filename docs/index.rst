@@ -81,3 +81,8 @@ Mac (and probably Linux) and do:
    dotnet restore
    cd .\eSusFarm\eSusInsurers-API
    dotnet run
+
+
+.. toctree::
+
+   PROJECT_CHARTER
