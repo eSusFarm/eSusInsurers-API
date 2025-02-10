@@ -84,5 +84,7 @@ Mac (and probably Linux) and do:
 
 
 .. toctree::
-
-   PROJECT_CHARTER
+ 
+    self
+    Project Charter <PROJECT_CHARTER>
+    Usage <usage>
