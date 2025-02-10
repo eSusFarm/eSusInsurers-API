@@ -20,6 +20,4 @@ build_script:
   - dotnet build -c Release
 test_script:
 - ps: >-
-    dotnet test /p:CollectCoverage=true
-    dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-    csmacnz.Coveralls --opencover -i ./Tests/eSusInsurers.Tests/coverage.opencover.xml --useRelativePaths
+    dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover & csmacnz.Coveralls --opencover -i ./Tests/eSusInsurers.Tests/coverage.opencover.xml --useRelativePaths
