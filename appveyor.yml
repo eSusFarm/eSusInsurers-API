@@ -1,3 +1,4 @@
+os: Visual Studio 2022
 version: 1.0.{build}
 skip_tags: true
 configuration: Release
@@ -10,15 +11,15 @@ assembly_info:
 environment:
   COVERALLS_REPO_TOKEN:
     secure: 1Cn22xLzXzP6P3dTXXJX0G3bcsluYI9GG
+matrix:
+  allow_failures:
+    - CLI_VERSION: Latest
 before_build:
   - nuget restore ".\eSusInsurers.sln"
-build:
-  project: eSusInsurers.sln
-  verbosity: minimal
+build_script:
+  - dotnet build -c Release
 test_script:
-- ps: >-
-    .\src\packages\OpenCover.4.6.166\tools\OpenCover.Console.exe -register:user -target:xunit.console.clr4.exe "-targetargs:""src\eSusInsurers.Tests\bin\$env:CONFIGURATION\eSusInsurers.Tests.dll"" /noshadow /appveyor" -filter:"+[eSusInsurers*]*" -output:opencoverCoverage.xml
+  - dotnet tool install --global coveralls.net
+  - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+  - csmacnz.Coveralls --opencover -i C:\projects\esusinsurers-api\Tests\eSusInsurers.Tests\coverage.opencover.xml --useRelativePaths
 
-    $coveralls = (Resolve-Path "src/packages/coveralls.net.*/tools/csmacnz.coveralls.exe").ToString()
-
-    & $coveralls --opencover -i opencoverCoverage.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
