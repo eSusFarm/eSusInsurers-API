@@ -3,78 +3,80 @@ using eSusInsurers.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eSusInsurers.Controllers
+namespace eSusInsurers.Controllers;
+
+/// <summary>
+///     User Token Management
+/// </summary>
+[Route("insurance/token")]
+public class TokenController : BaseController
 {
-    /// <summary>
-    /// User Token Management
-    /// </summary>
-    [Route("insurance/token")]
-    public class TokenController : BaseController
+    #region Fields
+
+    private readonly ITokenService _tokenService;
+
+    #endregion
+
+    #region Constructor
+
+    public TokenController(ITokenService tokenService)
     {
-        #region Fields
-        private readonly ITokenService _tokenService;
-        #endregion
+        _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
+    }
 
-        #region Constructor
-        public TokenController(ITokenService tokenService)
+    #endregion
+
+    /// <summary>
+    ///     Refresh access token
+    /// </summary>
+    /// <remarks>
+    ///     Refresh access token
+    /// </remarks>
+    /// <param name="tokenApiModel">Information of the user access token and refresh token</param>
+    /// <response code="200">Indicates the user token refreshed successfully.</response>
+    [HttpPost("refresh")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> Refresh(TokenApiModel tokenApiModel)
+    {
+        try
         {
-            this._tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
-        } 
-        #endregion
+            var response = await _tokenService.RefreshToken(tokenApiModel);
 
-        /// <summary>
-        /// Refresh Access Token
-        /// </summary>
-        /// <remarks>
-        /// Refresh Access Token
-        /// </remarks>
-        /// <param name="tokenApiModel">Information of the user access token and refresh token</param>
-        /// <response code="200">Indicates the user token refreshed successfully.</response>
-        [HttpPost("refresh")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Refresh(TokenApiModel tokenApiModel)
-        {
-            try
-            {
-                var response = await _tokenService.RefreshToken(tokenApiModel, new CancellationToken());
-
-                return new ObjectResult(response) { StatusCode = StatusCodes.Status200OK };
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new
-                {
-                    ErrorMessage = e.Message
-                });
-            }
-
+            return new ObjectResult(response) { StatusCode = StatusCodes.Status200OK };
         }
-
-        /// <summary>
-        /// Refresh Access Token
-        /// </summary>
-        /// <remarks>
-        /// Refresh Access Token
-        /// </remarks>
-        /// <param name="tokenApiModel">Information of the user access token and refresh token</param>
-        /// <response code="200">Indicates the refresh token is revoked.</response>
-        [HttpPost("revoke"), Authorize]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> Revoke()
+        catch (Exception e)
         {
-            try
+            return BadRequest(new
             {
-                var response = await _tokenService.RevokeToken(User.Identity.Name, new CancellationToken());
+                ErrorMessage = e.Message
+            });
+        }
+    }
 
-                return new ObjectResult(response) { StatusCode = StatusCodes.Status204NoContent };
-            }
-            catch (Exception e)
+    /// <summary>
+    ///     Revoke refresh token
+    /// </summary>
+    /// <remarks>
+    ///     Revoke refresh token
+    /// </remarks>
+    /// <response code="204">Indicates the refresh token is revoked.</response>
+    [HttpPost("revoke")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Revoke()
+    {
+        try
+        {
+            var response = await _tokenService.RevokeToken(User.Identity.Name);
+
+            return new ObjectResult(response) { StatusCode = StatusCodes.Status204NoContent };
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new
             {
-                return BadRequest(new
-                {
-                    ErrorMessage = e.Message
-                });
-            }
+                ErrorMessage = e.Message
+            });
         }
     }
 }

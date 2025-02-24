@@ -1,24 +1,22 @@
-﻿namespace eSusInsurers.Models.InsuranceProviders.CreateInsuranceProvider
+﻿namespace eSusInsurers.Models.InsuranceProviders.CreateInsuranceProvider;
+
+/// <summary>
+///     Represents the result of a newly created insurance provider.
+/// </summary>
+public class CreateInsuranceProviderResponse
 {
     /// <summary>
-    /// Represents the result of a newly created insurance provider.
+    ///     Indicates whether the insurance provider was sucessfully created.
     /// </summary>
-    public class CreateInsuranceProviderResponse
-    {
-        /// <summary>
-        /// Indicates whether the insurance provider was sucessfully created.
-        /// </summary>
-        public bool Success { get; set; }
+    public bool Success { get; set; }
 
-        /// <summary>
-        /// The reason the insurance provider was not created.
-        /// </summary>
-        public string? FailureReason { get; set; }
+    /// <summary>
+    ///     The reason the insurance provider was not created.
+    /// </summary>
+    public string? FailureReason { get; set; }
 
-        /// <summary>
-        /// The ID of the newly created part inventory
-        /// </summary>
-        public int? InsuranceProviderId { get; set; }
-
-    }
+    /// <summary>
+    ///     The ID of the newly created part inventory
+    /// </summary>
+    public int? InsuranceProviderId { get; set; }
 }
