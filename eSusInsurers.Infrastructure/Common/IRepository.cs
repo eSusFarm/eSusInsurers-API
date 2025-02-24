@@ -1,5 +1,4 @@
-﻿using eSusInsurers.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using eSusInsurers.Domain;
 
 namespace eSusInsurers.Infrastructure.Common
 {
