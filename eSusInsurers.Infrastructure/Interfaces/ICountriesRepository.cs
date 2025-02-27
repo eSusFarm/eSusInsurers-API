@@ -3,7 +3,7 @@ using eSusInsurers.Infrastructure.Common;
 
 namespace eSusInsurers.Infrastructure.Interfaces
 {
-    public interface ICountriesRepository : IRepository<Region>
+    public interface ICountriesRepository : IRepository<Country>
     {
     }
 }

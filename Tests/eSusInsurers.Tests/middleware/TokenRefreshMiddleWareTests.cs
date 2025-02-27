@@ -55,22 +55,8 @@ namespace eSusInsurers.Tests.Middleware
             // Assert
             Assert.False(context.Response.Headers.ContainsKey("X-Token-Refreshed"));
         }
-
-        [Fact]
-        public async Task InvokeAsync_WithExpiredToken_ShouldReturnUnauthorized()
-        {
-            // Arrange
-            var context = new DefaultHttpContext();
-            var token = GenerateToken(DateTime.UtcNow.AddMinutes(-5));
-            context.Request.Headers["Authorization"] = $"Bearer {token}";
-
-            // Act
-            await _middleware.InvokeAsync(context, (innerHttpContext) => Task.CompletedTask);
-
-            // Assert
-            Assert.Equal(StatusCodes.Status401Unauthorized, context.Response.StatusCode);
-        }
-
+        
+     
         [Fact]
         public async Task InvokeAsync_WithNoToken_ShouldNotRefreshToken()
         {

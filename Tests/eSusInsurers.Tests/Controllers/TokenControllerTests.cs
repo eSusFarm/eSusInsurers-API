@@ -56,7 +56,7 @@ namespace eSusInsurers.Tests.Controllers
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Invalid token", (badRequestResult.Value as dynamic).ErrorMessage);
+            Assert.Equal("{ ErrorMessage = Invalid token }", badRequestResult.Value.ToString());
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace eSusInsurers.Tests.Controllers
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Revoke failed", (badRequestResult.Value as dynamic).ErrorMessage);
+            Assert.Equal("{ ErrorMessage = Revoke failed }", badRequestResult.Value.ToString());
         }
     }
 }

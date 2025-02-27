@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace eSusInsurers.Infrastructure.Repositories
 {
-    public class CountriesRepository : Repository<Region>, ICountriesRepository
+    public class CountriesRepository : Repository<Country>, ICountriesRepository
     {
         public CountriesRepository(DbContext context) : base(context)
         {

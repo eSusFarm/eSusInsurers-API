@@ -21,11 +21,9 @@ public class CountriesService(
     {
         Dictionary<string, Models.Common.Filter> filters = RegionFilterById(countryId);
         Expression<Func<Region, bool>> predicate = ExpressionBuilder<Region>.BuildFilterExpression(filters);
-
-        var query = unitOfWork.CountriesRepository.GetAll()
+        var query = unitOfWork.RegionsRepository.GetAll()
             .Where(predicate)
             .ProjectTo<RegionModel>(mapper.ConfigurationProvider);
-
         return await query.ToListAsync(cancellationToken);
     }
 

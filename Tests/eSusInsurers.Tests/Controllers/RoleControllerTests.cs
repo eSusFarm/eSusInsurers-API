@@ -126,7 +126,7 @@ namespace eSusInsurers.Tests.Controllers
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
-            Assert.Equal("Test exception", (badRequestResult.Value as dynamic).ErrorMessage);
+            Assert.Equal("{ ErrorMessage = Test exception }", badRequestResult.Value.ToString());
         }
 
         [Fact]
@@ -141,7 +141,7 @@ namespace eSusInsurers.Tests.Controllers
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
-            Assert.Equal("Test exception", (badRequestResult.Value as dynamic).ErrorMessage);
+           Assert.Equal("{ ErrorMessage = Test exception }", badRequestResult.Value.ToString());
         }
 
         [Fact]
@@ -157,7 +157,8 @@ namespace eSusInsurers.Tests.Controllers
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Test exception", (badRequestResult.Value as dynamic).ErrorMessage);
+            Console.WriteLine(badRequestResult.Value);
+            Assert.Equal("{ ErrorMessage = Test exception }", badRequestResult.Value.ToString());
         }
 
         [Fact]
@@ -174,7 +175,7 @@ namespace eSusInsurers.Tests.Controllers
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Test exception", (badRequestResult.Value as dynamic).ErrorMessage);
+           Assert.Equal("{ ErrorMessage = Test exception }", badRequestResult.Value.ToString());
         }
 
         [Fact]
@@ -190,7 +191,7 @@ namespace eSusInsurers.Tests.Controllers
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
-            Assert.Equal("Test exception", (badRequestResult.Value as dynamic).ErrorMessage);
+           Assert.Equal("{ ErrorMessage = Test exception }", badRequestResult.Value.ToString());
         }
     }
 }
