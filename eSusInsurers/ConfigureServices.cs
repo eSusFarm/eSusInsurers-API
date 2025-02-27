@@ -9,6 +9,8 @@ using FluentValidation;
 using Microsoft.AspNetCore.ResponseCompression;
 using Serilog;
 using System.Reflection;
+using eSusInsurers.Infrastructure.Interfaces;
+using eSusInsurers.Infrastructure.Services;
 using ILogger = Serilog.ILogger;
 
 namespace eSusInsurers

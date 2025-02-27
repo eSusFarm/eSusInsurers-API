@@ -1,4 +1,4 @@
-﻿using eSusInsurers.Domain.Entities;
+﻿using eSusInsurers.Domain;
 using eSusInsurers.Infrastructure.Interfaces;
 using eSusInsurers.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -7,14 +7,58 @@ namespace eSusInsurers.Infrastructure.Common
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly esusinsurer_nonprodContext _context;
+        private readonly eSusInsurerContext _context;
+
         private IInsuranceProviderRepository _insuranceProviderRepository;
+
         private InsuranceProviderDocumentRepository _insuranceProviderDocumentRepository;
+
         private IUserRepository _userRepository;
-        private IUserTypeRepository _userTypeRepository;
+
         private IEmailTemplateRepository _emailTemplateRepository;
 
-        public UnitOfWork(esusinsurer_nonprodContext context)
+        private IRoleRepository _roleRepository;
+
+        private IMenuRolesPrivilegeRepository _menuRolesPrivilegeRepository;
+
+        private IMenuRolesFunctionalityRepository _menuRolesFunctionalityRepository;
+
+        private IMenuRoleFunctionalityApprovalProcessRepository _menuRoleFunctionalityApprovalProcessRepository;
+
+        private IApplicationMenuRepository _applicationMenuRepository;
+
+        private IApplicationChildMenuRepository _applicationChildMenuRepository;
+
+        private IApplicationFunctionalitiesRepository _applicationFunctionalitiesRepository;
+
+        private IFunctionalityApprovalProcessRepository _functionalityApprovalProcessRepository;
+
+        private IApplicationSettingsRepository _applicationSettingsRepository;
+
+        private IInsuranceProductRepository _insuranceProductRepository;
+
+        private ISeasonRepository _seasonRepository;
+
+        private ISeasonCutOffDateRepository _seasonCutOffDateRepository;
+
+        private ICountriesRepository _countriesRepository;
+
+        private IDistrictRepository _districtRepository;
+
+        private ISubcountiesRepository _subcountiesRepository;
+
+        public IParishRepository _parishRepository;
+
+        private IProgramRepository _programRepository;
+
+        public ICropRepository _cropRepository;
+        private IInsuranceCompanyRepository _insuranceCompanyRepository;
+
+        private ICropCategoryRepository _cropCategoryRepository;
+        private IRegionsRepository _regionsRepository;
+
+
+        public UnitOfWork(eSusInsurerContext context)
         {
             try
             {
@@ -32,9 +76,48 @@ namespace eSusInsurers.Infrastructure.Common
 
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
 
-        public IUserTypeRepository UserTypeRepository => _userTypeRepository ??= new UserTypeRepository(_context);
-
         public IEmailTemplateRepository EmailTemplateRepository => _emailTemplateRepository ??= new EmailTemplateRepository(_context);
+
+        public IRoleRepository RoleRepository => _roleRepository ??= new RoleRepository(_context);
+
+        public IMenuRolesPrivilegeRepository MenuRolesPrivilegeRepository => _menuRolesPrivilegeRepository ??= new MenuRolesPrivilegeRepository(_context);
+
+        public IMenuRolesFunctionalityRepository MenuRolesFunctionalityRepository => _menuRolesFunctionalityRepository ??= new MenuRolesFunctionalityRepository(_context);
+
+        public IMenuRoleFunctionalityApprovalProcessRepository MenuRoleFunctionalityApprovalProcessRepository => _menuRoleFunctionalityApprovalProcessRepository ??= new MenuRoleFunctionalityApprovalProcessRepository(_context);
+
+        public IApplicationMenuRepository ApplicationMenuRepository => _applicationMenuRepository ??= new ApplicationMenuRepository(_context);
+
+        public IApplicationChildMenuRepository ApplicationChildMenuRepository => _applicationChildMenuRepository ??= new ApplicationChildMenuRepository(_context);
+
+        public IApplicationFunctionalitiesRepository ApplicationFunctionalitiesRepository => _applicationFunctionalitiesRepository ??= new ApplicationFunctionalitiesRepository(_context);
+
+        public IFunctionalityApprovalProcessRepository FunctionalityApprovalProcessRepository => _functionalityApprovalProcessRepository ??= new FunctionalityApprovalProcessRepository(_context);
+
+        public IApplicationSettingsRepository ApplicationSettingsRepository => _applicationSettingsRepository ??= new ApplicationSettingsRepository(_context);
+
+        public IInsuranceProductRepository InsuranceProductRepository => _insuranceProductRepository ??= new InsuranceProductRepository(_context);
+
+        public ISeasonRepository SeasonRepository => _seasonRepository ??= new SeasonRepository(_context);
+
+        public ISeasonCutOffDateRepository SeasonCutOffDateRepository => _seasonCutOffDateRepository ??= new SeasonCutOffDateRepository(_context);
+
+        public ICountriesRepository CountriesRepository => _countriesRepository ??= new CountriesRepository(_context);
+
+        public IDistrictRepository DistrictRepository => _districtRepository??= new DistrictRepository(_context);
+
+        public ISubcountiesRepository SubcountiesRepository => _subcountiesRepository = new SubcountiesRepository(_context);
+
+        public IParishRepository ParishRepository => _parishRepository = new ParishRepository(_context);
+
+        public IProgramRepository ProgramRepository => _programRepository ??= new ProgramsRepository(_context);
+
+        public ICropRepository CropRepository => _cropRepository = new CropRepository(_context);
+
+        public ICropCategoryRepository CropCategoryRepository => _cropCategoryRepository ??= new CropCategoryRepository(_context);
+
+        public IInsuranceCompanyRepository InsuranceCompanyRepository => _insuranceCompanyRepository ??= new InsuranceCompanyRepository(_context);
+        public IRegionsRepository RegionsRepository => _regionsRepository ??= new RegionsRepository(_context);
 
         public void SaveChanges()
             => _context.SaveChanges();
