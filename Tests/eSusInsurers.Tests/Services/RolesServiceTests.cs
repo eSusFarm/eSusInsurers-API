@@ -1,12 +1,15 @@
 using AutoMapper;
+using eSusInsurers.Common.Exceptions;
 using eSusInsurers.Domain.Entities;
 using eSusInsurers.Infrastructure.Common;
 using eSusInsurers.Infrastructure.Interfaces;
 using eSusInsurers.Models.Roles.GetRoles;
 using eSusInsurers.Services.Implementations;
 using eSusInsurers.Services.Interfaces;
+using FluentAssertions;
 using MockQueryable.Moq;
 using Moq;
+using WMS.Models.Roles;
 using Xunit;
 using IConfigurationProvider = Microsoft.Extensions.Configuration.IConfigurationProvider;
 
@@ -73,4 +76,29 @@ public class RolesServiceTests
         Assert.Equal(0, result.TotalRecordCount);
     }
 
+    [Fact]
+    public async Task AddRoles_NullRequest_ThrowsArgumentNullException()
+    {
+        // Act
+        Func<Task> act = async () => await  _rolesService.AddRole(null, new CancellationToken());
+        await act.Should().ThrowAsync<ArgumentNullException>().WithMessage("Value cannot be null. (Parameter 'request')");
+    }
+    
+    [Fact]
+    public async Task AddSeason_RoleAlreadyExists_ReturnsException()
+    {
+        RoleRequest roleRequest = new RoleRequest
+        {
+            RoleName = "Role 1",
+        };
+        // Arrange
+        var role = new Role
+            { Id = 1,  RoleName = "Season 1", IsActive = true };
+        _roleRepository.Setup(x => x.GetByRoleNameAsync(roleRequest.RoleName, new CancellationToken())).Returns(Task.FromResult(role));
+        // Act
+        Func<Task> act = async () => await  _rolesService.AddRole(roleRequest, new CancellationToken());
+        await act.Should().ThrowAsync<BadRequestException>().WithMessage("Role name: (Role 1) already exists.");
+    }
+
+    
 }

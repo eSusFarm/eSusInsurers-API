@@ -34,6 +34,8 @@ public class UserService(
     IDateTime dateTime,
     IEmailService emailService) : IUserService
 {
+    
+    
     public async Task<bool> Register(UserRegisterRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request, nameof(request));

@@ -76,7 +76,7 @@ public class SeasonService(IUnitOfWork unitOfWork, IMapper mapper) : ISeasonServ
 
         season = mapper.Map<Season>(request);
 
-        var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
+        using var  transaction =  unitOfWork.BeginTransaction();
 
         try
         {

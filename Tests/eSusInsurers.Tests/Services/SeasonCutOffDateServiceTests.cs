@@ -1,4 +1,5 @@
 using AutoMapper;
+using eSusInsurers.Common.Exceptions;
 using eSusInsurers.Domain.Entities;
 using eSusInsurers.Infrastructure;
 using eSusInsurers.Infrastructure.Common;
@@ -6,8 +7,10 @@ using eSusInsurers.Models.Countries;
 using eSusInsurers.Models.SeasonCutOffDate;
 using eSusInsurers.Services.Implementations;
 using eSusInsurers.Services.Interfaces;
+using FluentAssertions;
 using MockQueryable.Moq;
 using Moq;
+using WMS.Models.Roles;
 using Xunit;
 using IConfigurationProvider = Microsoft.Extensions.Configuration.IConfigurationProvider;
 
@@ -117,6 +120,12 @@ public class SeasonCutOffDateServiceTests
         // Assert
         Assert.Equal(0, result.TotalRecordCount);
     }
-
-
+    
+    [Fact]
+    public async Task AddSeasonCutOff_NullRequest_ThrowsArgumentNullException()
+    {
+        // Act
+        Func<Task> act = async () => await  _seasonCutOffDateService.AddSeasonCutOffDates(null, new CancellationToken());
+        await act.Should().ThrowAsync<ArgumentNullException>().WithMessage("Value cannot be null. (Parameter 'request')");
+    }
 }
