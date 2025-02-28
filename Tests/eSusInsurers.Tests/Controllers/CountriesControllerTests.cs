@@ -41,6 +41,23 @@ namespace eSusInsurers.Tests.Controllers
            var regions = okResult.Value.Should().BeAssignableTo<List<RegionModel>>().Subject;
            regions.Should().BeEquivalentTo(expectedRegions);
        }
+       
+       [Fact]
+       public async Task GetRegions_WhenNoRegions_ReturnsOkWithNoRegions()
+       {
+           // Arrange
+           long countryId = 1;
+           var expectedRegions = new List<RegionModel>();
+           A.CallTo(() => _countriesService.GetRegions(countryId, A<CancellationToken>._))
+               .Returns(expectedRegions);
+           // Act
+           var result = await _controller.GetRegions(countryId);
+           // Assert
+           var okResult = result.Result.Should().BeOfType<OkObjectResult>().Subject;
+           var regions = okResult.Value.Should().BeAssignableTo<List<RegionModel>>().Subject;
+           regions.Should().BeEquivalentTo(expectedRegions);
+       }
+       
 
        [Fact]
        public async Task GetRegions_WhenExceptionOccurs_ReturnsBadRequest()

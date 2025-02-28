@@ -51,6 +51,27 @@ namespace eSusInsurers.Tests.Controllers
             var returnedCrops = Assert.IsAssignableFrom<List<CropModel>>(okResult.Value);
             Assert.Equal(expectedCrops.Count, returnedCrops.Count);
         }
+        
+        [Fact]
+        public async Task GetCropsByCropCategoryId_ReturnsOkResult_WithNoCrops()
+        {
+            // Arrange
+            const int cropCategoryId = 1;
+            var expectedCrops = new List<CropModel>();
+
+            _mockCropService
+                .Setup(service => service.GetCropsByCropCategoryId(cropCategoryId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(expectedCrops);
+
+            // Act
+            var actionResult = await _controller.GetCropsByCropCategoryId(cropCategoryId);
+
+            // Assert
+            var result = Assert.IsType<ActionResult<CropModel>>(actionResult);
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnedCrops = Assert.IsAssignableFrom<List<CropModel>>(okResult.Value);
+            Assert.Equal(expectedCrops.Count, returnedCrops.Count);
+        }
 
         [Fact]
         public async Task GetCropsByCropCategoryId_ReturnsBadRequest_WhenExceptionOccurs()

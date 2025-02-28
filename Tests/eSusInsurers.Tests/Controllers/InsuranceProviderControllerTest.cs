@@ -55,6 +55,8 @@ namespace eSusInsurers.Tests.Controllers
             objectResult.Value.Should().BeEquivalentTo(expectedResult);
             objectResult.StatusCode.Should().Be(StatusCodes.Status201Created);
         }
+        
+        
 
         [Fact]
         [Trait("Controller", "Post")]
