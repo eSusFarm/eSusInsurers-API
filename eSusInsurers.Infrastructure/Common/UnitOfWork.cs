@@ -52,10 +52,10 @@ namespace eSusInsurers.Infrastructure.Common
         private IProgramRepository _programRepository;
 
         public ICropRepository _cropRepository;
-        private IInsuranceCompanyRepository _insuranceCompanyRepository;
+        public IInsuranceCompanyRepository _insuranceCompanyRepository;
 
-        private ICropCategoryRepository _cropCategoryRepository;
-        private IRegionsRepository _regionsRepository;
+        public ICropCategoryRepository _cropCategoryRepository;
+        public IRegionsRepository _regionsRepository;
 
 
         public UnitOfWork(eSusInsurerContext context)

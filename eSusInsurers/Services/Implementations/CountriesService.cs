@@ -37,6 +37,8 @@ public class CountriesService(
             .Where(predicate)
             .ProjectTo<DistrictModel>(mapper.ConfigurationProvider);
 
+        if (!(query is IAsyncEnumerable<DistrictModel>))
+            return await Task.FromResult(query.ToList());
         return await query.ToListAsync(cancellationToken);
     }
 
@@ -51,6 +53,8 @@ public class CountriesService(
             .Where(predicate)
             .ProjectTo<SubCountiesModel>(mapper.ConfigurationProvider);
 
+        if (!(query is IAsyncEnumerable<SubCountiesModel>))
+            return await Task.FromResult(query.ToList());
         return await query.ToListAsync(cancellationToken);
     }
 
@@ -66,6 +70,8 @@ public class CountriesService(
             .Where(predicate)
             .ProjectTo<ParishModel>(mapper.ConfigurationProvider);
 
+        if (!(query is IAsyncEnumerable<ParishModel>))
+            return await Task.FromResult(query.ToList());
         return await query.ToListAsync(cancellationToken);
     }
 

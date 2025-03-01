@@ -128,4 +128,47 @@ public class SeasonCutOffDateServiceTests
         Func<Task> act = async () => await  _seasonCutOffDateService.AddSeasonCutOffDates(null, new CancellationToken());
         await act.Should().ThrowAsync<ArgumentNullException>().WithMessage("Value cannot be null. (Parameter 'request')");
     }
+    
+    [Fact]
+    public async Task AddSeasonCutOff_SeasonCutOffAlreadyExists_ReturnsException()
+    {
+
+        var expected = new SeasonCutOffDate
+        {
+            SeasonId = 1,
+            RegionId = 1,
+            CropCategoryId = 1,
+            CropId = 1
+        };
+
+        var requests = new List<SeasonCutOffDatesRequest>
+        {
+            new SeasonCutOffDatesRequest
+            {
+                SeasonId = 1,
+                RegionId = 1,
+                CropCategoryId = 1,
+                CropId = 1
+            }
+        };
+       
+        // Arrange
+        var seasonCutOffDates = new List<SeasonCutOffDate>
+        {
+            new() { Id = 1, SeasonId = 1,RegionId =1,  CropCategoryId= 1, CropId=1 ,IsActive=true},
+            new() { Id = 2, SeasonId = 1,RegionId =1,  CropCategoryId= 1, CropId=1 ,IsActive=true},
+        };
+        var mock = seasonCutOffDates.AsQueryable().BuildMockDbSet();
+        _seasonCutOffDateRepository.Setup(x => x.GetBySeasonCutOffDateAsync(1,1, 1, 1, new CancellationToken())).ReturnsAsync(expected);
+
+        _mapper.Setup(m => m.ConfigurationProvider).Returns(new MapperConfiguration(cfg => 
+        {
+            cfg.CreateMap<SeasonCutOffDate, SeasonCutOffDatesModel>()
+                .ForMember(d => d.SeasonId, opt => opt.MapFrom(s => s.Id));
+        }));
+        // Act
+        Func<Task> act = async () => await  _seasonCutOffDateService.AddSeasonCutOffDates(requests, new CancellationToken());
+        await act.Should().ThrowAsync<BadRequestException>().WithMessage("Request already exists.");
+    }
+
 }
