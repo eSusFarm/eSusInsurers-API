@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace eSusInsurers.Domain.Models;
+
+public partial class Crop : BaseAuditableEntity
+{
+
+    public string CropName { get; set; } = null!;
+
+    public int? CropCategoryId { get; set; }
+
+    public bool IsActive { get; set; }
+
+    public decimal MinOrderQuantity { get; set; }
+
+    public int QuantityUnits { get; set; }
+
+    public int? SequenceId { get; set; }
+
+    public virtual CropCategory? CropCategory { get; set; }
+
+    public virtual ICollection<FarmerCrop> FarmerCrops { get; set; } = new List<FarmerCrop>();
+
+    public virtual ICollection<SeasonCutOffDate> SeasonCutOffDates { get; set; } = new List<SeasonCutOffDate>();
+}

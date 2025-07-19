@@ -8,6 +8,7 @@ using eSusInsurers.Models.SeasonCutOffDate;
 using eSusInsurers.Services.Implementations;
 using eSusInsurers.Services.Interfaces;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using MockQueryable.Moq;
 using Moq;
 using WMS.Models.Roles;
@@ -23,6 +24,7 @@ public class SeasonCutOffDateServiceTests
     private readonly ISeasonCutOffDateService _seasonCutOffDateService;
     private readonly IConfigurationProvider _mapperConfig;
     private readonly Mock<IMapper> _mapper;
+    private readonly ILogger<SeasonCutOffDateService> _logger;
 
     public SeasonCutOffDateServiceTests()
     {
@@ -30,7 +32,8 @@ public class SeasonCutOffDateServiceTests
         _seasonCutOffDateRepository = new Mock<ISeasonCutOffDateRepository>();
         _mapper = new Mock<IMapper>();
         _unitOfWork.Setup(x => x.SeasonCutOffDateRepository).Returns(_seasonCutOffDateRepository.Object);
-        _seasonCutOffDateService = new SeasonCutOffDateService(_unitOfWork.Object, _mapper.Object);
+        _logger = new Logger<SeasonCutOffDateService>(new LoggerFactory());
+        _seasonCutOffDateService = new SeasonCutOffDateService(_unitOfWork.Object, _mapper.Object, _logger);
     }
     
     [Fact]

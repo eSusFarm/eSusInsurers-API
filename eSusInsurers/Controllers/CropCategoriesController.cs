@@ -1,38 +1,42 @@
 ﻿using eSusInsurers.Models;
+using eSusInsurers.Models.Countries;
 using eSusInsurers.Services;
+using eSusInsurers.Services.Implementations;
+using eSusInsurers.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eSusInsurers.Controllers;
-
-/// <summary>
-///     Controller for cropcategories.
-/// </summary>
-[Route("cropcategories")]
-public class CropCategoriesController(ICropCategoryService cropCategoryService) : ControllerBase
+namespace eSusInsurers.Controllers
 {
     /// <summary>
-    ///     Get crop categories
+    /// Controller for cropcategories.
     /// </summary>
-    /// <remarks>
-    ///     Returns crop categories.
-    /// </remarks>
-    /// <response code="200">Returns crop categories.</response>
-    /// <returns>Returns crop categories</returns>
-    [HttpGet]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<CropCategoryModel>))]
-    public async Task<ActionResult<List<CropCategoryModel>>> GetCropCategories()
+    [Route("cropcategories")]
+    public class CropCategoriesController(ICropCategoryService cropCategoryService) : ControllerBase
     {
-        try
+        /// <summary>
+        /// Get crop categories
+        /// </summary>
+        /// <remarks>
+        /// Returns crop categories.
+        /// </remarks>
+        /// <response code="200">Returns crop categories.</response>
+        /// <returns>Returns crop categories</returns>
+        [HttpGet(), Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<CropCategoryModel>))]
+        public async Task<ActionResult<List<CropCategoryModel>>> GetCropCategories()
         {
-            var result = await cropCategoryService.GetCropCategories(new CancellationToken());
+            try
+            {
+                var result = await cropCategoryService.GetCropCategories(new CancellationToken());
 
-            return Ok(result);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(new { ErrorMessage = e.Message });
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
         }
     }
 }

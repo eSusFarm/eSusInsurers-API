@@ -1,20 +1,27 @@
-﻿using eSusInsurers.Models.Common;
-using eSusInsurers.Models.SeasonCutOffDate;
+﻿using eSusInsurers.Models.SeasonCutOffDate;
 
-namespace eSusInsurers.Services.Interfaces;
-
-public interface ISeasonCutOffDateService
+namespace eSusInsurers.Services.Interfaces
 {
-    Task<PagedResult<SeasonCutOffDatesModel>> GetSeasonCutOffDates(GetSeasonCutOffDatesQuery request,
-        CancellationToken cancellationToken);
+    public interface ISeasonCutOffDateService
+    {
+        Task<Models.Common.PagedResult<SeasonCutOffDatesModel>> GetSeasonCutOffDates(GetSeasonCutOffDatesQuery request, CancellationToken cancellationToken);
+        Task<bool> AddSeasonCutOffDates(List<SeasonCutOffDatesRequest> request, CancellationToken cancellationToken);
+        Task UpdateSeasonCutOffDates(int seasonCutOffDateId, UpdateSeasonCutOffDatesRequest request, CancellationToken cancellationToken);
+        Task<bool> DeleteSeasonCutOffDates(int seasonCutOffDateId, CancellationToken cancellationToken);
+        Task<bool> ActivateSeasonCutOffDates(int seasonCutOffDateId, CancellationToken cancellationToken);
+        Task<bool> SeasonCutOffDatesExistenceCheck(SeasonCutOffDatesRequest request, CancellationToken cancellationToken);
+        Task<SeasonCutOffDatesModel?> GetSeasonCutOffDatesById(int seasonCutOffDateId, CancellationToken cancellationToken);
 
-    Task<bool> AddSeasonCutOffDates(List<SeasonCutOffDatesRequest> request, CancellationToken cancellationToken);
-
-    Task UpdateSeasonCutOffDates(int seasonCutOffDateId, UpdateSeasonCutOffDatesRequest request,
-        CancellationToken cancellationToken);
-
-    Task<bool> DeleteSeasonCutOffDates(int seasonCutOffDateId, CancellationToken cancellationToken);
-    Task<bool> ActivateSeasonCutOffDates(int seasonCutOffDateId, CancellationToken cancellationToken);
-    Task<bool> SeasonCutOffDatesExistenceCheck(SeasonCutOffDatesRequest request, CancellationToken cancellationToken);
-    Task<SeasonCutOffDatesModel?> GetSeasonCutOffDatesById(int seasonCutOffDateId, CancellationToken cancellationToken);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cropName"></param>
+        /// <param name="seasonName"></param>
+        /// <param name="seasonYear"></param>
+        /// <param name="regionName"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ValidateApplicationDateResponse> ValidateApplicationDate(String cropName, String seasonName, String seasonYear, String regionName,
+            CancellationToken cancellationToken);
+    }
 }

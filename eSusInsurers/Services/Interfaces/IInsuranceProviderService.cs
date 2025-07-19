@@ -1,9 +1,9 @@
 ﻿using eSusInsurers.Models.InsuranceProviders.CreateInsuranceProvider;
 
-namespace eSusInsurers.Services.Interfaces;
-
-public interface IInsuranceProviderService
+namespace eSusInsurers.Services.Interfaces
 {
-    Task<CreateInsuranceProviderResponse> CreateInsuranceProvider(CreateInsuranceProviderRequest request,
-        CancellationToken cancellationToken);
+    public interface IInsuranceProviderService
+    {
+        Task<CreateInsuranceProviderResponse> CreateInsuranceProvider(CreateInsuranceProviderRequest request, CancellationToken cancellationToken);
+    }
 }

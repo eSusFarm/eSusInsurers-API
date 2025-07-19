@@ -28,7 +28,6 @@ public class CountriesServiceTests
         _unitOfWork = new Mock<IUnitOfWork>();
         _regionsRepository = new Mock<IRegionsRepository>();
         _mapper = new Mock<IMapper>();
-        _unitOfWork.Setup(x => x.RegionsRepository).Returns(_regionsRepository.Object);
         _districtRepository = new Mock<IDistrictRepository>();
         _unitOfWork.Setup(x => x.DistrictRepository).Returns(_districtRepository.Object);
         _subcountiesRepository = new Mock<ISubcountiesRepository>();

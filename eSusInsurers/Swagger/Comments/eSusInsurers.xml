@@ -88,22 +88,34 @@
             Configures the services for ApplicationServices
             </summary>
         </member>
+        <member name="T:eSusInsurers.Controllers.BlockChainController">
+            <summary>
+            Create Etherisc Policy
+            </summary>
+            <param name="etheriscService"></param>
+        </member>
+        <member name="M:eSusInsurers.Controllers.BlockChainController.#ctor(eSusInsurers.Services.Interfaces.IEtheriscService)">
+            <summary>
+            Create Etherisc Policy
+            </summary>
+            <param name="etheriscService"></param>
+        </member>
         <member name="T:eSusInsurers.Controllers.CountriesController">
             <summary>
-                Controller for countries.
+            Controller for countries.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.CountriesController.#ctor(eSusInsurers.Services.Interfaces.ICountriesService)">
             <summary>
-                Controller for countries.
+            Controller for countries.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.CountriesController.GetRegions(System.Int64)">
             <summary>
-                Get regions by country Id
+            Get regions by country Id
             </summary>
             <remarks>
-                Returns regions.
+            Returns regions.
             </remarks>
             <param name="countryId">Country Id.</param>
             <response code="200">Returns regions.</response>
@@ -111,10 +123,22 @@
         </member>
         <member name="M:eSusInsurers.Controllers.CountriesController.GetDistricts(System.Int64,System.Int64)">
             <summary>
-                Get districts by region id
+            Get districts by region id
             </summary>
             <remarks>
-                Returns districts.
+            Returns districts.
+            </remarks>
+            <param name="regionId">Region Id</param>
+            <param name="countryId">Country Id</param>
+            <response code="200">Returns districts.</response>
+            <returns>Returns districts</returns>
+        </member>
+        <member name="M:eSusInsurers.Controllers.CountriesController.GetDistrictsByFirstThreeCharacters(System.Int64,System.Int64)">
+            <summary>
+            Get districts by region id
+            </summary>
+            <remarks>
+            Returns districts.
             </remarks>
             <param name="regionId">Region Id</param>
             <param name="countryId">Country Id</param>
@@ -123,10 +147,23 @@
         </member>
         <member name="M:eSusInsurers.Controllers.CountriesController.GetSubcounties(System.Int64,System.Int64,System.Int64)">
             <summary>
-                Get subcounties by district id
+            Get subcounties by district id
             </summary>
             <remarks>
-                Returns subcounties.
+            Returns subcounties.
+            </remarks>
+            <param name="regionId">Region Id</param>
+            <param name="countryId">Country Id</param>
+            <param name="districtId">District Id</param>
+            <response code="200">Returns subcounties.</response>
+            <returns>Returns subcounties</returns>
+        </member>
+        <member name="M:eSusInsurers.Controllers.CountriesController.GetSubcountiesByFirstThreeCharacters(System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Get subcounties by district id and search text
+            </summary>
+            <remarks>
+            Returns subcounties.
             </remarks>
             <param name="regionId">Region Id</param>
             <param name="countryId">Country Id</param>
@@ -136,10 +173,24 @@
         </member>
         <member name="M:eSusInsurers.Controllers.CountriesController.GetParishes(System.Int64,System.Int64,System.Int64,System.Int64)">
             <summary>
-                Get parishes by subcounty id
+            Get parishes by subcounty id
             </summary>
             <remarks>
-                Returns parishes.
+            Returns parishes.
+            </remarks>
+            <param name="regionId">Region Id</param>
+            <param name="countryId">Country Id</param>
+            <param name="districtId">District Id</param>
+            <param name="subcountyId">Subcounty Id</param>
+            <response code="200">Returns parishes.</response>
+            <returns>Returns parishes</returns>
+        </member>
+        <member name="M:eSusInsurers.Controllers.CountriesController.GetParishesByFirstThreeCharacters(System.Int64,System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Get parishes by subcounty id and first three characters.
+            </summary>
+            <remarks>
+            Returns parishes.
             </remarks>
             <param name="regionId">Region Id</param>
             <param name="countryId">Country Id</param>
@@ -150,80 +201,88 @@
         </member>
         <member name="T:eSusInsurers.Controllers.CropCategoriesController">
             <summary>
-                Controller for cropcategories.
+            Controller for cropcategories.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.CropCategoriesController.#ctor(eSusInsurers.Services.ICropCategoryService)">
             <summary>
-                Controller for cropcategories.
+            Controller for cropcategories.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.CropCategoriesController.GetCropCategories">
             <summary>
-                Get crop categories
+            Get crop categories
             </summary>
             <remarks>
-                Returns crop categories.
+            Returns crop categories.
             </remarks>
             <response code="200">Returns crop categories.</response>
             <returns>Returns crop categories</returns>
         </member>
         <member name="T:eSusInsurers.Controllers.CropsController">
             <summary>
-                Controller for crops.
+            Controller for crops.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.CropsController.#ctor(eSusInsurers.Services.ICropService)">
             <summary>
-                Controller for crops.
+            Controller for crops.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.CropsController.GetCropsByCropCategoryId(System.Int32)">
             <summary>
-                Get crops by cropCategoryId
+            Get crops by cropCategoryId
             </summary>
             <remarks>
-                Returns a list of crops by cropCategoryId
+            Returns a list of crops by cropCategoryId
             </remarks>
             <param name="cropCategoryId"></param>
             <response code="200">Returns a list of crops by cropCategoryId.</response>
         </member>
+        <member name="T:eSusInsurers.Controllers.EsusFarmPolicyController">
+            <summary>
+            Controller for policy creation on blockchain.
+            </summary>
+            <remarks>
+            Returns an object of type EsusFarmPolicyRequestDto.
+            </remarks>
+        </member>
         <member name="T:eSusInsurers.Controllers.InsuranceCompanyController">
             <summary>
-                Controller for insurance companies.
+            Controller for insurance companies.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.InsuranceCompanyController.#ctor(eSusInsurers.Services.Interfaces.IInsuranceCompanyService)">
             <summary>
-                Controller for insurance companies.
+            Controller for insurance companies.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.InsuranceCompanyController.GetInsuranceCompanies">
             <summary>
-                Get insurance companies
+            Get insurance companies
             </summary>
             <remarks>
-                Returns insurance companies.
+            Returns insurance companies.
             </remarks>
             <response code="200">Returns insurance companies.</response>
             <returns>Returns insurance companies</returns>
         </member>
         <member name="T:eSusInsurers.Controllers.InsuranceProductController">
             <summary>
-                Controller for managing insurance products.
+            Controller for managing insurance products.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.InsuranceProductController.#ctor(eSusInsurers.Services.Interfaces.IInsuranceProductService)">
             <summary>
-                Controller for managing insurance products.
+            Controller for managing insurance products.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.InsuranceProductController.GetInsuranceProducts(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.InsuranceProducts.InsuranceProductFilterOption,eSusInsurers.Models.Common.SortingOptions)">
             <summary>
-                Get Insurance Products
+            Get Insurance Products
             </summary>
             <remarks>
-                Returns a paginated list of insurance products.
+            Returns a paginated list of insurance products.
             </remarks>
             <param name="pagingOptions">Pagination options for response.</param>
             <param name="filter">Data filter options.</param>
@@ -233,41 +292,76 @@
         </member>
         <member name="T:eSusInsurers.Controllers.InsuranceProviderController">
             <summary>
-                Controller for managing insurance providers.
+            Controller for managing insurance providers.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.InsuranceProviderController.#ctor(eSusInsurers.Services.Interfaces.IInsuranceProviderService)">
             <summary>
-                Initializes a new instance of the <see cref="T:eSusInsurers.Controllers.InsuranceProviderController" /> class.
+            Initializes a new instance of the <see cref="T:eSusInsurers.Controllers.InsuranceProviderController"/> class.
             </summary>
             <param name="insuranceProviderService">The instance of insurance provider service.</param>
         </member>
         <member name="M:eSusInsurers.Controllers.InsuranceProviderController.CreateInsuranceProvider(eSusInsurers.Models.InsuranceProviders.CreateInsuranceProvider.CreateInsuranceProviderRequest)">
             <summary>
-                Create insurance provider
+            Create insurance provider
             </summary>
             <remarks>
-                Creates a new insurance provider.
+            Creates a new insurance provider.
             </remarks>
             <param name="request">Information of the insurance provider to be created.</param>
             <response code="201">Indicates the insurance provider was successfully created.</response>
         </member>
+        <member name="T:eSusInsurers.Controllers.InsuranceRequestsController">
+            <summary>
+            Controller for Insurance Requests
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.InsuranceRequestsController.#ctor(eSusInsurers.Services.Interfaces.IInsuranceRequestsService)">
+            <summary>
+            Controller for Insurance Requests
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Controllers.InsuranceRequestsController.GetUsers(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.InsuranceRequestFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
+            <summary>
+            Get Insurance Requests
+            </summary>
+            <remarks>
+            Returns a paginated list of insurance requests.
+            </remarks>
+            <param name="pagingOptions">Pagination options for response.</param>
+            <param name="filter">Data filter options.</param>
+            <param name="sort">Data sorting options.</param>
+            <response code="200">Returns a paginated list of users.</response>
+            <returns>Paginated list of users.</returns>
+        </member>
+        <member name="T:eSusInsurers.Controllers.PaymentsController">
+            <summary>
+            Create Etherisc Policy
+            </summary>
+            <param name="etheriscService"></param>
+        </member>
+        <member name="M:eSusInsurers.Controllers.PaymentsController.#ctor(eSusInsurers.Services.Interfaces.IPaymentService)">
+            <summary>
+            Create Etherisc Policy
+            </summary>
+            <param name="etheriscService"></param>
+        </member>
         <member name="T:eSusInsurers.Controllers.ProgramsController">
             <summary>
-                Controller for prograns.
+            Controller for prograns.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.ProgramsController.#ctor(eSusInsurers.Services.Interfaces.IProgramsService)">
             <summary>
-                Controller for prograns.
+            Controller for prograns.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.ProgramsController.Getprograms(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.Programs.ProgramFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
             <summary>
-                Get programs
+            Get programs
             </summary>
             <remarks>
-                Returns a paginated list of programs.
+            Returns a paginated list of programs.
             </remarks>
             <param name="pagingOptions">Pagination options for response.</param>
             <param name="filter">Data filter options.</param>
@@ -277,20 +371,20 @@
         </member>
         <member name="M:eSusInsurers.Controllers.ProgramsController.AddProgram(eSusInsurers.Models.Programs.ProgramRequest)">
             <summary>
-                Add new program
+            Add new program
             </summary>
             <remarks>
-                Add new program
+            Add new program
             </remarks>
             <param name="request">Information of the program to register</param>
             <response code="201">Indicates the program is successfully created.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.ProgramsController.UpdateProgram(System.Int32,eSusInsurers.Models.Programs.ProgramRequest)">
             <summary>
-                Update a program
+            Update a program
             </summary>
             <remarks>
-                Update a program
+            Update a program
             </remarks>
             <param name="request">Program details of the program</param>
             <param name="programId">Program id of the program</param>
@@ -298,48 +392,48 @@
         </member>
         <member name="M:eSusInsurers.Controllers.ProgramsController.DeleteProgram(System.Int32)">
             <summary>
-                Deactivate a program
+            Deactivate a program
             </summary>
             <remarks>
-                Deactivate a program
+            Deactivate a program
             </remarks>
             <param name="programId">Program id of the program</param>
             <response code="204">Indicates the program is inactive</response>
         </member>
         <member name="M:eSusInsurers.Controllers.ProgramsController.ActivateProgram(System.Int32)">
             <summary>
-                Activate a program
+            Activate a program
             </summary>
             <remarks>
-                Activate a program
+            Activate a program
             </remarks>
             <param name="programId">Program Id of the program</param>
             <response code="204">Indicates the program is active</response>
         </member>
         <member name="T:eSusInsurers.Controllers.RoleController">
             <summary>
-                Controller for roles.
+            Controller for roles.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.RoleController.#ctor(eSusInsurers.Services.Interfaces.IRolesService)">
             <summary>
-                Controller for roles.
+            Controller for roles.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.RoleController.GetApplicationMenuItemsMasterList(System.Threading.CancellationToken)">
             <summary>
-                To get ApplicationMenus, SubMenus and functionalities
+            To get ApplicationMenus, SubMenus and functionalities
             </summary>
             <returns>
-                To get ApplicationMenus, SubMenus and functionalities
+            To get ApplicationMenus, SubMenus and functionalities
             </returns>
         </member>
         <member name="M:eSusInsurers.Controllers.RoleController.GetRoles(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.Roles.GetRoles.RoleFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
             <summary>
-                Get roles
+            Get roles
             </summary>
             <remarks>
-                Returns a paginated list of roles.
+            Returns a paginated list of roles.
             </remarks>
             <param name="pagingOptions">Pagination options for response.</param>
             <param name="filter">Data filter options.</param>
@@ -349,20 +443,20 @@
         </member>
         <member name="M:eSusInsurers.Controllers.RoleController.AddRole(WMS.Models.Roles.RoleRequest)">
             <summary>
-                Add new role
+            Add new role
             </summary>
             <remarks>
-                Add new role
+            Add new role
             </remarks>
             <param name="request">Information of the role to add</param>
             <response code="201">Indicates the role is successfully created.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.RoleController.UpdateRole(System.Int32,WMS.Models.Roles.UpdateRole.UpdateRoleRequestModel)">
             <summary>
-                Update a role
+            Update a role
             </summary>
             <remarks>
-                Update a role
+            Update a role
             </remarks>
             <param name="request">role details of the role</param>
             <param name="roleId">role id of the roles</param>
@@ -370,11 +464,10 @@
         </member>
         <member name="M:eSusInsurers.Controllers.RoleController.RoleDetails(System.Int32,System.Threading.CancellationToken)">
             <summary>
-                Get role details
+            Get role details 
             </summary>
-            ///
-            <remarks>
-                Get role details based on role id.
+             /// <remarks>
+            Get role details based on role id.
             </remarks>
             <param name="roleId"></param>
             <param name="cancellationToken"></param>
@@ -382,20 +475,20 @@
         </member>
         <member name="T:eSusInsurers.Controllers.SeasonCutOffDatesController">
             <summary>
-                Controller for seasons.
+            Controller for seasons.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.#ctor(eSusInsurers.Services.Interfaces.ISeasonCutOffDateService)">
             <summary>
-                Controller for seasons.
+            Controller for seasons.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.GetSeasonCutOffDates(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
             <summary>
-                Get season cutoff dates
+            Get season cutoff dates
             </summary>
             <remarks>
-                Returns a paginated list of season cutoff dates.
+            Returns a paginated list of season cutoff dates.
             </remarks>
             <param name="pagingOptions">Pagination options for response.</param>
             <param name="filter">Data filter options.</param>
@@ -405,30 +498,30 @@
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.GetSeasonCutOffDatesById(System.Int32)">
             <summary>
-                Get seasons cutoff dates by seasonCutOffDateId
+            Get seasons cutoff dates by seasonCutOffDateId
             </summary>
             <remarks>
-                Returns a list of seasons cutoff dates by seasonCutOffDateId.
+            Returns a list of seasons cutoff dates by seasonCutOffDateId.
             </remarks>
             <param name="seasonCutOffDateId"></param>
             <response code="200">Returns a list of seasons cutoff dates by seasonCutOffDateId.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.AddSeasonCutOffDates(System.Collections.Generic.List{eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesRequest})">
             <summary>
-                Add new season cutoff dates
+            Add new season cutoff dates
             </summary>
             <remarks>
-                Add new season cutoff dates
+            Add new season cutoff dates
             </remarks>
             <param name="request">Information of the season cutoff dates to add</param>
             <response code="201">Indicates the season cutoff dates is successfully created.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.UpdateSeasonCutOffDates(System.Int32,eSusInsurers.Models.SeasonCutOffDate.UpdateSeasonCutOffDatesRequest)">
             <summary>
-                Update a season cutoff dates
+            Update a season cutoff dates
             </summary>
             <remarks>
-                Update a season cutoff dates
+            Update a season cutoff dates
             </remarks>
             <param name="request">season details of the season cutoff dates</param>
             <param name="seasonCutOffDateId">season id of the seasons cutoff dates</param>
@@ -436,50 +529,57 @@
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.DeleteSeasonCutOffDates(System.Int32)">
             <summary>
-                Deactivate a season cutoff dates
+            Deactivate a season cutoff dates
             </summary>
             <remarks>
-                Deactivate a season cutoff dates
+            Deactivate a season cutoff dates
             </remarks>
             <param name="seasonCutOffDateId">Id of the season cutoff dates</param>
             <response code="204">Indicates the season cutoff dates is inactive</response>
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.ActivateSeason(System.Int32)">
             <summary>
-                Activate a season cutoff dates
+            Activate a season cutoff dates
             </summary>
             <remarks>
-                Activate a season cutoff dates
+            Activate a season cutoff dates
             </remarks>
             <param name="seasonCutOffDateId">Id of the season cutoff dates</param>
             <response code="204">Indicates the season cutoff dates is active</response>
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.SeasonCutOffDatesExistenceCheck(eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesRequest)">
             <summary>
-                Add new season cutoff dates
+            Add new season cutoff dates
             </summary>
             <remarks>
-                Add new season cutoff dates
+            Add new season cutoff dates
             </remarks>
             <param name="request">Information of the season cutoff dates to add</param>
             <response code="201">Indicates the season cutoff dates is successfully created.</response>
         </member>
+        <member name="M:eSusInsurers.Controllers.SeasonCutOffDatesController.ValidateCutOffDate(eSusInsurers.Models.SeasonCutOffDate.ValidateApplicationDateRequest)">
+            <summary>
+            CHeck if application is within cutoff date.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
         <member name="T:eSusInsurers.Controllers.SeasonsController">
             <summary>
-                Controller for seasons.
+            Controller for seasons.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonsController.#ctor(eSusInsurers.Services.ISeasonService)">
             <summary>
-                Controller for seasons.
+            Controller for seasons.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonsController.GetSeasons(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.Seasons.SeasonFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
             <summary>
-                Get seasons
+            Get seasons
             </summary>
             <remarks>
-                Returns a paginated list of seasons.
+            Returns a paginated list of seasons.
             </remarks>
             <param name="pagingOptions">Pagination options for response.</param>
             <param name="filter">Data filter options.</param>
@@ -489,30 +589,30 @@
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonsController.GetSeasonByYear(System.String)">
             <summary>
-                Get seasons by year
+            Get seasons by year
             </summary>
             <remarks>
-                Returns a list of seasons by year.
+            Returns a list of seasons by year.
             </remarks>
             <param name="year"></param>
             <response code="200">Returns a list of seasons by year.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonsController.AddSeason(eSusInsurers.Models.Seasons.SeasonRequest)">
             <summary>
-                Add new season
+            Add new season
             </summary>
             <remarks>
-                Add new season
+            Add new season
             </remarks>
             <param name="request">Information of the season to add</param>
             <response code="201">Indicates the season is successfully created.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonsController.UpdateSeason(System.Int32,eSusInsurers.Models.Seasons.UpdateSeasonRequest)">
             <summary>
-                Update a season
+            Update a season
             </summary>
             <remarks>
-                Update a season
+            Update a season
             </remarks>
             <param name="request">season details of the season</param>
             <param name="seasonId">season id of the seasons</param>
@@ -520,64 +620,64 @@
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonsController.DeleteSeason(System.Int32)">
             <summary>
-                Deactivate a season
+            Deactivate a season
             </summary>
             <remarks>
-                Deactivate a season
+            Deactivate a season
             </remarks>
             <param name="seasonId">Id of the season</param>
             <response code="204">Indicates the season is inactive</response>
         </member>
         <member name="M:eSusInsurers.Controllers.SeasonsController.ActivateSeason(System.Int32)">
             <summary>
-                Activate a season
+            Activate a season
             </summary>
             <remarks>
-                Activate a season
+            Activate a season
             </remarks>
             <param name="seasonId">Id of the season</param>
             <response code="204">Indicates the season is active</response>
         </member>
         <member name="T:eSusInsurers.Controllers.TokenController">
             <summary>
-                User Token Management
+            User Token Management
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.TokenController.Refresh(eSusInsurers.Models.Users.RefreshAccessToken.TokenApiModel)">
             <summary>
-                Refresh access token
+            Refresh access token
             </summary>
             <remarks>
-                Refresh access token
+            Refresh access token
             </remarks>
             <param name="tokenApiModel">Information of the user access token and refresh token</param>
             <response code="200">Indicates the user token refreshed successfully.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.TokenController.Revoke">
             <summary>
-                Revoke refresh token
+            Revoke refresh token
             </summary>
             <remarks>
-                Revoke refresh token
+            Revoke refresh token
             </remarks>
             <response code="204">Indicates the refresh token is revoked.</response>
         </member>
         <member name="T:eSusInsurers.Controllers.UserController">
             <summary>
-                Controller for managing users.
+            Controller for managing users.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.#ctor(eSusInsurers.Services.Interfaces.IUserService)">
             <summary>
-                Controller for managing users.
+            Controller for managing users.
             </summary>
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.GetUsers(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.Users.GetUsers.UserFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
             <summary>
-                Get Users
+            Get Users
             </summary>
             <remarks>
-                Returns a paginated list of users.
+            Returns a paginated list of users.
             </remarks>
             <param name="pagingOptions">Pagination options for response.</param>
             <param name="filter">Data filter options.</param>
@@ -587,10 +687,10 @@
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.GetUserById(System.Int64)">
             <summary>
-                Get User By Id
+            Get User By Id
             </summary>
             <remarks>
-                Returns user details.
+            Returns user details.
             </remarks>
             <param name="userId">User id of the user.</param>
             <response code="200">Returns user details.</response>
@@ -598,20 +698,20 @@
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.Register(eSusInsurers.Models.UserRegisterRequest)">
             <summary>
-                Add new user
+            Add new user
             </summary>
             <remarks>
-                Add new user
+            Add new user
             </remarks>
             <param name="request">Information of the user to register</param>
             <response code="201">Indicates the user is successfully created.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.UpdateUser(System.Int32,eSusInsurers.Models.Users.UpdateUser.UpdateUserRequestModel)">
             <summary>
-                Update a user
+            Update a user
             </summary>
             <remarks>
-                Update a user
+            Update a user
             </remarks>
             <param name="request">user details of the user</param>
             <param name="userId">user id of the user</param>
@@ -619,10 +719,10 @@
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.UpdateUserProfile(System.Int32,eSusInsurers.Models.Users.UpdateUser.UpdateUserProfileRequestModel)">
             <summary>
-                Update a user profile
+            Update a user profile
             </summary>
             <remarks>
-                Update a user profile
+            Update a user profile
             </remarks>
             <param name="request">user details of the user profile</param>
             <param name="userId">user id of the user profile</param>
@@ -630,50 +730,50 @@
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.DeleteUser(System.Int32)">
             <summary>
-                Deactivate a user
+            Deactivate a user
             </summary>
             <remarks>
-                Deactivate a user
+            Deactivate a user
             </remarks>
             <param name="userId">user id of the user</param>
             <response code="204">Indicates the user is inactive</response>
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.ActivateUser(System.Int32)">
             <summary>
-                Activate a user
+            Activate a user
             </summary>
             <remarks>
-                Activate a user
+            Activate a user
             </remarks>
             <param name="userId">user id of the user</param>
             <response code="204">Indicates the user is active</response>
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.CheckUsername(System.String)">
             <summary>
-                User name existence
+            User name existence
             </summary>
             <remarks>
-                User name existence
+            User name existence
             </remarks>
             <param name="userName">To check whether user name exists or not</param>
             <response code="200">Indicates the user existance.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.SendOtp(System.String)">
             <summary>
-                Send Otp to user
+            Send Otp to user
             </summary>
             <remarks>
-                Send Otp to user
+            Send Otp to user
             </remarks>
             <param name="userName">Send otp to the userName</param>
             <response code="200">Indicates the otp has been successsful.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.ConfirmOtp(System.String,System.String)">
             <summary>
-                Confirm Otp of user
+            Confirm Otp of user
             </summary>
             <remarks>
-                COnfirm Otp od user
+            COnfirm Otp od user
             </remarks>
             <param name="userName">userName of the user</param>
             <param name="otp">Otp sent to the userName</param>
@@ -681,10 +781,10 @@
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.ResetPassword(System.String,eSusInsurers.Models.Users.UpdatePassword.ResetPasswordRequest)">
             <summary>
-                Reset Password
+            Reset Password
             </summary>
             <remarks>
-                Reset Password
+            Reset Password
             </remarks>
             <param name="emailId">email Id of the user</param>
             <param name="request">Information of the user to reset password</param>
@@ -692,20 +792,20 @@
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.Login(eSusInsurers.Models.Users.Login.LoginRequest)">
             <summary>
-                User Login
+            User Login
             </summary>
             <remarks>
-                User Login
+            User Login
             </remarks>
             <param name="request">Information of the user to login</param>
             <response code="200">Indicates the user successful login.</response>
         </member>
         <member name="M:eSusInsurers.Controllers.UserController.ChangePassword(eSusInsurers.Models.Users.ChangePassword.ChangePasswordRequest)">
             <summary>
-                Change Password
+            Change Password
             </summary>
             <remarks>
-                Change Password
+            Change Password
             </remarks>
             <param name="request">Information of the user to change password</param>
             <response code="200">Indicates the user password is successfully updated.</response>
@@ -801,6 +901,26 @@
                 The sorting direction that should be applied to the sorted on property.
             </summary>
             <example>Ascending</example>
+        </member>
+        <member name="T:eSusInsurers.Models.Etherisc.Config.ConfigResponse">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Models.Etherisc.Location.LocationRequest">
+            <summary>
+            Etherisc Location Request Body
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Models.Etherisc.Policy.AddPolicyRequest">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.Etherisc.Policy.AddPolicyRequest.PolicyNumber">
+            <summary>
+            
+            </summary>
         </member>
         <member name="P:eSusInsurers.Models.InsuranceProducts.InsuranceProductFilterOption.IsActive">
             <summary>
@@ -929,6 +1049,57 @@
                 Document Data in Base 64
             </summary>
         </member>
+        <member name="T:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetinsuranceRequestsQuery">
+            <summary>
+            GetinsuranceRequestsQuery
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetinsuranceRequestsQuery.pagingOptions">
+            <summary>
+            pagingOptions
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetinsuranceRequestsQuery.filter">
+            <summary>
+            InsuranceRequestFilterOptions
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetinsuranceRequestsQuery.sortingOptions">
+            <summary>
+            SortingOptions
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetInsuranceRequestsResponse">
+            <summary>
+            GetInsuranceRequestsResponse
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetInsuranceRequestsResponse.InsuranceRequests">
+            <summary>
+            InsuranceRequests
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.InsuranceRequestFilterOptions">
+            <summary>
+            Insurance Filter Options
+            </summary>
+        </member>
+        <member name="P:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.InsuranceRequestFilterOptions.IsActive">
+            <summary>
+            Filter based on active users.
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.InsuranceRequestModel">
+            <summary>
+            Insurance Requests Model
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.InsuranceRequestModel.Mapping(AutoMapper.Profile)">
+            <summary>
+            
+            </summary>
+            <param name="profile"></param>
+        </member>
         <member name="P:eSusInsurers.Models.Programs.ProgramFilterOptions.IsActive">
             <summary>
                 Filter based on active programs.
@@ -946,32 +1117,37 @@
         </member>
         <member name="P:eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions.Region">
             <summary>
-                Filter based on region of season cutoff dates.
+            Filter based on region of season cutoff dates.
             </summary>
         </member>
         <member name="P:eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions.Crop">
             <summary>
-                Filter based on crop of season cutoff dates.
+            Filter based on crop of season cutoff dates.
             </summary>
         </member>
         <member name="P:eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions.CropCategory">
             <summary>
-                Filter based on crop category of season cutoff dates.
+            Filter based on crop category of season cutoff dates.
             </summary>
         </member>
         <member name="P:eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions.Year">
             <summary>
-                Filter based on year of season cutoff dates.
+            Filter based on year of season cutoff dates.
             </summary>
         </member>
         <member name="P:eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions.Season">
             <summary>
-                Filter based on season of  season cutoff dates.
+            Filter based on season of  season cutoff dates.
             </summary>
         </member>
         <member name="P:eSusInsurers.Models.SeasonCutOffDate.SeasonCutOffDatesFilterOptions.IsActive">
             <summary>
-                Filter based on active of season cutoff dates.
+            Filter based on active of season cutoff dates.
+            </summary>
+        </member>
+        <member name="T:eSusInsurers.Models.SeasonCutOffDate.ValidateApplicationDateRequest">
+            <summary>
+            
             </summary>
         </member>
         <member name="P:eSusInsurers.Models.Seasons.SeasonFilterOptions.Year">
@@ -1010,6 +1186,59 @@
             </summary>
             <param name="name">input to convert</param>
             <returns>snake_case format of input</returns>
+        </member>
+        <member name="M:eSusInsurers.Services.Implementations.EtheriscService.AddPolicy(eSusInsurers.Models.Etherisc.Policy.AddPolicyRequest,System.Threading.CancellationToken)">
+            <summary>
+            Create new Etherisc Policy.
+            </summary>
+            <param name="request"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:eSusInsurers.Services.Implementations.InsuranceRequestsService">
+            <summary>
+            InsuranceRequestsService
+            </summary>
+            <param name="unitOfWork"></param>
+            <param name="configuration"></param>
+            <param name="mapper"></param>
+            <param name="tokenService"></param>
+            <param name="dateTime"></param>
+        </member>
+        <member name="M:eSusInsurers.Services.Implementations.InsuranceRequestsService.#ctor(eSusInsurers.Infrastructure.Common.IUnitOfWork,Microsoft.Extensions.Configuration.IConfiguration,AutoMapper.IMapper,eSusInsurers.Services.Interfaces.ITokenService,eSusInsurers.Infrastructure.Interfaces.IDateTime)">
+            <summary>
+            InsuranceRequestsService
+            </summary>
+            <param name="unitOfWork"></param>
+            <param name="configuration"></param>
+            <param name="mapper"></param>
+            <param name="tokenService"></param>
+            <param name="dateTime"></param>
+        </member>
+        <member name="T:eSusInsurers.Services.Interfaces.IInsuranceRequestsService">
+            <summary>
+            Service that handles the insurance requests data.
+            </summary>
+        </member>
+        <member name="M:eSusInsurers.Services.Interfaces.IInsuranceRequestsService.GetInsuranceRequests(eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.GetinsuranceRequestsQuery,System.Threading.CancellationToken)">
+            <summary>
+            GetInsuranceRequests
+            </summary>
+            <param name="request"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eSusInsurers.Services.Interfaces.ISeasonCutOffDateService.ValidateApplicationDate(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="cropName"></param>
+            <param name="seasonName"></param>
+            <param name="seasonYear"></param>
+            <param name="regionName"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
         </member>
         <member name="T:eSusInsurers.Swagger.OperationFilters.ParametersOperationFilter">
             <summary>

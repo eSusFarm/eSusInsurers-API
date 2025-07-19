@@ -45,4 +45,7 @@ public partial class CropInsurance : BaseAuditableEntity
     public virtual ICollection<PremiumPayment> PremiumPayments { get; set; } = new List<PremiumPayment>();
 
     public virtual ICollection<PremiumPaymentsAu> PremiumPaymentsAus { get; set; } = new List<PremiumPaymentsAu>();
+    public virtual ICollection<InsurancePremiumPayment> InsurancePremiumPayments { get; set; } = new List<InsurancePremiumPayment>();
+
+    
 }
