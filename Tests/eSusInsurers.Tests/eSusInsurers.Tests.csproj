@@ -33,8 +33,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\eSusInsurers\eSusInsurers.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\Implementations\" />
-  </ItemGroup>
 </Project>
