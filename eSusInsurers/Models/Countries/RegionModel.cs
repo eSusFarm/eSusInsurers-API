@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using eSusInsurers.Common.Mappings;
 using eSusInsurers.Domain.Entities;
-
 namespace eSusInsurers.Models.Countries;
 
 public class RegionModel : IMapFrom<Region>
