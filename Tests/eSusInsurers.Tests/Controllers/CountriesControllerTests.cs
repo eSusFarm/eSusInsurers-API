@@ -126,6 +126,23 @@ namespace eSusInsurers.Tests.Controllers
            var subcounties = okResult.Value.Should().BeAssignableTo<List<SubCountiesModel>>().Subject;
            subcounties.Should().BeEquivalentTo(expectedSubcounties);
        }
+       
+       [Fact]
+       public async Task GetDistricts_WhenExceptionOccurs_ReturnsBadRequest()
+       {
+           // Arrange
+           long countryId = 1;
+           long regionId = 1;
+           var expectedException = new Exception("Test error");
+           A.CallTo(() => _countriesService.GetDistricts(countryId, regionId,A<CancellationToken>._))
+               .Throws(expectedException);
+           // Act
+           var result = await _controller.GetDistricts(countryId,regionId);
+           // Assert
+           var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
+           var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
+           error.Should().NotBeNull();
+       }
 
        [Fact]
        public async Task GetParishes_WhenSuccessful_ReturnsOkWithParishes()
@@ -151,6 +168,27 @@ namespace eSusInsurers.Tests.Controllers
            var okResult = result.Result.Should().BeOfType<OkObjectResult>().Subject;
            var parishes = okResult.Value.Should().BeAssignableTo<List<ParishModel>>().Subject;
            parishes.Should().BeEquivalentTo(expectedParishes);
+       }
+       
+       [Fact]
+       public async Task GetParishes_WheneXCEPTION_ReturnsBadrequest()
+       {
+           // Arrange
+           long countryId = 1;
+           long regionId = 1;
+           long districtId = 1;
+           long subcountyId = 1;
+           var expectedException = new Exception("Test error");
+           A.CallTo(() => _countriesService.GetParishes(countryId, regionId, districtId, subcountyId, A<CancellationToken>._))
+               .Throws(expectedException);
+
+           // Act
+           var result = await _controller.GetParishes(countryId, regionId, districtId, subcountyId);
+
+           // Assert
+           var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
+           var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
+           error.Should().NotBeNull();
        }
    }
 }

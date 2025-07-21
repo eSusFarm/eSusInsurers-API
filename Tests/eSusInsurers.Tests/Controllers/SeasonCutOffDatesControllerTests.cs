@@ -4,6 +4,7 @@ using eSusInsurers.Models.InsuranceProducts;
 using eSusInsurers.Models.Programs;
 using eSusInsurers.Models.SeasonCutOffDate;
 using eSusInsurers.Services.Interfaces;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WMS.Models.Roles;
@@ -79,7 +80,37 @@ public class SeasonCutOffDatesControllerTests
     }
     
     [Fact]
-    public async Task AddPGetSeasonCutOffDate_ReturnsCreatedResult_WhenSuccessful()
+    public async Task GetSeasonCutOffDatesByValidId_ShouldReturnBadRequest_WhenExceptionIsThrown()
+    {
+        const int seasonCutOffDateId = 1;
+        var expectedException = new Exception("Test error");
+        _mockSeasonCutOffDateService.Setup(s => s.GetSeasonCutOffDatesById(seasonCutOffDateId, It.IsAny<CancellationToken>()))
+            .Throws(expectedException);
+        var result = await _controller.GetSeasonCutOffDatesById(seasonCutOffDateId);
+        // Assert
+        var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
+        var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
+        error.Should().NotBeNull();
+    }
+    
+    
+    [Fact]
+    public async Task GetSeasonCutOffDates_ShouldReturnBadRequest_WhenExceptionIsThrown()
+    {
+        var pagingOptions = new PagingOptions { Page = 1, PageSize = 10 };
+        var expectedException = new Exception("Test error");
+        _mockSeasonCutOffDateService.Setup(s => s.GetSeasonCutOffDates( It.IsAny<GetSeasonCutOffDatesQuery>(), It.IsAny<CancellationToken>()))
+            .Throws(expectedException);
+        var result = await _controller.GetSeasonCutOffDates(pagingOptions);
+        // Assert
+        var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
+        var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
+        error.Should().NotBeNull();
+    }
+
+    
+    [Fact]
+    public async Task AddSeasonCutOffDate_ReturnsCreatedResult_WhenSuccessful()
     {
         // Arrange
         var request = new List<SeasonCutOffDatesRequest>
@@ -95,6 +126,22 @@ public class SeasonCutOffDatesControllerTests
         var createdResult = Assert.IsType<ObjectResult>(result);
         Assert.Equal(201, createdResult.StatusCode);
     }
+    
+    [Fact]
+    public async Task AddSeasonCutOffDates_ShouldReturnBadRequest_WhenExceptionIsThrown()
+    {
+        var request = new List<SeasonCutOffDatesRequest>
+        {
+            new SeasonCutOffDatesRequest()
+        };
+        var expectedException = new Exception("Test error");
+        _mockSeasonCutOffDateService.Setup(s => s.AddSeasonCutOffDates( It.IsAny<List<SeasonCutOffDatesRequest>>(), It.IsAny<CancellationToken>()))
+            .Throws(expectedException);
+        var result = await _controller.AddSeasonCutOffDates(request);
+        // Assert
+        Assert.NotNull( result);
+    }
+
     [Fact]
     public async Task UpdateSeasonCutOffDate_ReturnsUpdatedResult_WhenSuccessful()
     {
@@ -110,12 +157,36 @@ public class SeasonCutOffDatesControllerTests
     }
     
     [Fact]
+    public async Task UpdateSeasonCutOffDates_ShouldReturnBadRequest_WhenExceptionIsThrown()
+    {
+        var pagingOptions = new PagingOptions { Page = 1, PageSize = 10 };
+        var expectedException = new Exception("Test error");
+        _mockSeasonCutOffDateService.Setup(s => s.UpdateSeasonCutOffDates(1,  It.IsAny<UpdateSeasonCutOffDatesRequest>(), It.IsAny<CancellationToken>()))
+            .Throws(expectedException);
+        var result = await _controller.UpdateSeasonCutOffDates(1,new UpdateSeasonCutOffDatesRequest());
+        // Assert
+        Assert.NotNull( result);
+    }
+    
+    [Fact]
     public async Task DeleteSeasonCutOffDate_ReturnsDeletedResult_WhenSuccessful()
     {
         int id = 1;
         // Arrange
         _mockSeasonCutOffDateService.Setup(s => s.DeleteSeasonCutOffDates(1,It.IsAny<CancellationToken>())).ReturnsAsync(true);
         // Act
+        var result = await _controller.DeleteSeasonCutOffDates(id);
+        // Assert
+        Assert.NotNull( result);
+    }
+    
+    [Fact]
+    public async Task DeleteSeasonCutOffDates_ShouldReturnBadRequest_WhenExceptionIsThrown()
+    {
+        int id = 1;
+        var expectedException = new Exception("Test error");
+        _mockSeasonCutOffDateService.Setup(s => s.DeleteSeasonCutOffDates(1,   It.IsAny<CancellationToken>()))
+            .Throws(expectedException);
         var result = await _controller.DeleteSeasonCutOffDates(id);
         // Assert
         Assert.NotNull( result);
@@ -134,13 +205,31 @@ public class SeasonCutOffDatesControllerTests
     }
     
     [Fact]
-    public async Task SeasonCutOffDatesExistenceCheck_ReturnsResult_WhenSuccessful()
+    public async Task ActivateSeasonCutOffDates_ShouldReturnBadRequest_WhenExceptionIsThrown()
     {
         int id = 1;
+        var expectedException = new Exception("Test error");
+        _mockSeasonCutOffDateService.Setup(s => s.ActivateSeasonCutOffDates(1,   It.IsAny<CancellationToken>()))
+            .Throws(expectedException);
+        var result = await _controller.ActivateSeason(id);
+        // Assert
+        Assert.NotNull( result);
+    }
+    
+    [Fact]
+    public async Task SeasonCutOffDatesExistenceCheck_ReturnsResult_WhenSuccessful()
+    {
+        var seasonCutoffDatesReuest = new SeasonCutOffDatesRequest
+        {
+            CropId = 1,
+            CropCategoryId = 1,
+            SeasonId = 1,
+            RegionId = 1
+        };
         // Arrange
         _mockSeasonCutOffDateService.Setup(s => s.SeasonCutOffDatesExistenceCheck(It.IsAny<SeasonCutOffDatesRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
         // Act
-        var result = await _controller.ActivateSeason(id);
+        var result = await _controller.SeasonCutOffDatesExistenceCheck(seasonCutoffDatesReuest);
         // Assert
         Assert.NotNull( result);
     }
