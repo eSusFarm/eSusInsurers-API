@@ -10,6 +10,7 @@ using FluentAssertions;
 using MockQueryable.Moq;
 using Moq;
 using WMS.Models.Roles;
+using WMS.Models.Roles.UpdateRole;
 using Xunit;
 using IConfigurationProvider = Microsoft.Extensions.Configuration.IConfigurationProvider;
 
@@ -31,13 +32,11 @@ public class RolesServiceTests
         _unitOfWork.Setup(x => x.RoleRepository).Returns(_roleRepository.Object);
         _rolesService = new RolesService(_unitOfWork.Object, _mapper.Object);
     }
-    
+
     [Fact]
     public async Task GetRoles_WitRoles_ReturnsRolesList()
     {
-        int ReportingToId = 3;
         var getRolesQuery = new GetRolesQuery();
-        // Arrange
         var roles = new List<Role>
         {
             new() { Id = 1, RoleName = "_Role 1", IsActive=true, ReportingToId=3 },
@@ -50,18 +49,15 @@ public class RolesServiceTests
             cfg.CreateMap<Role, RoleModel>()
                 .ForMember(d => d.RoleId, opt => opt.MapFrom(s => s.Id));
         }));
-        // Act
+
         var result = await _rolesService.GetRoles(getRolesQuery, CancellationToken.None);
-        // Assert
         Assert.NotNull(result);
-    }  
-    
+    }
+
     [Fact]
     public async Task GetRoles_WithNoRoles_ReturnsNoRoles()
     {
-        int ReportingToId = 5;
         var getRolesQuery = new GetRolesQuery();
-        // Arrange
         var roles = new List<Role>();
         var mock = roles.AsQueryable().BuildMockDbSet();
         _roleRepository.Setup(x => x.GetAll(null, false)).Returns(mock.Object.AsQueryable());
@@ -70,35 +66,63 @@ public class RolesServiceTests
             cfg.CreateMap<Role, RoleModel>()
                 .ForMember(d => d.RoleId, opt => opt.MapFrom(s => s.Id));
         }));
-        // Act
+
         var result = await _rolesService.GetRoles(getRolesQuery, CancellationToken.None);
-        // Assert
         Assert.Equal(0, result.TotalRecordCount);
     }
 
     [Fact]
     public async Task AddRoles_NullRequest_ThrowsArgumentNullException()
     {
-        // Act
-        Func<Task> act = async () => await  _rolesService.AddRole(null, new CancellationToken());
+        Func<Task> act = async () => await _rolesService.AddRole(null, new CancellationToken());
         await act.Should().ThrowAsync<ArgumentNullException>().WithMessage("Value cannot be null. (Parameter 'request')");
     }
-    
+
     [Fact]
-    public async Task AddSeason_RoleAlreadyExists_ReturnsException()
+    public async Task AddRole_RoleAlreadyExists_ThrowsBadRequestException()
     {
-        RoleRequest roleRequest = new RoleRequest
-        {
-            RoleName = "Role 1",
-        };
-        // Arrange
-        var role = new Role
-            { Id = 1,  RoleName = "Season 1", IsActive = true };
-        _roleRepository.Setup(x => x.GetByRoleNameAsync(roleRequest.RoleName, new CancellationToken())).Returns(Task.FromResult(role));
-        // Act
-        Func<Task> act = async () => await  _rolesService.AddRole(roleRequest, new CancellationToken());
-        await act.Should().ThrowAsync<BadRequestException>().WithMessage("Role name: (Role 1) already exists.");
+        var request = new RoleRequest { RoleName = "ExistingRole" };
+        _roleRepository.Setup(r => r.GetByRoleNameAsync("ExistingRole", It.IsAny<CancellationToken>()))
+                       .ReturnsAsync(new Role());
+
+        Func<Task> act = async () => await _rolesService.AddRole(request, CancellationToken.None);
+        await act.Should().ThrowAsync<BadRequestException>().WithMessage("Role name: (ExistingRole) already exists.");
     }
 
-    
-}
+    [Fact]
+    public async Task UpdateRole_WithInvalidId_ThrowsNotFoundException()
+    {
+        var request = new UpdateRoleRequestModel { RoleName = "NewName" };
+        _roleRepository.Setup(r => r.GetByIdAsync(1, null, false, It.IsAny<CancellationToken>()))
+                       .ReturnsAsync((Role)null);
+
+        Func<Task> act = async () => await _rolesService.UpdateRole(1, request, CancellationToken.None);
+        await act.Should().ThrowAsync<NotFoundException>().WithMessage("Role Id doesn't exist.");
+    }
+
+    [Fact]
+    public async Task UpdateRole_WithDuplicateName_ThrowsBadRequestException()
+    {
+        var role = new Role { Id = 1, RoleName = "Role1" };
+        var request = new UpdateRoleRequestModel { RoleName = "DuplicateName" };
+
+        _roleRepository.Setup(r => r.GetByIdAsync(1, null, false, It.IsAny<CancellationToken>()))
+                       .ReturnsAsync(role);
+        _roleRepository.Setup(r => r.GetByRoleNameAsync(1, "DuplicateName", It.IsAny<CancellationToken>()))
+                       .ReturnsAsync(new Role { Id = 2, RoleName = "DuplicateName" });
+
+        Func<Task> act = async () => await _rolesService.UpdateRole(1, request, CancellationToken.None);
+        await act.Should().ThrowAsync<BadRequestException>().WithMessage("Role name: (DuplicateName) already exists.");
+    }
+
+    [Fact]
+    public async Task RoleDetails_WithNullResult_ThrowsApplicationException()
+    {
+        int roleId = 1;
+        _roleRepository.Setup(x => x.GetRoleDetails(roleId, It.IsAny<CancellationToken>()))
+                       .ReturnsAsync((SP_GetRoleDetailsResult)null);
+
+        Func<Task> act = async () => await _rolesService.RoleDetails(roleId, CancellationToken.None);
+        await act.Should().ThrowAsync<ApplicationException>();
+    }
+} 

@@ -21,7 +21,6 @@ public class CountriesServiceTests
     private readonly Mock<IDistrictRepository> _districtRepository;
     private readonly Mock<ISubcountiesRepository> _subcountiesRepository;
     private readonly Mock<IParishRepository> _parishRepository;
-   
 
     public CountriesServiceTests()
     {
@@ -41,7 +40,6 @@ public class CountriesServiceTests
     [Fact]
     public async Task GetRegions_WithValidCountryId_ReturnsRegionsList()
     {
-        // Arrange
         int countryId = 1;
         var regions = new List<Region>
         {
@@ -56,17 +54,15 @@ public class CountriesServiceTests
             cfg.CreateMap<Region, RegionModel>()
                 .ForMember(d => d.RegionId, opt => opt.MapFrom(s => s.Id));
         }));
-        // Act
+
         var result = await _service.GetRegions(countryId, CancellationToken.None);
-        // Assert
         Assert.NotNull(result);
         _regionsRepository.Verify(x => x.GetAll(null, false), Times.Once());
     }
-    
+
     [Fact]
     public async Task GetRegions_WithInValidCountryId_ReturnsNoRegionsList()
     {
-        // Arrange
         int countryId = 1;
         var regions = new List<Region>
         {
@@ -76,23 +72,20 @@ public class CountriesServiceTests
 
         var mock = regions.AsQueryable().BuildMockDbSet();
         _regionsRepository.Setup(x => x.GetAll(null, false)).Returns(mock.Object.AsQueryable());
-        
+
         _mapper.Setup(m => m.ConfigurationProvider).Returns(new MapperConfiguration(cfg => 
         {
             cfg.CreateMap<Region, RegionModel>()
                 .ForMember(d => d.RegionId, opt => opt.MapFrom(s => s.Id));
         }));
 
-        // Act
         var result = await _service.GetRegions(countryId, CancellationToken.None);
-        // Assert
         Assert.Equal(0, result.Count);
     }
 
     [Fact]
     public async Task GetdstrictsWithValidCountryId_ReturnsDistrcitsList()
     {
-        //Arrange
         int countryId = 1;
         int regionId = 1;
         var districts = new List<District>
@@ -111,16 +104,41 @@ public class CountriesServiceTests
             cfg.CreateMap<District, DistrictModel>()
                 .ForMember(d => d.DistrictId, opt => opt.MapFrom(s => s.Id));
         }));
-        //Act
+
         var result = await _service.GetDistricts(countryId,regionId, CancellationToken.None);
-        // Assert
         Assert.NotNull(result);
     }
-    
+
     [Fact]
     public async Task GetSubCountiesWithValidCountryId_ReturnsCountyList()
     {
-        //Arrange
+        int countryId = 1;
+        int regionId = 1;
+        int districtId = 1;
+        var subCounties = new List<SubCounty>
+        {
+            new ()
+            {
+                Id = 1,
+                SubCountyName = "SubCounty 1",
+                DistrictId = districtId,
+            }
+        };
+        var mock = subCounties.AsQueryable().BuildMockDbSet();
+        _subcountiesRepository.Setup(x => x.GetAll(null, true)).Returns(mock.Object.AsQueryable());
+        _mapper.Setup(m => m.ConfigurationProvider).Returns(new MapperConfiguration(cfg => 
+        {
+            cfg.CreateMap<SubCounty, SubCountiesModel>()
+                .ForMember(d => d.SubCountyId, opt => opt.MapFrom(s => s.Id));
+        }));
+
+        var result = await _service.GetSubcounties(countryId, regionId, districtId, CancellationToken.None);
+        Assert.NotNull(result);
+    }
+
+    [Fact]
+    public async Task GetParishesWithValidCountryId_ReturnsParishList()
+    {
         int countryId = 1;
         int regionId = 1;
         int districtId = 1;
@@ -131,7 +149,7 @@ public class CountriesServiceTests
             {
                 Id = 1,
                 ParishName = "Parish 1",
-                 SubCountyId= 1,
+                SubCountyId = subCountyId,
             }
         };
         var mock = parishes.AsQueryable().BuildMockDbSet();
@@ -141,9 +159,8 @@ public class CountriesServiceTests
             cfg.CreateMap<Parish, ParishModel>()
                 .ForMember(d => d.ParishId, opt => opt.MapFrom(s => s.Id));
         }));
-        //Act
-        var result = await _service.GetParishes(countryId,regionId, districtId,subCountyId, CancellationToken.None);
-        // Assert
+
+        var result = await _service.GetParishes(countryId, regionId, districtId, subCountyId, CancellationToken.None);
         Assert.NotNull(result);
     }
-}
+} 
