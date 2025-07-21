@@ -88,3 +88,5 @@ Mac (and probably Linux) and do:
     self
     Project Charter <PROJECT_CHARTER>
     Usage <usage>
+    Privacy Policy <Privacy Policy>
+    Do No Harm By Design <DO_NO_HARM>
