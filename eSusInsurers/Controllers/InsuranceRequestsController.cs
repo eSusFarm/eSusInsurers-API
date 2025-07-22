@@ -26,7 +26,7 @@ namespace eSusInsurers.Controllers
         /// <returns>Paginated list of users.</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetInsuranceRequestsResponse))]
-        public async Task<ActionResult<GetInsuranceRequestsResponse>> GetUsers([FromQuery] PagingOptions pagingOptions = default!,
+        public async Task<ActionResult<InsuranceRequestModel>> GetInsuranceResquests([FromQuery] PagingOptions pagingOptions = default!,
             [FromQuery]  InsuranceRequestFilterOptions filter= default!,
             [FromQuery] SortingOptions sort = default!)
         {
