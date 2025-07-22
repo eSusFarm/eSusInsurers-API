@@ -4,6 +4,7 @@ using eSusInsurers.Models.InsuranceProducts;
 using eSusInsurers.Models.Programs;
 using eSusInsurers.Models.Seasons;
 using eSusInsurers.Services;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -77,6 +78,20 @@ public class SeasonsControllerTests
     }
 
     [Fact]
+    public async Task GetSeasonByYear_SerciveThrowsException_ShouldReturnBadRequest()
+    {
+        var expectedException = new Exception("Test error");
+        _seasonServiceMock.Setup(s => s.GetSeasonByYear(It.IsAny<String>(), It.IsAny<CancellationToken>())).ThrowsAsync(expectedException);
+        // Act
+        var result = await _controller.GetSeasonByYear("2025");
+
+        // Assert
+        var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
+        var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
+        error.Should().NotBeNull();
+    }
+
+    [Fact]
     public async Task AddSeason_CreatesSeasonSuccessfully()
     {
         _seasonServiceMock.Setup(s => s.AddSeason(It.IsAny<SeasonRequest>(),It.IsAny<CancellationToken>() )).ReturnsAsync(1);
@@ -104,12 +119,26 @@ public class SeasonsControllerTests
         var okResult = Assert.IsType<NoContentResult>(result.Result);
     }
     
+    [Fact]
     public async Task ActivateSeason_ActivatesSeasonSuccessfully()
     {
         _seasonServiceMock.Setup(s =>
             s.ActivateSeason(It.IsAny<int>(), It.IsAny<CancellationToken>()));
         var result = _controller.ActivateSeason(1);
         var okResult = Assert.IsType<NoContentResult>(result.Result);
+    }
+    
+    [Fact]
+    public async Task ActivateSeason_ServiceThrowsException_ActivatesSeasonThrowsException()
+    {
+        var expectedException = new Exception("Test error");
+        _seasonServiceMock.Setup(s =>
+            s.ActivateSeason(It.IsAny<int>(), It.IsAny<CancellationToken>())).Throws(expectedException);
+        var result = _controller.ActivateSeason(1);
+        // Assert
+        var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
+        var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
+        error.Should().NotBeNull();
     }
 
     private SeasonModel GetSeasonModel()

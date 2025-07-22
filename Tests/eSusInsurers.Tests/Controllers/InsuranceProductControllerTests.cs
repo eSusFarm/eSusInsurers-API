@@ -4,6 +4,7 @@ using eSusInsurers.Models.Common;
 using eSusInsurers.Models.InsuranceProducts;
 using eSusInsurers.Models.Roles.GetRoles;
 using eSusInsurers.Services.Interfaces;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -65,6 +66,33 @@ namespace eSusInsurers.Tests.Controllers
             Assert.Equal(expectedResult.Records.Count, returnedResponse.Records.Count);
             Assert.Equal(expectedResult.Records[0].InsurancePolicyId, returnedResponse.Records[0].InsurancePolicyId);
             Assert.Equal(expectedResult.Records[0].CompanyName, returnedResponse.Records[0].CompanyName);
+        }
+        
+         [Fact]
+        public async Task GetCropCategories_ServiceThrowsException_ShouldReturnBadRequest()
+        {
+            //Arrange
+            const int cropCategory = 1;
+            var cropCategories = new List<InsuranceProductModel>
+            {
+                new InsuranceProductModel {InsurancePolicyId = 1 },
+            };
+            
+            // Arrange
+            var pagingOptions = new PagingOptions { Page = 1, PageSize = 10 };
+            var filter = new InsuranceProductFilterOption();
+            var sort = new SortingOptions();
+            var expectedException = new Exception("Test error");
+            _insuranceProductServiceMock.Setup(s => s.GetInsuranceProducts(It.IsAny<InsuranceProductQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(expectedException);
+
+            // Act
+            var result = await _controller.GetInsuranceProducts(pagingOptions, filter, sort);
+
+            // Assert
+            var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
+            var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
+            error.Should().NotBeNull();
         }
     }
 }
