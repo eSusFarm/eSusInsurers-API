@@ -43,4 +43,8 @@ public partial class InsuranceRequest : BaseAuditableEntity
     public bool? IsRequestSubmitted { get; set; }
 
     public bool IsActive { get; set; }
+    
+    public decimal InsuredAmount   { get; set; }
+    public decimal PremiumAmount   { get; set; }
+    
 }

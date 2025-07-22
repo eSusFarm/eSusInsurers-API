@@ -49,37 +49,4 @@ public class MappingProfile : Profile
             }
         }
     }
-    
-    public void ApplyMappingsFromAssembly(Assembly assembly, Func<Type, bool> filter)
-    {
-        var mapFromType = typeof(IMapFrom<>);
-        var mappingMethodName = nameof(IMapFrom<object>.Mapping);
-
-        bool HasInterface(Type t) =>
-            t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == mapFromType);
-
-        var types = assembly.GetExportedTypes()
-            .Where(t => HasInterface(t) && (filter?.Invoke(t) ?? true))
-            .ToList();
-
-        foreach (var type in types)
-        {
-            var instance = Activator.CreateInstance(type);
-            var methodInfo = type.GetMethod(mappingMethodName);
-
-            if (methodInfo != null)
-            {
-                methodInfo.Invoke(instance, new object[] { this });
-            }
-            else
-            {
-                var interfaces = type.GetInterfaces().Where(HasInterface);
-                foreach (var @interface in interfaces)
-                {
-                    var interfaceMethodInfo = @interface.GetMethod(mappingMethodName, new[] { typeof(Profile) });
-                    interfaceMethodInfo?.Invoke(instance, new object[] { this });
-                }
-            }
-        }
-    }
 }

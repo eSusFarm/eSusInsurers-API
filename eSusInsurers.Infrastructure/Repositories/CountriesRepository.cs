@@ -10,11 +10,16 @@ using System.Threading.Tasks;
 
 namespace eSusInsurers.Infrastructure.Repositories
 {
-    public class CountriesRepository : Repository<Country>, ICountriesRepository
+    public class CountriesRepository : Repository<Region>, ICountriesRepository
     {
         public CountriesRepository(DbContext context) : base(context)
         {
             
+        }
+
+        public async Task<Region?> GetByRegionName(string regionName, CancellationToken cancellationToken)
+        {
+            return await GetAll().FirstOrDefaultAsync(x => x.RegionName == regionName);
         }
     }
 }

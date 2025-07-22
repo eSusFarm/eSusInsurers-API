@@ -1,0 +1,48 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace eSusInsurers.Domain.Models;
+
+public partial class CropInsurance : BaseAuditableEntity
+{
+
+    public int FarmerId { get; set; }
+
+    public int FarmerCropId { get; set; }
+
+    public string CropName { get; set; } = null!;
+
+    public decimal? Longitude { get; set; }
+
+    public decimal? Latitude { get; set; }
+
+    public int InsurancePolicyId { get; set; }
+
+    public int InsuranceRiskId { get; set; }
+
+    public string? Status { get; set; }
+
+    public string? Comments { get; set; }
+
+    public bool? IsActive { get; set; }
+
+    public virtual ICollection<Claim> Claims { get; set; } = new List<Claim>();
+
+    public virtual ICollection<ClaimsAu> ClaimsAus { get; set; } = new List<ClaimsAu>();
+
+    public virtual ICollection<CropInsurancePremium> CropInsurancePremia { get; set; } = new List<CropInsurancePremium>();
+
+    public virtual ICollection<CropInsurancePremiumsAu> CropInsurancePremiumsAus { get; set; } = new List<CropInsurancePremiumsAu>();
+
+    public virtual Farmer Farmer { get; set; } = null!;
+
+    public virtual FarmerCrop FarmerCrop { get; set; } = null!;
+
+    public virtual InsurancePolicy InsurancePolicy { get; set; } = null!;
+
+    public virtual InsuranceRisk InsuranceRisk { get; set; } = null!;
+
+    public virtual ICollection<PremiumPayment> PremiumPayments { get; set; } = new List<PremiumPayment>();
+
+    public virtual ICollection<PremiumPaymentsAu> PremiumPaymentsAus { get; set; } = new List<PremiumPaymentsAu>();
+}

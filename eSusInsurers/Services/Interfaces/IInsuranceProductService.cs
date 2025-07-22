@@ -1,10 +1,9 @@
-﻿using eSusInsurers.Models.Common;
-using eSusInsurers.Models.InsuranceProducts;
+﻿using eSusInsurers.Models.InsuranceProducts;
 
-namespace eSusInsurers.Services.Interfaces;
-
-public interface IInsuranceProductService
+namespace eSusInsurers.Services.Interfaces
 {
-    Task<PagedResult<InsuranceProductModel>> GetInsuranceProducts(InsuranceProductQuery request,
-        CancellationToken cancellationToken);
+    public interface IInsuranceProductService
+    {
+        Task<Models.Common.PagedResult<InsuranceProductModel>> GetInsuranceProducts(InsuranceProductQuery request, CancellationToken cancellationToken);
+    }
 }

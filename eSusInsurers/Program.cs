@@ -7,7 +7,10 @@ using eSusInsurers;
 using eSusInsurers.ConfigServices;
 using eSusInsurers.Infrastructure;
 using eSusInsurers.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Filters;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,16 +19,17 @@ var builder = WebApplication.CreateBuilder(args);
 var _env = builder.Environment;
 
 // Add services to the container.
+// Adding comment to create push on develop to test coveralls.
 
 var configuration = builder.Services.AddEnvironmentVariables(_env);
 
 builder.Services
-    .AddWebApiServices(configuration)
-    .AddApplicationServices(configuration)
-    .AddEmailService(configuration)
-    .AddInfrastructureServices(configuration, _env)
-    .AddAzureIntegrationServices(configuration)
-    .AddeSusFarmInternalServices(configuration);
+                .AddWebApiServices(configuration)
+                .AddApplicationServices(configuration)
+                .AddEmailService(configuration)
+                .AddInfrastructureServices(configuration, _env)
+                .AddAzureIntegrationServices(configuration)
+                .AddeSusFarmInternalServices(configuration);
 
 var apiVersioningBuilder = builder.Services.AddApiVersioning(config =>
 {
@@ -33,12 +37,15 @@ var apiVersioningBuilder = builder.Services.AddApiVersioning(config =>
     config.AssumeDefaultVersionWhenUnspecified = true;
     config.ReportApiVersions = true;
     config.ApiVersionReader = ApiVersionReader.Combine(
-        new QueryStringApiVersionReader("api-version"),
-        new HeaderApiVersionReader("api-version"),
-        new MediaTypeApiVersionReader("ver"));
+    new QueryStringApiVersionReader("api-version"),
+    new HeaderApiVersionReader("api-version"),
+    new MediaTypeApiVersionReader("ver"));
 });
 
-apiVersioningBuilder.AddApiExplorer(options => { options.GroupNameFormat = "'v'VVV"; });
+apiVersioningBuilder.AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+});
 
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
@@ -54,8 +61,10 @@ app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
     foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+    {
         options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
             description.GroupName.ToUpperInvariant());
+    }
 });
 
 

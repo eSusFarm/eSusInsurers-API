@@ -1,8 +1,9 @@
 ﻿using eSusInsurers.Models.InsuranceCompany;
 
-namespace eSusInsurers.Services.Interfaces;
-
-public interface IInsuranceCompanyService
+namespace eSusInsurers.Services.Interfaces
 {
-    Task<List<InsuranceCompanyModel>?> GetCompanies(CancellationToken cancellationToken);
+    public interface IInsuranceCompanyService
+    {
+        Task<List<InsuranceCompanyModel>?> GetCompanies(CancellationToken cancellationToken);
+    }
 }

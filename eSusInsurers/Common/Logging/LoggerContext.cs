@@ -1,28 +1,27 @@
 ﻿using ILogger = Serilog.ILogger;
 
-namespace eSusInsurers.Common.Logging;
-
-public class LoggerContext<TRequest> : ILoggerContext<TRequest>
+namespace eSusInsurers.Common.Logging
 {
-    private readonly ILogger _logClient;
-
-    public LoggerContext(ILogger logClient)
+    public class LoggerContext<TRequest> : ILoggerContext<TRequest>
     {
-        _logClient = logClient;
-    }
+        private readonly ILogger _logClient;
 
-    public Task LogMessageAsync(TRequest request, string? response, CancellationToken cancellationToken,
-        Dictionary<string, string>? customProperties = null)
-    {
-        _logClient.LogInformation(response, customProperties);
-        return Task.FromResult(true);
-    }
+        public LoggerContext(ILogger logClient)
+        {
+            _logClient = logClient;
+        }
 
-    public Task LogErrorAsync(TRequest request, Exception ex, string errorMessage, CancellationToken cancellationToken,
-        Dictionary<string, string>? customProperties = null)
-    {
-        _logClient.LogError(ex, customProperties);
+        public Task LogMessageAsync(TRequest request, string? response, CancellationToken cancellationToken, Dictionary<string, string>? customProperties = null)
+        {
+            _logClient.LogInformation(response, customProperties);
+            return Task.FromResult(true);
+        }
 
-        return Task.FromResult(true);
+        public Task LogErrorAsync(TRequest request, Exception ex, string errorMessage, CancellationToken cancellationToken, Dictionary<string, string>? customProperties = null)
+        {
+            _logClient.LogError(ex, customProperties);
+
+            return Task.FromResult(true);
+        }
     }
 }

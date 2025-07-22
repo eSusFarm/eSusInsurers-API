@@ -5,12 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eSusInsurers.Infrastructure.Repositories
 {
-    public class RegionsRepository: Repository<Region>, IRegionsRepository
+    public class CropInsuranceReposity: Repository<CropInsurance>, ICropInsuranceRepository
     {
-        public RegionsRepository(DbContext context) : base(context)
+        public CropInsuranceReposity(DbContext context) : base(context)
         {
-            
         }
-    }   
+    }
 }
 

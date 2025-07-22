@@ -2,6 +2,7 @@
 using eSusInsurers.Infrastructure.Interfaces;
 using eSusInsurers.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore.Storage;
+using IInsuranceRiskRepository = eSusInsurers.Infrastructure.Interfaces.IInsuranceRiskRepository;
 
 namespace eSusInsurers.Infrastructure.Common
 {
@@ -50,13 +51,23 @@ namespace eSusInsurers.Infrastructure.Common
         public IParishRepository _parishRepository;
 
         private IProgramRepository _programRepository;
+        
+        private IEsusFarmPolicyRepository _esusFarmPolicyRepository;
 
         public ICropRepository _cropRepository;
-        public IInsuranceCompanyRepository _insuranceCompanyRepository;
+        private IInsuranceCompanyRepository _insuranceCompanyRepository;
 
-        public ICropCategoryRepository _cropCategoryRepository;
-        public IRegionsRepository _regionsRepository;
+        private ICropCategoryRepository _cropCategoryRepository;
 
+        private IInsuranceRequestsRepository _insuranceRequestsRepository;
+        private EtheriscPolicyRepository _etheriscPolicyRepository;
+        public ICropInsuranceRepository _cropInsuranceRepository; 
+        public IInsurancePoliciesRepository _insurancePoliciesRepository;
+        public IInsuranceRiskRepository _insuranceRiskRepository;
+        public IFarmerRepository _farmerRepository;
+        public IFarmerCroprepository _farmerCroprepository;
+        public IPremiumPaymentsRepository _premiumPaymentsRepository;
+        public ILocationsRepository _locationsRepository;
 
         public UnitOfWork(eSusInsurerContext context)
         {
@@ -115,10 +126,19 @@ namespace eSusInsurers.Infrastructure.Common
         public ICropRepository CropRepository => _cropRepository = new CropRepository(_context);
 
         public ICropCategoryRepository CropCategoryRepository => _cropCategoryRepository ??= new CropCategoryRepository(_context);
+        public IInsuranceRequestsRepository InsuranceRequestsRepository => _insuranceRequestsRepository ??= new InsuranceRequestsRepository(_context);
+        public IEtheriscPolicyRepository EtheriscPolicyRepository => _etheriscPolicyRepository ??= new EtheriscPolicyRepository(_context);
 
         public IInsuranceCompanyRepository InsuranceCompanyRepository => _insuranceCompanyRepository ??= new InsuranceCompanyRepository(_context);
-        public IRegionsRepository RegionsRepository => _regionsRepository ??= new RegionsRepository(_context);
-
+        public IEsusFarmPolicyRepository EsusFarmPolicyRepository => 
+            _esusFarmPolicyRepository ??= new EsusFarmPolicyRepository(_context);
+        public ICropInsuranceRepository CropInsuranceRepository => _cropInsuranceRepository = new CropInsuranceReposity(_context);
+        public IInsurancePoliciesRepository InsurancePoliciesRepository => _insurancePoliciesRepository = new InsurancePoliciesRepository(_context);
+        public IInsuranceRiskRepository InsuranceRiskRepository => _insuranceRiskRepository = new InsuranceRiskRepository(_context);
+        public IFarmerRepository FarmerRepository => _farmerRepository = new FarmerRepository(_context);
+        public IFarmerCroprepository FarmerCroprepository => _farmerCroprepository = new FarmerCroprepository(_context);
+        public IPremiumPaymentsRepository PremiumPaymentsRepository => _premiumPaymentsRepository = new PremiumPaymentsRepository(_context);
+        public ILocationsRepository LocationsRepository => _locationsRepository = new LocationsRepository(_context);
         public void SaveChanges()
             => _context.SaveChanges();
 

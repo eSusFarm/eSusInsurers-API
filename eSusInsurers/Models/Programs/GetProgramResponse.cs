@@ -1,8 +1,9 @@
 ﻿using eSusInsurers.Models.Common;
 
-namespace eSusInsurers.Models.Programs;
-
-public class GetProgramResponse
+namespace eSusInsurers.Models.Programs
 {
-    public PagedResult<ProgramsModel> Programs { get; set; } = PagedResult<ProgramsModel>.Empty;
+    public class GetProgramResponse
+    {
+        public PagedResult<ProgramsModel> Programs { get; set; } = PagedResult<ProgramsModel>.Empty;
+    }
 }

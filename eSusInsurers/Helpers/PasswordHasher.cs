@@ -1,41 +1,44 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace eSusInsurers.Helpers;
-
-public static class PasswordHasher
+namespace eSusInsurers.Helpers
 {
-    private const string AllowedChars =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+]>?";
-
-    public static string ComputeHash(string password, string salt, string pepper, int iteration)
+    public static class PasswordHasher
     {
-        if (iteration <= 0) return password;
+        private const string AllowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+]>?";
 
-        using var sha256 = SHA256.Create();
-        var passwordSaltPepper = $"{password}{salt}{pepper}";
-        var byteValue = Encoding.UTF8.GetBytes(passwordSaltPepper);
-        var byteHash = sha256.ComputeHash(byteValue);
-        var hash = Convert.ToBase64String(byteHash);
-        return ComputeHash(hash, salt, pepper, iteration - 1);
-    }
+        public static string ComputeHash(string password, string salt, string pepper, int iteration)
+        {
+            if (iteration <= 0) return password;
 
-    public static string GenerateSalt()
-    {
-        using var rng = RandomNumberGenerator.Create();
-        var byteSalt = new byte[16];
-        rng.GetBytes(byteSalt);
-        var salt = Convert.ToBase64String(byteSalt);
-        return salt;
-    }
+            using var sha256 = SHA256.Create();
+            var passwordSaltPepper = $"{password}{salt}{pepper}";
+            var byteValue = Encoding.UTF8.GetBytes(passwordSaltPepper);
+            var byteHash = sha256.ComputeHash(byteValue);
+            var hash = Convert.ToBase64String(byteHash);
+            return ComputeHash(hash, salt, pepper, iteration - 1);
+        }
 
-    public static string GeneratePassword()
-    {
-        var random = new Random();
-        var password = new char[8];
+        public static string GenerateSalt()
+        {
+            using var rng = RandomNumberGenerator.Create();
+            var byteSalt = new byte[16];
+            rng.GetBytes(byteSalt);
+            var salt = Convert.ToBase64String(byteSalt);
+            return salt;
+        }
 
-        for (var i = 0; i < 8; i++) password[i] = AllowedChars[random.Next(0, AllowedChars.Length)];
+        public static string GeneratePassword()
+        {
+            Random random = new Random();
+            char[] password = new char[8];
 
-        return new string(password);
+            for (int i = 0; i < 8; i++)
+            {
+                password[i] = AllowedChars[random.Next(0, AllowedChars.Length)];
+            }
+
+            return new string(password);
+        }
     }
 }

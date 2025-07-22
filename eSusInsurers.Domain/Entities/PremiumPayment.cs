@@ -5,11 +5,7 @@ namespace eSusInsurers.Domain.Entities;
 
 public partial class PremiumPayment : BaseAuditableEntity
 {
-
     public int? CropInsuranceId { get; set; }
-
-    public int? CropInsurncePremiumId { get; set; }
-
     public DateTime? PaymentDate { get; set; }
 
     public decimal? PaidAmount { get; set; }
@@ -27,6 +23,4 @@ public partial class PremiumPayment : BaseAuditableEntity
     public bool? IsActive { get; set; }
 
     public virtual CropInsurance CropInsurance { get; set; }
-
-    public virtual CropInsurancePremium CropInsurncePremium { get; set; }
 }
