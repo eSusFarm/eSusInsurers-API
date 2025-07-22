@@ -14,11 +14,11 @@ namespace eSusInsurers.Controllers
     {
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegisterPaymentResponse))]
-        public IActionResult AddPolicy([FromBody] RegisterPaymentRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddPolicy([FromBody] RegisterPaymentRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var response = paymentService.registerPayment(request, cancellationToken);
+                var response =await  paymentService.registerPayment(request, cancellationToken);
                 return Ok(response);
             }
             catch (Exception e)
