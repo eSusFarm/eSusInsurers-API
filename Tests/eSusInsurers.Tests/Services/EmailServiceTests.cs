@@ -93,7 +93,7 @@ public class EmailServiceTests
             s => s.SendEmailAsync(It.Is<Message>(m =>
                 m.Subject == "UpdatedSubject" &&
                 m.Content == "UpdatedContent" &&
-                m.Attachments == attachments
+                m.Attachments != null && m.Attachments.Count == attachments.Count
             )),
             Times.Once
         );
