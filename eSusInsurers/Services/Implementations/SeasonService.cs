@@ -102,7 +102,7 @@ public class SeasonService(IUnitOfWork unitOfWork, IMapper mapper) : ISeasonServ
 
         ArgumentNullException.ThrowIfNull(seasonId, nameof(seasonId));
 
-        var season = await unitOfWork.SeasonRepository.GetByIdAsync(seasonId, null, false, cancellationToken);
+        var season = await unitOfWork.SeasonRepository.GetByIdAsync(seasonId, null!, false, cancellationToken);
 
         if (season == null)
             throw new NotFoundException("Season Id doesn't exist.");
