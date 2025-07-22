@@ -26,7 +26,7 @@ namespace eSusInsurers.Infrastructure
                 {
                     options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
 
-                    options.UseSqlServer(configuration.GetConnectionString("DbConnection"))
+                    options.UseNpgsql(configuration.GetConnectionString("DbConnection"))
                            .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
                            .EnableSensitiveDataLogging();
                 });
@@ -38,7 +38,7 @@ namespace eSusInsurers.Infrastructure
                 {
                     options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
 
-                    options.UseSqlServer(configuration.GetConnectionString("DbConnection"))
+                    options.UseNpgsql(configuration.GetConnectionString("DbConnection"))
                            .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
                            .EnableSensitiveDataLogging();
                 });

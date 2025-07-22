@@ -1,22 +1,23 @@
-﻿namespace eSusInsurers.ConfigServices;
-
-/// <summary>
-///     Helper class for Serializer Helpers.
-/// </summary>
-public static class SerializerHelpers
+﻿namespace eSusInsurers.ConfigServices
 {
     /// <summary>
-    ///     Adds serializer configuration to the MVC builder.
+    /// Helper class for Serializer Helpers.
     /// </summary>
-    /// <param name="mvcBuilder">The MVC builder.</param>
-    /// <returns>The updated MVC builder.</returns>
-    public static IMvcBuilder AddSerializerConfiguration(this IMvcBuilder mvcBuilder)
+    public static class SerializerHelpers
     {
-        mvcBuilder.AddJsonOptions(jsonOptions =>
+        /// <summary>
+        /// Adds serializer configuration to the MVC builder.
+        /// </summary>
+        /// <param name="mvcBuilder">The MVC builder.</param>
+        /// <returns>The updated MVC builder.</returns>
+        public static IMvcBuilder AddSerializerConfiguration(this IMvcBuilder mvcBuilder)
         {
-            jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = new CustomNamingPolicy();
-        });
+            mvcBuilder.AddJsonOptions(jsonOptions =>
+            {
+                jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = new CustomNamingPolicy();
+            });
 
-        return mvcBuilder;
+            return mvcBuilder;
+        }
     }
 }

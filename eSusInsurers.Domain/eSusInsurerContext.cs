@@ -157,6 +157,12 @@ public partial class eSusInsurerContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<EsusFarmPolicy> EsusFarmPolicy { get; set; }
+    public virtual DbSet<EtheriscPolicy> EtheriscPolicy { get; set; }
+    public virtual DbSet<InsurancePremiumPayment> InsurancePremiumPayment { get; set; }
+
+    
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new Configurations.AppEventConfiguration());
@@ -231,7 +237,8 @@ public partial class eSusInsurerContext : DbContext
         modelBuilder.ApplyConfiguration(new Configurations.TaxComponentConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.TaxComponentsAuConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.UserConfiguration());
-
+        modelBuilder.ApplyConfiguration(new Configurations.FarmerConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.InsurancePremiumPaymentConfiguration());
         OnModelCreatingPartial(modelBuilder);
     }
 

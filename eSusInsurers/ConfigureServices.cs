@@ -3,14 +3,17 @@ using EmailService.Services;
 using eSusInsurers.Common.Logging;
 using eSusInsurers.ConfigServices;
 using eSusInsurers.Helpers;
+using eSusInsurers.Services;
 using eSusInsurers.Services.Implementations;
 using eSusInsurers.Services.Interfaces;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
-using eSusInsurers.Infrastructure.Interfaces;
-using eSusInsurers.Infrastructure.Services;
+using System.Text;
 using ILogger = Serilog.ILogger;
 
 namespace eSusInsurers
@@ -39,6 +42,32 @@ namespace eSusInsurers
                 options.Providers.Add<GzipCompressionProvider>();
             });
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+           .AddJwtBearer(options =>
+           {
+               options.SaveToken = true;
+               options.RequireHttpsMetadata = false;
+               options.IncludeErrorDetails = true;
+               options.TokenValidationParameters = new TokenValidationParameters()
+               {
+                   ValidateIssuer = false,
+                   ValidateAudience = false,
+                   ValidateLifetime = false,
+                   ValidateIssuerSigningKey = false,
+                   ClockSkew = TimeSpan.Zero,
+
+                   ValidAudience = configuration["JWT:ValidAudience"],
+                   ValidIssuer = configuration["JWT:ValidIssuer"],
+                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+               };
+           });
+
+            services.AddSwaggerExamplesFromAssemblies(typeof(Program).Assembly);
             return services;
         }
 
@@ -57,6 +86,10 @@ namespace eSusInsurers
 
                 services.AddSingleton(logger);
             });
+            services.AddHttpClient<IEsusFarmPolicyService, EsusFarmPolicyService>(client =>
+            {
+                client.BaseAddress = new Uri("https://api.esusfarm.etherisc.com/");
+            });
 
             services.AddScoped(typeof(ILoggerContext<>), typeof(LoggerContext<>));
 
@@ -65,12 +98,23 @@ namespace eSusInsurers
             //Register services
             services.AddTransient(typeof(IInsuranceProviderService), typeof(InsuranceProviderService));
             services.AddTransient(typeof(IUserService), typeof(UserService));
+            services.AddTransient(typeof(IInsuranceRequestsService), typeof(InsuranceRequestsService));
             services.AddTransient<ITokenService, TokenService>();
-            services.AddTransient<IDateTime, DateTimeService>();
             services.AddTransient<IUpdateNotificationTemplate, UpdateNotificationTemplate>();
             services.AddTransient<IEmailService, Services.Implementations.EmailService>();
+            services.AddTransient<IRolesService, RolesService>();
+            services.AddTransient<ISeasonService, SeasonService>();
+            services.AddTransient<ISeasonCutOffDateService, SeasonCutOffDateService>();
+            services.AddTransient<IInsuranceProductService, InsuranceProductService>();
             services.AddTransient<FireForget>();
-
+            services.AddTransient<ICountriesService, CountriesService>();
+            services.AddTransient<IProgramsService, ProgramService>();
+            services.AddTransient<ICropCategoryService, CropCategoryService>();
+            services.AddTransient<ICropService, CropService>();
+            services.AddTransient<IInsuranceCompanyService, InsuranceCompanyService>();
+            services.AddTransient<IEtheriscService, EtheriscService>();
+            services.AddTransient<IEsusFarmPolicyService, EsusFarmPolicyService>();
+            services.AddTransient<IPaymentService, PaymentService>();
             return services;
         }
     }
