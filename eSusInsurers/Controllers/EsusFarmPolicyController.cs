@@ -28,13 +28,13 @@ namespace eSusInsurers.Controllers
         [Authorize]
         public async Task<IActionResult> CreatePolicy([FromBody] EsusFarmPolicyRequestDto request, CancellationToken cancellationToken)
         {
-            var result = await _esusFarmPolicyService.ProcessPolicyRequestAsync(request, cancellationToken);
-
-            if (result)
+            
+            try
             {
+                var result = await _esusFarmPolicyService.ProcessPolicyRequestAsync(request, cancellationToken);
                 return Ok("Policy request processed successfully.");
             }
-            else
+            catch (Exception ex)
             {
                 return BadRequest("Policy request processing failed. Check logs for details.");
             }

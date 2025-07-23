@@ -70,7 +70,7 @@ namespace eSusInsurers.Services.Implementations
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error occurred while processing EsusFarm policy request");
-            throw;
+            throw new Exception("Policy request processing failed. Check logs for details.");
         }
     }
 }
