@@ -233,4 +233,60 @@ public class SeasonCutOffDatesControllerTests
         // Assert
         Assert.NotNull( result);
     }
+    
+    [Fact]
+    public async Task SeasonCutOffDatesExistenceCheck_ExceptionThrown_WhenSuccessful()
+    {
+        var seasonCutoffDatesReuest = new SeasonCutOffDatesRequest
+        {
+            CropId = 1,
+            CropCategoryId = 1,
+            SeasonId = 1,
+            RegionId = 1
+        };
+        var expectedException = new Exception("Test error");
+        // Arrange
+        _mockSeasonCutOffDateService.Setup(s => s.SeasonCutOffDatesExistenceCheck(It.IsAny<SeasonCutOffDatesRequest>(), It.IsAny<CancellationToken>())).Throws(expectedException);
+        // Act
+        var result = await _controller.SeasonCutOffDatesExistenceCheck(seasonCutoffDatesReuest);
+        // Assert
+        Assert.NotNull( result);
+    }
+    
+    [Fact]
+    public async Task ValidateCutOffDatesExistenceCheck_ReturnsResult_WhenSuccessful()
+    {
+        var ValidateApplicationDateRequest = new ValidateApplicationDateRequest
+        {
+            RegionName = "TestRegion",
+            CropName = "TestCrop",
+            SeasonName = "TestSeason",
+            SeasonYear =   "2025"
+        };
+        // Arrange
+        _mockSeasonCutOffDateService.Setup(s => s.ValidateApplicationDate(It.IsAny<string>(),It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()));
+        // Act
+        var result = await _controller.ValidateCutOffDate(ValidateApplicationDateRequest);
+        // Assert
+        Assert.NotNull( result);
+    }
+    
+    [Fact]
+    public async Task ValidateOffDatesExistenceCheck_ExceptionThrown_WhenSuccessful()
+    {
+        var ValidateApplicationDateRequest = new ValidateApplicationDateRequest
+        {
+            RegionName = "TestRegion",
+            CropName = "TestCrop",
+            SeasonName = "TestSeason",
+            SeasonYear =   "2025"
+        };
+        var expectedException = new Exception("Test error");
+        // Arrange
+        _mockSeasonCutOffDateService.Setup(s => s.ValidateApplicationDate(It.IsAny<string>(),It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Throws(expectedException);
+        // Act
+        var result = await _controller.ValidateCutOffDate(ValidateApplicationDateRequest);
+        // Assert
+        Assert.NotNull( result);
+    }
 }

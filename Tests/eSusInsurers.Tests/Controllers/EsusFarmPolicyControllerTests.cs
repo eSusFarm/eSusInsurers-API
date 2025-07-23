@@ -38,7 +38,7 @@ public class EsusFarmPolicyControllerTests
         _esusFarmPolicyServiceMock.Setup(s =>
                 s.ProcessPolicyRequestAsync(It.IsAny<EsusFarmPolicyRequestDto>(), It.IsAny<CancellationToken>()))
             .Throws(expectedException);
-        var result = _controller.CreatePolicy(new EsusFarmPolicyRequestDto(), new CancellationToken());
+        var result = await  _controller.CreatePolicy(new EsusFarmPolicyRequestDto(), new CancellationToken());
         // Assert
         // Assert
         Assert.NotNull( result);
