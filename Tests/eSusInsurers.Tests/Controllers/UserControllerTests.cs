@@ -296,12 +296,23 @@ public class UserControllerTests
     {
         var expectedException = new Exception("Test error");
         _userService.Setup(s =>
-            s.ResetPassword(It.IsAny<string>(), It.IsAny<Models.Users.UpdatePassword.ResetPasswordRequest>(), It.IsAny<CancellationToken>())).Throws(expectedException);
-        var result = _controller.ResetPassword("somehitng@something", new Models.Users.UpdatePassword.ResetPasswordRequest());
+            s.Login(It.IsAny<LoginRequest>(),  It.IsAny<CancellationToken>())).Throws(expectedException);
+        var result = _controller.Login(new LoginRequest("somehitng@something", "somehitng@something"), new CancellationToken());
         // Assert
         var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
         var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
         error.Should().NotBeNull();
+    }
+    
+    [Fact]
+    public async Task ChangePassword_WhenSuccessful_Returns200Ok()
+    {
+
+        _userService.Setup(s =>
+            s.ChangePassword(It.IsAny<ChangePasswordRequest>(), It.IsAny<CancellationToken>()));
+        var result = _controller.ChangePassword(new ChangePasswordRequest());
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result.Result);
     }
     
     [Fact]
