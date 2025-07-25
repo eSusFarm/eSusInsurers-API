@@ -6,7 +6,7 @@ using eSusInsurers.Services.Interfaces;
 
 namespace eSusInsurers.Services.Implementations;
 
-public class PaymentService(IUnitOfWork unitOfWork, IMapper mapper,  ILogger<PaymentService> logger): IPaymentService
+public class PaymentService(IUnitOfWork unitOfWork, ILogger<PaymentService> logger): IPaymentService
 {
     public async Task<RegisterPaymentResponse> registerPayment(RegisterPaymentRequest registerPaymentRequest, CancellationToken cancellationToken)
     {
