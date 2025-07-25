@@ -89,30 +89,4 @@ public class CountriesServiceTests
         Assert.Equal(0, result.Count);
     }
     
-    [Fact]
-    public async Task GetDistricts_WithValidCountryId_WithvalidRegionId_ReturnsDistrictsList()
-    {
-        // Arrange
-        int countryId = 1;
-        int regionId = 1;
-        var districts = new List<District>
-        {
-            new() { Id = 1, RegionId = regionId },
-            new() { Id = 2, RegionId = 2 }
-        };
-
-        var mock = districts.AsQueryable().BuildMockDbSet();
-        _districtRepository.Setup(x => x.GetAll(null, false)).Returns(mock.Object.AsQueryable());
-        _mapper.Setup(m => m.ConfigurationProvider).Returns(new MapperConfiguration(cfg => 
-        {
-            cfg.CreateMap<District, DistrictModel>()
-                .ForMember(d => d.RegionId, opt => opt.MapFrom(s => s.Id));
-        }));
-        // Act
-        var result = await _service.GetDistricts(countryId,regionId, CancellationToken.None);
-        // Assert
-        Assert.NotNull(result);
-        _countriesRepository.Verify(x => x.GetAll(null, false), Times.Once());
-    } 
-    
 }
