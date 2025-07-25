@@ -25,10 +25,8 @@ namespace eSusInsurers.Services.Implementations
     /// <param name="mapper"></param>
     /// <param name="tokenService"></param>
     /// <param name="dateTime"></param>
-    public class InsuranceRequestsService(IUnitOfWork unitOfWork,IConfiguration configuration,
-        IMapper mapper,
-        ITokenService tokenService,
-        IDateTime dateTime): IInsuranceRequestsService
+    public class InsuranceRequestsService(IUnitOfWork unitOfWork,
+        IMapper mapper): IInsuranceRequestsService
     {
         public async Task<Models.Common.PagedResult<InsuranceRequestModel>> GetInsuranceRequests(GetinsuranceRequestsQuery request, CancellationToken cancellationToken)
         {
