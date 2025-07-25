@@ -54,18 +54,18 @@ namespace eSusInsurers.Services.Implementations
                 IsSuccess = isSuccess
             };
 
-            if (isSuccess)
+            if (!isSuccess)
             {
                 _logger.LogWarning("Unsuccessful response from EsusFarm API: {ResponseContent}", responseContent);
+                return false;
             }
             else
             {
                 await _unitOfWork.EsusFarmPolicyRepository.AddAsync(esusFarmPolicy, cancellationToken);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
                 _logger.LogWarning("Successful response from EsusFarm API, persistence complete: {ResponseContent}", responseContent);
+               return isSuccess;
             }
-
-            return isSuccess;
         }
         catch (Exception ex)
         {
