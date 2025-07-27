@@ -149,7 +149,96 @@ public class PaymentServicetTests
                           IsActive = true
                       }
                       }
+                  },
+                  ClaimsAus = new List<ClaimsAu>
+                  {
+                      new()
+                      {
+                          ClaimNumber="Claim",
+                          FarmerId = 1,
+                          CropInsuranceId=2,
+                          CropInsurancePremiumId=2,
+                          RequestedOn = DateTime.Now,
+                          AllowedAmount=70,
+                          OtherChargesAmount=70,
+                          DisallowAmount=70,
+                          Currency="UGX",
+                          PaidDate=DateTime.Now,
+                          Status = "pending",
+                          IsActive = true,
+                          CropInsurance = new CropInsurance{
+                              CreatedDate = DateTime.Now,
+                              FarmerId = 2,
+                              FarmerCropId = 2,
+                              Longitude=70,
+                              Latitude=70,
+                              InsurancePolicyId=70,
+                              CropName="UGX",
+                              InsuranceRiskId = 1,
+                              Status  = "pending",
+                              Comments = "dqwd",
+                              IsActive = true
+                      }
+                  }},
+                  FarmerCrops = new List<FarmerCrop>
+                  {
+                      new () {
+                          Comments = "test",
+                          FarmerId = 1,
+                          CreatedDate = DateTime.Now,
+                          CreatedBy = "test", 
+                          IsActive = true, 
+                          Id = 2, 
+                          ModifiedDate = DateTime.Now , 
+                          FarmLandSize = 568,
+                          IsPrecultCompleted = false,
+                          IsCultCompleted = false,
+                          IsPlantGrowthCompleted = false,
+                          IsHarvestCompleted = false,
+                          PreCultStartDate = DateTime.Now,
+                          PreCultEndDate = DateTime.Now,
+                          CultStartDate = DateTime.Now,
+                          CultEndDate = DateTime.Now,
+                          PlantGrowthStartDate = DateTime.Now,
+                          PlantGrowthEndDate = DateTime.Now,
+                          HarvestingStartDate = DateTime.Now,
+                          HarvestingEndDate = DateTime.Now,
+                          Crop = new Crop
+                      {
+                          CreatedDate = DateTime.Now,
+                          CreatedBy = "tester",
+                          CropCategoryId = 1,
+                          CropName = "tester"
+                      }}
                   }
+                },
+                CropInsurancePremia = new List<CropInsurancePremium>
+                {
+                    new ()
+                    {
+                        CreatedBy = "test",
+                        CropInsurance = new CropInsurance
+                        {
+                            CreatedDate = DateTime.Now,
+                            FarmerId = 1,
+                            FarmerCropId = 2
+                        },
+                        CreatedDate = DateTime.Today,
+                        IsActive = true,
+                        Id = 2,
+                        ModifiedDate = DateTime.Now ,
+                        InsurancePremium = new InsurancePremium
+                        {
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = "tester",
+                            InsurancePolicyId = 1,
+                            InsurancePolicy = new InsurancePolicy
+                            {
+                                CreatedDate = DateTime.Now,
+                                CreatedBy = "tester"
+                            }
+                        }
+                    }
                 },
                 Comments = "test",
                 FarmerId=2,
