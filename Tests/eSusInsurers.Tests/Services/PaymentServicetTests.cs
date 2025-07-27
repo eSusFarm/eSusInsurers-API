@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using eSusInsurers.Domain.Entities;
 using eSusInsurers.Infrastructure.Common;
 using eSusInsurers.Infrastructure.Interfaces;
@@ -73,6 +74,83 @@ public class PaymentServicetTests
             CropInsurance = new CropInsurance
             {
                 CreatedDate = DateTime.Now,
+                FarmerCropId = 1,
+                Farmer = new Farmer
+                {
+                  Address  =   "unit 6 block 134",
+                  AdminComments = "test",
+                  ChiefName = "tester",
+                  City = "tester",
+                  Country = "tester",
+                  MobileNumber =   869609,
+                  Msisdn =   869609,
+                  Password = "tester",
+                  MobilePin =1736863,
+                  Name =   "test",
+                  TnCaccepted = true,
+                  Surname = "tester",
+                  Dob  = "tester",
+                  Idnumber = "tester",
+                  Gender = "tester",
+                  Province = "tester",
+                  CountryId=1,
+                  IsActive=false,
+                  ProgramName = false,
+                  EnterProgramName = "tester",
+                  FarmingCommodity = 12,
+                  FarmSize=2346,
+                  DataConfirmation = true,
+                  MainOrTraditionalLand = 1,
+                  StreetName = "tester",
+                  VillageName = "tester",
+                  RiverName = "tester",
+                  LevelOfEducation = "tester",
+                  DipTank = "tester",
+                  NearestMountain = "tester",
+                  ProgramId = 1,
+                  IsFarmerDeletedbySuperAdmin = false,
+                  IsSuspended = false,
+                  Comments = "dqwd",
+                  CreatedDate = DateTime.Now,
+                  Latitude = 131313,
+                  Longitude = 131313,
+                  Location = "tester",
+                  ProfilePicture = "tester",
+                  IdfrontView = "tester",
+                  IdbackView = "tester",
+                  ServiceProvider = "tester",
+                  Claims = new List<Claim>
+                  {
+                      new ()
+                      {
+                          ClaimNumber="Claim",
+                          FarmerId = 1,
+                          CropInsuranceId=2,
+                          CropInsurancePremiumId=2,
+                          RequestedOn = DateTime.Now,
+                          AllowedAmount=70,
+                          OtherChargesAmount=70,
+                          DisallowAmount=70,
+                          Currency="UGX",
+                          PaidDate=DateTime.Now,
+                          Status = "pending",
+                          IsActive = true,
+                          CropInsurance = new CropInsurance{
+                          CreatedDate = DateTime.Now,
+                          FarmerId = 2,
+                          FarmerCropId = 2,
+                          Longitude=70,
+                          Latitude=70,
+                          InsurancePolicyId=70,
+                          CropName="UGX",
+                          InsuranceRiskId = 1,
+                          Status  = "pending",
+                          Comments = "dqwd",
+                          IsActive = true
+                      }
+                      }
+                  }
+                },
                 Comments = "test",
                 FarmerId=2,
                 CropName = "test",

@@ -323,7 +323,7 @@
             Controller for Insurance Requests
             </summary>
         </member>
-        <member name="M:eSusInsurers.Controllers.InsuranceRequestsController.GetUsers(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.InsuranceRequestFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
+        <member name="M:eSusInsurers.Controllers.InsuranceRequestsController.GetInsuranceResquests(eSusInsurers.Models.Common.PagingOptions,eSusInsurers.Models.InsuranceRequests.getInsuranceRequests.InsuranceRequestFilterOptions,eSusInsurers.Models.Common.SortingOptions)">
             <summary>
             Get Insurance Requests
             </summary>
@@ -1209,7 +1209,7 @@
             <param name="tokenService"></param>
             <param name="dateTime"></param>
         </member>
-        <member name="M:eSusInsurers.Services.Implementations.InsuranceRequestsService.#ctor(eSusInsurers.Infrastructure.Common.IUnitOfWork,Microsoft.Extensions.Configuration.IConfiguration,AutoMapper.IMapper,eSusInsurers.Services.Interfaces.ITokenService,eSusInsurers.Infrastructure.Interfaces.IDateTime)">
+        <member name="M:eSusInsurers.Services.Implementations.InsuranceRequestsService.#ctor(eSusInsurers.Infrastructure.Common.IUnitOfWork,AutoMapper.IMapper)">
             <summary>
             InsuranceRequestsService
             </summary>
