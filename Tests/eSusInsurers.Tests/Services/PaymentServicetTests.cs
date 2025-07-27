@@ -69,7 +69,20 @@ public class PaymentServicetTests
             ModeOfPayment = "test",
             TaxAmount = 2334,
             PaidAmount = 1344,
-            TotalPaidAmount = 23455
+            TotalPaidAmount = 23455,
+            CropInsurance = new CropInsurance
+            {
+                CreatedDate = DateTime.Now,
+                Comments = "test",
+                FarmerId=2,
+                CropName = "test",
+                Longitude=23586809,
+                Latitude=23586809,
+                InsurancePolicyId=1,
+                InsuranceRiskId=1,
+                Status="stattus",
+                IsActive = true
+            }
         };
     }
 }
