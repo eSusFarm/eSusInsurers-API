@@ -2,19 +2,20 @@
 using eSusInsurers.Common.Mappings;
 using eSusInsurers.Domain.Entities;
 
-namespace WMS.Models.Roles;
-
-public class RoleRequest : IMapFrom<Role>
+namespace WMS.Models.Roles
 {
-    public string RoleName { get; set; } = null!;
-
-    public int? ReportingToId { get; set; }
-
-    public void Mapping(Profile profile)
+    public class RoleRequest : IMapFrom<Role>
     {
-        profile.CreateMap<RoleRequest, Role>()
-            .ForMember(x => x.RoleName, opt => opt.MapFrom(c => c.RoleName))
-            .ForMember(x => x.ReportingToId, opt => opt.MapFrom(c => c.ReportingToId))
-            .ForMember(x => x.IsActive, opt => opt.MapFrom(c => true));
+        public string RoleName { get; set; } = null!;
+
+        public int? ReportingToId { get; set; }
+
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<RoleRequest, Role>()
+                .ForMember(x => x.RoleName, opt => opt.MapFrom(c => c.RoleName))
+                .ForMember(x => x.ReportingToId, opt => opt.MapFrom(c => c.ReportingToId))
+                .ForMember(x => x.IsActive, opt => opt.MapFrom(c => true));
+        }
     }
 }

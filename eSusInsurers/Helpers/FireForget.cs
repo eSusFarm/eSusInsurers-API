@@ -1,27 +1,28 @@
-﻿namespace eSusInsurers.Helpers;
-
-public sealed class FireForget
+﻿namespace eSusInsurers.Helpers
 {
-    private readonly IServiceScopeFactory _serviceScopeFactory;
-
-    public FireForget(IServiceScopeFactory serviceScopeFactory)
+    public sealed class FireForget
     {
-        _serviceScopeFactory = serviceScopeFactory;
-    }
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
-    public void Execute<TService>(Func<TService, Task> func)
-    {
-        Task.Run(async () =>
+        public FireForget(IServiceScopeFactory serviceScopeFactory)
         {
-            try
+            _serviceScopeFactory = serviceScopeFactory;
+        }
+
+        public void Execute<TService>(Func<TService, Task> func)
+        {
+            Task.Run(async () =>
             {
-                var context = _serviceScopeFactory.CreateScope().ServiceProvider.GetService<TService>();
-                await func(context);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        });
+                try
+                {
+                    var context = _serviceScopeFactory.CreateScope().ServiceProvider.GetService<TService>();
+                    await func(context);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            });
+        }
     }
 }

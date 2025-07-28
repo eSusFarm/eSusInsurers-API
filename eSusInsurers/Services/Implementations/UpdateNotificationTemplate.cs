@@ -1,30 +1,30 @@
 ﻿using eSusInsurers.Models.Common;
 using eSusInsurers.Services.Interfaces;
 
-namespace eSusInsurers.Services.Implementations;
-
-public class UpdateNotificationTemplate : IUpdateNotificationTemplate
+namespace eSusInsurers.Services.Implementations
 {
-    public string UpdateNotificationContentParametrs(NotificationContentParameters parameters,
-        string notificationContent, string eventName)
+    public class UpdateNotificationTemplate : IUpdateNotificationTemplate
     {
-        try
+        public string UpdateNotificationContentParametrs(NotificationContentParameters parameters, string notificationContent, string eventName)
         {
-            notificationContent = notificationContent.Replace("[index0]", parameters.Index0);
-            notificationContent = notificationContent.Replace("[index1]", parameters.Index1);
-            notificationContent = notificationContent.Replace("[index2]", parameters.Index2);
-            notificationContent = notificationContent.Replace("[index3]", parameters.Index3);
-            notificationContent = notificationContent.Replace("[url]", parameters.URL);
-            notificationContent = notificationContent.Replace("[username]", parameters.UserName);
-            notificationContent = notificationContent.Replace("[AppName]", parameters.AppName);
-            notificationContent = notificationContent.Replace("[emailId]", parameters.EmailId);
-            notificationContent = notificationContent.Replace("[password]", parameters.Password);
-            notificationContent = notificationContent.Replace("[CompanyName]", parameters.CompanyName);
-            return notificationContent;
-        }
-        catch
-        {
-            return string.Empty;
+            try
+            {
+                notificationContent = notificationContent.Replace("[index0]", parameters.Index0);
+                notificationContent = notificationContent.Replace("[index1]", parameters.Index1);
+                notificationContent = notificationContent.Replace("[index2]", parameters.Index2);
+                notificationContent = notificationContent.Replace("[index3]", parameters.Index3);
+                notificationContent = notificationContent.Replace("[url]", parameters.URL);
+                notificationContent = notificationContent.Replace("[username]", parameters.UserName);
+                notificationContent = notificationContent.Replace("[AppName]", parameters.AppName);
+                notificationContent = notificationContent.Replace("[emailId]", parameters.EmailId);
+                notificationContent = notificationContent.Replace("[password]", parameters.Password);
+                notificationContent = notificationContent.Replace("[CompanyName]", parameters.CompanyName);
+                return notificationContent;
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
     }
 }

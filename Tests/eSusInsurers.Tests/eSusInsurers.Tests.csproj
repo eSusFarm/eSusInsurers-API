@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="coveralls.io" Version="1.4.2" />
     <PackageReference Include="coverlet.collector" Version="6.0.4">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -36,5 +37,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\eSusInsurers\eSusInsurers.csproj" />
     <ProjectReference Include="..\..\eSusInsurers.Infrastructure\eSusInsurers.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Mappings\" />
   </ItemGroup>
 </Project>

@@ -1,13 +1,17 @@
-﻿namespace eSusInsurers.Helpers;
-
-public class RandomOTP
+﻿namespace eSusInsurers.Helpers
 {
-    public static string CreateRandomOTP()
+    public class RandomOTP
     {
-        var _allowedChars = "0123456789";
-        var randomNum = new Random();
-        var chars = new char[4];
-        for (var i = 0; i < 4; i++) chars[i] = _allowedChars[(int)(_allowedChars.Length * randomNum.NextDouble())];
-        return new string(chars);
+        public static string CreateRandomOTP()
+        {
+            string _allowedChars = "0123456789";
+            Random randomNum = new Random();
+            char[] chars = new char[4];
+            for (int i = 0; i < 4; i++)
+            {
+                chars[i] = _allowedChars[(int)((_allowedChars.Length) * randomNum.NextDouble())];
+            }
+            return new string(chars);
+        }
     }
 }

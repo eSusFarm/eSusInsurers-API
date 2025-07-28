@@ -1,15 +1,5 @@
 # eSusfarm Crop Insurance Management with Etherisc Blockchain Integration and AIC
 
-## Table of Contents
-- [Overview](#esusfarm-crop-insurance-management-with-etherisc-blockchain-integration-and-aic)
-- [Contributing](CONTRIBUTING.md)
-- [Project Charter](PROJECT_CHARTER.md)
-- [Architecture](#architecture)
-- [ASP.NET Core Features](#aspnet-core-features)
-- [.NET Core API Configuration](#net-core-api-configuration)
-
-  
-## Overview
 1. eSusfarm will receive crop monitoring index insurance details data from AIC through an API, ensuring seamless integration of information.
 2. Upon receiving the data, eSusfarm will post it onto the Etherisc blockchain, ensuring the integrity and immutability of the information.
 3. Leveraging the Etherisc blockchain API, eSusfarm will establish communication with the Etherisc blockchain (https://github.com/etherisc/esusfarm), facilitating secure and transparent data transactions.
@@ -22,10 +12,10 @@
 10. eSusfarm will continuously communicate with the Etherisc blockchain via its dedicated API, enabling real-time updates and synchronization of data for all stakeholders involved.
 11. Through this robust and interconnected ecosystem, eSusfarm, AIC, and farmers will collectively benefit from enhanced efficiency, transparency, and security in managing crop insurance processes.
 
-## Architecture
+# Architecture
 ![eSusInsurance-Backend Architecture drawio (2)](https://github.com/eSusFarm/eSusInsurers-API/assets/88090641/f8ca4c07-3d6a-485f-a94e-40211a70fec4)
 
-## ASP.NET Core Features
+# ASP.NET Core Features
 * Creating an API backend service
 * Isolating business logic and Controller code
 * Separating code into separate projects
@@ -34,15 +24,19 @@
 * Using ASP.NET Core as a backend to an Angular 17.0 front end
 
 Version supported:
+
 * .NET Core 8.0
 * 8.0 SDK or later
 * Visual Studio 2022 or later
 * Visual Studio Code
 
-## .NET Core API Configuration
+# .NET Core API Configuration
 You should just be able to clone this repo as is on either Windows or Mac (and probably Linux) and do:
-```bash
+```
 cd <Base Solution Folder>
 dotnet restore
 cd .\eSusFarm\eSusInsurers-API
 dotnet run
+```
+
+

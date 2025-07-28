@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace eSusInsurers.Domain.Models;
+
+public partial class ClaimsAu : BaseAuditableEntity
+{
+
+    public DateTime HistoryCreatedDate { get; set; }
+
+    public int ClaimId { get; set; }
+
+    public string? ClaimNumber { get; set; }
+
+    public int? FarmerId { get; set; }
+
+    public int? CropInsuranceId { get; set; }
+
+    public int? CropInsurancePremiumId { get; set; }
+
+    public DateTime? RequestedOn { get; set; }
+
+    public decimal? AllowedAmount { get; set; }
+
+    public decimal? DisallowAmount { get; set; }
+
+    public decimal? OtherChargesAmount { get; set; }
+
+    public string? Currency { get; set; }
+
+    public DateTime? PaidDate { get; set; }
+
+    public string? Status { get; set; }
+
+    public bool? IsActive { get; set; }
+
+    public virtual CropInsurance? CropInsurance { get; set; }
+
+    public virtual CropInsurancePremium? CropInsurancePremium { get; set; }
+
+    public virtual Farmer? Farmer { get; set; }
+}

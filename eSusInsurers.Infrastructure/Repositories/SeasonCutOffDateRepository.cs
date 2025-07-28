@@ -32,5 +32,16 @@ namespace eSusInsurers.Infrastructure
             && x.RegionId == regionId && x.CropCategoryId == cropCategoryId
             && x.CropId == cropId, cancellationToken);
         }
+        
+        public async Task<SeasonCutOffDate?> GetByCropAndSeason( int seasonId, int regionId, int? cropCategoryId, int? cropId, CancellationToken cancellationToken)
+        {
+            return await GetAll(new string[]
+            {
+                "Crop",  "CropCategory",  "Region",  "Season"
+            }).FirstOrDefaultAsync(x => x.SeasonId == seasonId
+                                                                   && x.RegionId == regionId && x.CropCategoryId == cropCategoryId
+                                                                   && x.CropId == cropId, cancellationToken);
+        }
+        
     }
 }

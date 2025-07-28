@@ -8,5 +8,7 @@ namespace eSusInsurers.Infrastructure
         Task<SeasonCutOffDate?> GetBySeasonCutOffDateAsync(int seasonId, int regionId, int? cropCategoryId, int? cropId, CancellationToken cancellationToken);
 
         Task<SeasonCutOffDate?> GetBySeasonCutOffDateAsync(int seasonCutOffDateId, int seasonId, int regionId, int? cropCategoryId, int? cropId, CancellationToken cancellationToken);
+
+        Task<SeasonCutOffDate?> GetByCropAndSeason(int seasonId, int regionId, int? cropCategoryId, int? cropId, CancellationToken cancellationToken);
     }
 }
