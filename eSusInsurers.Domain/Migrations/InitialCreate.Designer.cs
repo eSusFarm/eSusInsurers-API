@@ -347,9 +347,6 @@ namespace eSusInsurers.Domain.Migrations
                     b.Property<int?>("CropInsuranceId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CropInsurancePremiumId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Currency")
                         .HasMaxLength(100)
                         .IsUnicode(false)
@@ -390,8 +387,6 @@ namespace eSusInsurers.Domain.Migrations
                         .HasName("PK__Claims__EF2E139B6F0F8FA1");
 
                     b.HasIndex("CropInsuranceId");
-
-                    b.HasIndex("CropInsurancePremiumId");
 
                     b.HasIndex("FarmerId");
 
@@ -5735,16 +5730,7 @@ namespace eSusInsurers.Domain.Migrations
                     b.Navigation("InsurancePolicy1s");
                 });
 
-            modelBuilder.Entity("eSusInsurers.Domain.Entities.CropInsurancePremium", b =>
-                {
-                    b.Navigation("Claims");
 
-                    b.Navigation("ClaimsAus");
-
-                    b.Navigation("PremiumPayments");
-
-                    b.Navigation("PremiumPaymentsAus");
-                });
 
             modelBuilder.Entity("eSusInsurers.Domain.Entities.District", b =>
                 {

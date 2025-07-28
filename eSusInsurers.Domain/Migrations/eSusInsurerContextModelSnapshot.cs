@@ -5483,8 +5483,6 @@ namespace eSusInsurers.Domain.Migrations
                         .HasConstraintName("FK_CropInsurance_PremiumPayments");
                     
                     b.Navigation("CropInsurance");
-
-                    b.Navigation("CropInsurncePremium");
                 });
 
             modelBuilder.Entity("eSusInsurers.Domain.Entities.PremiumPaymentsAu", b =>
@@ -5736,17 +5734,6 @@ namespace eSusInsurers.Domain.Migrations
             modelBuilder.Entity("eSusInsurers.Domain.Entities.CropInsuranceCategory", b =>
                 {
                     b.Navigation("InsurancePolicy1s");
-                });
-
-            modelBuilder.Entity("eSusInsurers.Domain.Entities.CropInsurancePremium", b =>
-                {
-                    b.Navigation("Claims");
-
-                    b.Navigation("ClaimsAus");
-
-                    b.Navigation("PremiumPayments");
-
-                    b.Navigation("PremiumPaymentsAus");
                 });
 
             modelBuilder.Entity("eSusInsurers.Domain.Entities.District", b =>
