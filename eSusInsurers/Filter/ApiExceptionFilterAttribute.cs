@@ -1,162 +1,167 @@
-﻿using eSusInsurers.Common.Exceptions;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+using eSusInsurers.Common.Exceptions;
 
-namespace eSusInsurers.Filter;
-
-/// <summary>
-///     Represents an exception filter attribute that handles and processes exceptions in an API.
-/// </summary>
-public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
+namespace eSusInsurers.Filter
 {
-    private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
-
     /// <summary>
-    ///     Initializes a new instance of the <see cref="ApiExceptionFilterAttribute" /> class.
+    /// Represents an exception filter attribute that handles and processes exceptions in an API.
     /// </summary>
-    public ApiExceptionFilterAttribute()
+    public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
-        // Register known exception types and handlers.
-        _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
-        {
-            { typeof(ValidationException), HandleValidationException },
-            { typeof(NotFoundException), HandleNotFoundException },
-            { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
-            { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
-            { typeof(DbConnectionException), HandleDbConnectionException }
-        };
-    }
+        private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
 
-    /// <summary>
-    ///     Called when an exception occurs during the execution of an action.
-    /// </summary>
-    /// <param name="context">The exception context.</param>
-    public override void OnException(ExceptionContext context)
-    {
-        var type = context.Exception.GetType();
-        if (_exceptionHandlers.ContainsKey(type))
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiExceptionFilterAttribute"/> class.
+        /// </summary>
+        public ApiExceptionFilterAttribute()
         {
-            _exceptionHandlers[type].Invoke(context);
-            return; // No longer needed, the method will naturally exit after handling the exception
+            // Register known exception types and handlers.
+            _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
+            {
+                { typeof(ValidationException), HandleValidationException },
+                { typeof(NotFoundException), HandleNotFoundException },
+                { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
+                { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
+                { typeof(DbConnectionException), HandleDbConnectionException },
+            };
         }
 
-        if (!context.ModelState.IsValid)
-            HandleInvalidModelStateException(context);
-        else
-            HandleGlobalException(context);
-    }
-
-    private void HandleValidationException(ExceptionContext context)
-    {
-        var exception = (ValidationException)context.Exception;
-
-        var details = new ValidationProblemDetails(exception.Errors)
+        /// <summary>
+        /// Called when an exception occurs during the execution of an action.
+        /// </summary>
+        /// <param name="context">The exception context.</param>
+        public override void OnException(ExceptionContext context)
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
-        };
+            Type type = context.Exception.GetType();
+            if (_exceptionHandlers.ContainsKey(type))
+            {
+                _exceptionHandlers[type].Invoke(context);
+                return; // No longer needed, the method will naturally exit after handling the exception
+            }
 
-        context.Result = new BadRequestObjectResult(details);
+            if (!context.ModelState.IsValid)
+            {
+                HandleInvalidModelStateException(context);
+            }
+            else
+            {
+                HandleGlobalException(context);
+            }
+        }
 
-        context.ExceptionHandled = true;
-    }
-
-    private void HandleDbConnectionException(ExceptionContext context)
-    {
-        var exception = (DbConnectionException)context.Exception;
-
-        var details = new ProblemDetails
+        private void HandleValidationException(ExceptionContext context)
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-            Title = "Azure SQL Managed Instance connection failed",
-            Detail = exception.Message
-        };
+            var exception = (ValidationException)context.Exception;
 
-        context.Result = new ObjectResult(details)
+            var details = new ValidationProblemDetails(exception.Errors)
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+            };
+
+            context.Result = new BadRequestObjectResult(details);
+
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleDbConnectionException(ExceptionContext context)
         {
-            StatusCode = StatusCodes.Status500InternalServerError
-        };
+            var exception = (DbConnectionException)context.Exception;
 
-        context.ExceptionHandled = true;
-    }
+            var details = new ProblemDetails()
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                Title = "Azure SQL Managed Instance connection failed",
+                Detail = exception.Message
+            };
 
-    private static void HandleGlobalException(ExceptionContext context)
-    {
-        var exception = context.Exception;
+            context.Result = new ObjectResult(details)
+            {
+                StatusCode = StatusCodes.Status500InternalServerError
+            };
 
-        var details = new ProblemDetails
+            context.ExceptionHandled = true;
+        }
+
+        private static void HandleGlobalException(ExceptionContext context)
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-            Title = "A global exception happened.",
-            Detail = exception.Message
-        };
+            var exception = context.Exception;
 
-        context.Result = new ObjectResult(details)
+            var details = new ProblemDetails()
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                Title = "A global exception happened.",
+                Detail = exception.Message
+            };
+
+            context.Result = new ObjectResult(details)
+            {
+                StatusCode = StatusCodes.Status500InternalServerError
+            };
+
+            context.ExceptionHandled = true;
+        }
+
+        private static void HandleInvalidModelStateException(ExceptionContext context)
         {
-            StatusCode = StatusCodes.Status500InternalServerError
-        };
+            var details = new ValidationProblemDetails(context.ModelState)
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+            };
 
-        context.ExceptionHandled = true;
-    }
+            context.Result = new BadRequestObjectResult(details);
 
-    private static void HandleInvalidModelStateException(ExceptionContext context)
-    {
-        var details = new ValidationProblemDetails(context.ModelState)
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleNotFoundException(ExceptionContext context)
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
-        };
+            var exception = (NotFoundException)context.Exception;
 
-        context.Result = new BadRequestObjectResult(details);
+            var details = new ProblemDetails()
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                Title = "The specified resource was not found.",
+                Detail = exception.Message
+            };
 
-        context.ExceptionHandled = true;
-    }
+            context.Result = new NotFoundObjectResult(details);
 
-    private void HandleNotFoundException(ExceptionContext context)
-    {
-        var exception = (NotFoundException)context.Exception;
+            context.ExceptionHandled = true;
+        }
 
-        var details = new ProblemDetails
+        private void HandleUnauthorizedAccessException(ExceptionContext context)
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-            Title = "The specified resource was not found.",
-            Detail = exception.Message
-        };
+            var details = new ProblemDetails
+            {
+                Status = StatusCodes.Status401Unauthorized,
+                Title = "Unauthorized",
+                Type = "https://tools.ietf.org/html/rfc7235#section-3.1"
+            };
 
-        context.Result = new NotFoundObjectResult(details);
+            context.Result = new ObjectResult(details)
+            {
+                StatusCode = StatusCodes.Status401Unauthorized
+            };
 
-        context.ExceptionHandled = true;
-    }
+            context.ExceptionHandled = true;
+        }
 
-    private void HandleUnauthorizedAccessException(ExceptionContext context)
-    {
-        var details = new ProblemDetails
+        private void HandleForbiddenAccessException(ExceptionContext context)
         {
-            Status = StatusCodes.Status401Unauthorized,
-            Title = "Unauthorized",
-            Type = "https://tools.ietf.org/html/rfc7235#section-3.1"
-        };
+            var details = new ProblemDetails
+            {
+                Status = StatusCodes.Status403Forbidden,
+                Title = "Forbidden",
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
+            };
 
-        context.Result = new ObjectResult(details)
-        {
-            StatusCode = StatusCodes.Status401Unauthorized
-        };
+            context.Result = new ObjectResult(details)
+            {
+                StatusCode = StatusCodes.Status403Forbidden
+            };
 
-        context.ExceptionHandled = true;
-    }
-
-    private void HandleForbiddenAccessException(ExceptionContext context)
-    {
-        var details = new ProblemDetails
-        {
-            Status = StatusCodes.Status403Forbidden,
-            Title = "Forbidden",
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
-        };
-
-        context.Result = new ObjectResult(details)
-        {
-            StatusCode = StatusCodes.Status403Forbidden
-        };
-
-        context.ExceptionHandled = true;
+            context.ExceptionHandled = true;
+        }
     }
 }

@@ -13,17 +13,12 @@ namespace eSusInsurers.Domain.Configurations
         public void Configure(EntityTypeBuilder<PremiumPayment> entity)
         {
             entity.HasKey(e => e.Id).HasName("PK__PremiumP__679D297815A2DF98");
-
-
-            entity.ToTable(tb => tb.HasTrigger("trigger_PremiumPayments_AU"));
-
             entity.Property(e => e.Id).HasColumnName("PremiumPaymentId");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.CropInsuranceId);
-            entity.Property(e => e.CropInsurncePremiumId);
             entity.Property(e => e.Currency)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -42,15 +37,6 @@ namespace eSusInsurers.Domain.Configurations
                 .IsUnicode(false);
             entity.Property(e => e.TaxAmount).HasColumnType("money");
             entity.Property(e => e.TotalPaidAmount).HasColumnType("money");
-
-            entity.HasOne(d => d.CropInsurance).WithMany(p => p.PremiumPayments)
-                .HasForeignKey(d => d.CropInsuranceId)
-                .HasConstraintName("FK_CropInsurance_PremiumPayments");
-
-            entity.HasOne(d => d.CropInsurncePremium).WithMany(p => p.PremiumPayments)
-                .HasForeignKey(d => d.CropInsurncePremiumId)
-                .HasConstraintName("FK_CropInsurancePremiums_PremiumPayments");
-
             OnConfigurePartial(entity);
         }
 

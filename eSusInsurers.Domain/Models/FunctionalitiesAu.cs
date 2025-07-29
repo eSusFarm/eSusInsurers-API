@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace eSusInsurers.Domain.Models;
+
+public partial class FunctionalitiesAu : BaseAuditableEntity
+{
+
+    public DateTime HistoryCreatedDate { get; set; }
+
+    public int FunctionalityId { get; set; }
+
+    public int FeatureId { get; set; }
+
+    public string Functionality { get; set; } = null!;
+
+    public bool? IsActive { get; set; }
+
+    public virtual Feature Feature { get; set; } = null!;
+}

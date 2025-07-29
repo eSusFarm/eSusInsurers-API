@@ -1,20 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace eSusInsurers.Common.Exceptions;
-
-public class SqlDbUpdateException : DbUpdateException
+namespace eSusInsurers.Common.Exceptions
 {
-    protected SqlDbUpdateException()
-    {
-    }
 
-    public SqlDbUpdateException(string message)
-        : base(message)
+    public class SqlDbUpdateException : DbUpdateException
     {
-    }
+        protected SqlDbUpdateException() : base() { }
+        public SqlDbUpdateException(string message)
+            : base(message)
+        {
+        }
 
-    public SqlDbUpdateException(string message, Exception innerException)
-        : base(message, innerException)
-    {
+        public SqlDbUpdateException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
     }
 }

@@ -1,7 +1,8 @@
-﻿namespace eSusInsurers.Helpers;
-
-public class AppEvents
+﻿namespace eSusInsurers.Helpers
 {
-    public static string SendOtp = "SendOTP";
-    public static string CreateUser = "CreateUser";
+    public class AppEvents
+    {
+        public static string SendOtp = "SendOTP";
+        public static string CreateUser = "CreateUser";
+    }
 }

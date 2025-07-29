@@ -23,7 +23,6 @@ namespace eSusInsurers.Domain.Configurations
                 .IsUnicode(false);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.CropInsuranceId);
-            entity.Property(e => e.CropInsurancePremiumId);
             entity.Property(e => e.Currency)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -44,15 +43,6 @@ namespace eSusInsurers.Domain.Configurations
                 .IsUnicode(false);
             entity.Property(e => e.TaxAmount).HasColumnType("money");
             entity.Property(e => e.TotalPaidAmount).HasColumnType("money");
-
-            entity.HasOne(d => d.CropInsurance).WithMany(p => p.PremiumPaymentsAus)
-                .HasForeignKey(d => d.CropInsuranceId)
-                .HasConstraintName("FK_CropInsurance_PremiumPayments_AU");
-
-            entity.HasOne(d => d.CropInsurancePremium).WithMany(p => p.PremiumPaymentsAus)
-                .HasForeignKey(d => d.CropInsurancePremiumId)
-                .HasConstraintName("FK_CropInsurancePremiums_PremiumPayments_AU");
-
             OnConfigurePartial(entity);
         }
 

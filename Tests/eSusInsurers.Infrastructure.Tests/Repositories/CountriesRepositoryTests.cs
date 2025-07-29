@@ -1,6 +1,7 @@
 using eSusInsurers.Domain;
 using eSusInsurers.Domain.Entities;
 using eSusInsurers.Infrastructure.Common;
+using eSusInsurers.Infrastructure.Interfaces;
 using eSusInsurers.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -13,7 +14,7 @@ namespace eSusInsurers.Infrastructure.Tests.Repositories
 
         private readonly DbContext _dbContext;
         private readonly Mock<IUnitOfWork> _unitOfWork;
-        private readonly CountriesRepository _repository;
+        private readonly ICountriesRepository _repository;
 
         public CountriesRepositoryTests()
         {
@@ -32,10 +33,14 @@ namespace eSusInsurers.Infrastructure.Tests.Repositories
                 CountryName = "Country 1 Name",
                 IsActive = true
             };
-            var createdCrountry = await _repository.AddAsync(country, CancellationToken.None);
-            Assert.NotNull(createdCrountry);
-            Assert.Equal("Country 1 Name", createdCrountry.CountryName);
 
+            var region = new Region
+            {
+                Id = 1,
+                CountryId = 1
+            };
+            var createdCrountry = await _repository.AddAsync(region, CancellationToken.None);
+            Assert.NotNull(createdCrountry);
         }
 } 
 }

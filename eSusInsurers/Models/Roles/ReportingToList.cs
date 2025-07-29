@@ -1,8 +1,9 @@
-﻿namespace WMS.Models.Roles;
-
-public class ReportingToList
+﻿namespace WMS.Models.Roles
 {
-    public int RoleId { get; set; }
+    public class ReportingToList
+    {
+        public int RoleId { get; set; }
 
-    public string RoleName { get; set; } = null!;
+        public string RoleName { get; set; } = null!;
+    }
 }

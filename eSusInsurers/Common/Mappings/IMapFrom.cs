@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 
-namespace eSusInsurers.Common.Mappings;
-
-public interface IMapFrom<T>
+namespace eSusInsurers.Common.Mappings
 {
-    void Mapping(Profile profile)
+    public interface IMapFrom<T>
     {
-        profile.CreateMap(typeof(T), GetType());
+        void Mapping(Profile profile) => profile.CreateMap(typeof(T), GetType());
     }
 }

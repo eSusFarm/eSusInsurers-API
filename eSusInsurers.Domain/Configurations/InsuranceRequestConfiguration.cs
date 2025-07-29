@@ -49,7 +49,8 @@ namespace eSusInsurers.Domain.Configurations
             entity.Property(e => e.ModifiedBy).HasMaxLength(100);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             entity.Property(e => e.ProgramName).HasMaxLength(500);
-
+            entity.Property(e => e.InsuredAmount);
+            entity.Property(e => e.PremiumAmount);
             OnConfigurePartial(entity);
         }
 

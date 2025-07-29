@@ -1,23 +1,25 @@
-﻿namespace eSusInsurers.Common.Exceptions;
-
-public class UnauthorizedException : Exception
+﻿namespace eSusInsurers.Common.Exceptions
 {
-    public UnauthorizedException()
+    public class UnauthorizedException : Exception
     {
-    }
+        public UnauthorizedException()
+            : base()
+        {
+        }
 
-    public UnauthorizedException(string message)
-        : base(message)
-    {
-    }
+        public UnauthorizedException(string message)
+            : base(message)
+        {
+        }
 
-    public UnauthorizedException(string message, Exception innerException)
-        : base(message, innerException)
-    {
-    }
+        public UnauthorizedException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
 
-    public UnauthorizedException(string name, object key)
-        : base($"Entity \"{name}\" ({key}) was not found.")
-    {
+        public UnauthorizedException(string name, object key)
+            : base($"Entity \"{name}\" ({key}) was not found.")
+        {
+        }
     }
 }
