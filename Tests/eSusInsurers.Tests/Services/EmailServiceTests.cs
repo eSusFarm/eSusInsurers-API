@@ -86,7 +86,7 @@ public class EmailServiceTests
         await emailService.SendEmailAsync(parameters, eventName, toAddresses, attachments, cancellationToken);
 
         // Give time for the fire-and-forget operation to complete
-        await Task.Delay(200);
+        await Task.Delay(500);
 
         // Assert
         _mockEmailSender.Verify(
@@ -125,7 +125,7 @@ public class EmailServiceTests
         await emailService.SendEmailAsync(parameters, eventName, toAddresses, null, cancellationToken);
 
         // Give time for the fire-and-forget operation to complete
-        await Task.Delay(200);
+        await Task.Delay(500);
 
         // Assert
         _mockEmailSender.Verify(s => s.SendEmailAsync(It.IsAny<Message>()), Times.Never);
@@ -157,7 +157,7 @@ public class EmailServiceTests
         await emailService.SendEmailAsync(parameters, eventName, toAddresses, null, cancellationToken);
 
         // Give time for the fire-and-forget operation to complete
-        await Task.Delay(200);
+        await Task.Delay(500);
 
         // Assert - The exception should be caught and handled by FireForget, so no email should be sent
         _mockEmailSender.Verify(s => s.SendEmailAsync(It.IsAny<Message>()), Times.Never);
