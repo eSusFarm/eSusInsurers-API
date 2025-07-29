@@ -1,10 +1,11 @@
 ﻿using eSusInsurers.Models.Common;
 
-namespace eSusInsurers.Models.SeasonCutOffDate;
-
-public class GetSeasonCutOffDatesQuery
+namespace eSusInsurers.Models.SeasonCutOffDate
 {
-    public PagingOptions pagingOptions { get; set; }
-    public SeasonCutOffDatesFilterOptions? filter { get; set; }
-    public SortingOptions? sortingOptions { get; set; }
+    public class GetSeasonCutOffDatesQuery
+    {
+        public PagingOptions pagingOptions { get; set; }
+        public SeasonCutOffDatesFilterOptions? filter { get; set; }
+        public SortingOptions? sortingOptions { get; set; }
+    }
 }

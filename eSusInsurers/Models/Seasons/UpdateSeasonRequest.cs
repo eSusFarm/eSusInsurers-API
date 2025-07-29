@@ -2,17 +2,18 @@
 using eSusInsurers.Common.Mappings;
 using eSusInsurers.Domain.Entities;
 
-namespace eSusInsurers.Models.Seasons;
-
-public class UpdateSeasonRequest : IMapFrom<Season>
+namespace eSusInsurers.Models.Seasons
 {
-    public string SeasonName { get; set; } = null!;
-
-    public string SeasonYear { get; set; } = null!;
-
-    public void Mapping(Profile profile)
+    public class UpdateSeasonRequest : IMapFrom<Season>
     {
-        profile.CreateMap<UpdateSeasonRequest, Season>()
-            .ForMember(x => x.IsActive, opt => opt.MapFrom(c => true));
+        public string SeasonName { get; set; } = null!;
+
+        public string SeasonYear { get; set; } = null!;
+
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<UpdateSeasonRequest, Season>()
+                .ForMember(x => x.IsActive, opt => opt.MapFrom(c => true));
+        }
     }
 }

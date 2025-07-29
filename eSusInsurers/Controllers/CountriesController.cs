@@ -1,124 +1,199 @@
-﻿using eSusInsurers.Models.Countries;
+﻿using System.Web;
+using eSusInsurers.Models.Countries;
 using eSusInsurers.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eSusInsurers.Controllers;
-
-/// <summary>
-///     Controller for countries.
-/// </summary>
-[Route("countries")]
-public class CountriesController(ICountriesService countriesService) : BaseController
+namespace eSusInsurers.Controllers
 {
     /// <summary>
-    ///     Get regions by country Id
+    /// Controller for countries.
     /// </summary>
-    /// <remarks>
-    ///     Returns regions.
-    /// </remarks>
-    /// <param name="countryId">Country Id.</param>
-    /// <response code="200">Returns regions.</response>
-    /// <returns>Returns regions</returns>
-    [HttpGet("{countryId}/regions")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RegionModel>))]
-    public async Task<ActionResult<List<RegionModel>>> GetRegions(long countryId)
+    [Route("countries")]
+    public class CountriesController(ICountriesService countriesService) : BaseController
     {
-        try
+        /// <summary>
+        /// Get regions by country Id
+        /// </summary>
+        /// <remarks>
+        /// Returns regions.
+        /// </remarks>
+        /// <param name="countryId">Country Id.</param>
+        /// <response code="200">Returns regions.</response>
+        /// <returns>Returns regions</returns>
+        [HttpGet("{countryId}/regions")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RegionModel>))]
+        public async Task<ActionResult<List<RegionModel>>> GetRegions(long countryId)
         {
-            var result = await countriesService.GetRegions(countryId, new CancellationToken());
+            try
+            {
+                var result = await countriesService.GetRegions(countryId, new CancellationToken());
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
         }
-        catch (Exception e)
-        {
-            return BadRequest(new { ErrorMessage = e.Message });
-        }
-    }
 
-    /// <summary>
-    ///     Get districts by region id
-    /// </summary>
-    /// <remarks>
-    ///     Returns districts.
-    /// </remarks>
-    /// <param name="regionId">Region Id</param>
-    /// <param name="countryId">Country Id</param>
-    /// <response code="200">Returns districts.</response>
-    /// <returns>Returns districts</returns>
-    [HttpGet("{countryId}/regions/{regionId}/districts")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<DistrictModel>))]
-    public async Task<ActionResult<List<DistrictModel>>> GetDistricts(long countryId, long regionId)
-    {
-        try
+        /// <summary>
+        /// Get districts by region id
+        /// </summary>
+        /// <remarks>
+        /// Returns districts.
+        /// </remarks>
+        /// <param name="regionId">Region Id</param>
+        /// <param name="countryId">Country Id</param>
+        /// <response code="200">Returns districts.</response>
+        /// <returns>Returns districts</returns>
+        [HttpGet("{countryId}/regions/{regionId}/districts"), Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<DistrictModel>))]
+        public async Task<ActionResult<List<DistrictModel>>> GetDistricts(long countryId, long regionId)
         {
-            var result = await countriesService.GetDistricts(countryId, regionId, new CancellationToken());
-            return Ok(result);
+            try
+            {
+                var result = await countriesService.GetDistricts(countryId, regionId, new CancellationToken());
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
         }
-        catch (Exception e)
+        
+        /// <summary>
+        /// Get districts by region id
+        /// </summary>
+        /// <remarks>
+        /// Returns districts.
+        /// </remarks>
+        /// <param name="regionId">Region Id</param>
+        /// <param name="countryId">Country Id</param>
+        /// <response code="200">Returns districts.</response>
+        /// <returns>Returns districts</returns>
+        [HttpGet("{countryId}/regions/{regionId}/districts/search"), Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<DistrictModel>))]
+        public async Task<ActionResult<List<DistrictModel>>> GetDistrictsByFirstThreeCharacters(long countryId, long regionId)
         {
-            return BadRequest(new { ErrorMessage = e.Message });
+            try
+            {
+                String queryString = HttpUtility.ParseQueryString(Convert.ToString(Request?.QueryString)).Get("value");
+                var result = await countriesService.GetDistrictsByFirstThreeCharacters(countryId, regionId, new CancellationToken(), queryString);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
         }
-    }
 
-    /// <summary>
-    ///     Get subcounties by district id
-    /// </summary>
-    /// <remarks>
-    ///     Returns subcounties.
-    /// </remarks>
-    /// <param name="regionId">Region Id</param>
-    /// <param name="countryId">Country Id</param>
-    /// <param name="districtId">District Id</param>
-    /// <response code="200">Returns subcounties.</response>
-    /// <returns>Returns subcounties</returns>
-    [HttpGet("{countryId}/regions/{regionId}/districts/{districtId}/subcounties")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<SubCountiesModel>))]
-    public async Task<ActionResult<List<SubCountiesModel>>> GetSubcounties(long countryId, long regionId,
-        long districtId)
-    {
-        try
+        /// <summary>
+        /// Get subcounties by district id
+        /// </summary>
+        /// <remarks>
+        /// Returns subcounties.
+        /// </remarks>
+        /// <param name="regionId">Region Id</param>
+        /// <param name="countryId">Country Id</param>
+        /// <param name="districtId">District Id</param>
+        /// <response code="200">Returns subcounties.</response>
+        /// <returns>Returns subcounties</returns>
+        [HttpGet("{countryId}/regions/{regionId}/districts/{districtId}/subcounties"), Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<SubCountiesModel>))]
+        public async Task<ActionResult<List<SubCountiesModel>>> GetSubcounties(long countryId, long regionId, long districtId)
         {
-            var result =
-                await countriesService.GetSubcounties(countryId, regionId, districtId, new CancellationToken());
-            return Ok(result);
+            try
+            {
+                var result = await countriesService.GetSubcounties(countryId, regionId, districtId, new CancellationToken());
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
         }
-        catch (Exception e)
+        
+        /// <summary>
+        /// Get subcounties by district id and search text
+        /// </summary>
+        /// <remarks>
+        /// Returns subcounties.
+        /// </remarks>
+        /// <param name="regionId">Region Id</param>
+        /// <param name="countryId">Country Id</param>
+        /// <param name="districtId">District Id</param>
+        /// <response code="200">Returns subcounties.</response>
+        /// <returns>Returns subcounties</returns>
+        [HttpGet("{countryId}/regions/{regionId}/districts/{districtId}/subcounties/search"), Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<SubCountiesModel>))]
+        public async Task<ActionResult<List<SubCountiesModel>>> GetSubcountiesByFirstThreeCharacters(long countryId, long regionId, long districtId)
         {
-            return BadRequest(new { ErrorMessage = e.Message });
+            try
+            {
+                String queryString = HttpUtility.ParseQueryString(Convert.ToString(Request?.QueryString)).Get("value");
+                var result = await countriesService.GetSubcountiesByFirstThreeCharacters(countryId, regionId,districtId, new CancellationToken(), queryString);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
         }
-    }
 
-    /// <summary>
-    ///     Get parishes by subcounty id
-    /// </summary>
-    /// <remarks>
-    ///     Returns parishes.
-    /// </remarks>
-    /// <param name="regionId">Region Id</param>
-    /// <param name="countryId">Country Id</param>
-    /// <param name="districtId">District Id</param>
-    /// <param name="subcountyId">Subcounty Id</param>
-    /// <response code="200">Returns parishes.</response>
-    /// <returns>Returns parishes</returns>
-    [HttpGet("{countryId}/regions/{regionId}/districts/{districtId}/subcounties/{subcountyId}/parishes")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ParishModel>))]
-    public async Task<ActionResult<List<ParishModel>>> GetParishes(long countryId, long regionId, long districtId,
-        long subcountyId)
-    {
-        try
+        /// <summary>
+        /// Get parishes by subcounty id
+        /// </summary>
+        /// <remarks>
+        /// Returns parishes.
+        /// </remarks>
+        /// <param name="regionId">Region Id</param>
+        /// <param name="countryId">Country Id</param>
+        /// <param name="districtId">District Id</param>
+        /// <param name="subcountyId">Subcounty Id</param>
+        /// <response code="200">Returns parishes.</response>
+        /// <returns>Returns parishes</returns>
+        [HttpGet("{countryId}/regions/{regionId}/districts/{districtId}/subcounties/{subcountyId}/parishes"), Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ParishModel>))]
+        public async Task<ActionResult<List<ParishModel>>> GetParishes(long countryId, long regionId, long districtId, long subcountyId)
         {
-            var result = await countriesService.GetParishes(countryId, regionId, districtId, subcountyId,
-                new CancellationToken());
-            return Ok(result);
+            try
+            {
+                var result = await countriesService.GetParishes(countryId, regionId, districtId, subcountyId, new CancellationToken());
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
         }
-        catch (Exception e)
+        
+        /// <summary>
+        /// Get parishes by subcounty id and first three characters.
+        /// </summary>
+        /// <remarks>
+        /// Returns parishes.
+        /// </remarks>
+        /// <param name="regionId">Region Id</param>
+        /// <param name="countryId">Country Id</param>
+        /// <param name="districtId">District Id</param>
+        /// <param name="subcountyId">Subcounty Id</param>
+        /// <response code="200">Returns parishes.</response>
+        /// <returns>Returns parishes</returns>
+        [HttpGet("{countryId}/regions/{regionId}/districts/{districtId}/subcounties/{subcountyId}/parishes/search"), Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ParishModel>))]
+        public async Task<ActionResult<List<ParishModel>>> GetParishesByFirstThreeCharacters(long countryId, long regionId, long districtId, long subcountyId)
         {
-            return BadRequest(new { ErrorMessage = e.Message });
+            try
+            {
+                String queryString = HttpUtility.ParseQueryString(Convert.ToString(Request?.QueryString)).Get("value");
+                var result = await countriesService.GetParishesByFirstThreeCharacters(countryId, regionId, districtId, subcountyId, new CancellationToken(), queryString);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using eSusInsurers.Models.Common;
 
-namespace eSusInsurers.Models.Users.GetUsers;
-
-public class GetUsersResponse
+namespace eSusInsurers.Models.Users.GetUsers
 {
-    public PagedResult<UserModel> Users { get; set; } = PagedResult<UserModel>.Empty;
+    public class GetUsersResponse
+    {
+        public PagedResult<UserModel> Users { get; set; } = PagedResult<UserModel>.Empty;
+    }
 }

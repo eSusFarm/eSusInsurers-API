@@ -3,9 +3,7 @@ using eSusInsurers.Infrastructure.Common;
 
 namespace eSusInsurers.Infrastructure.Interfaces
 {
-  
-    public interface IRegionsRepository: IRepository<Region>
+    public interface IEsusFarmPolicyRepository : IRepository<EsusFarmPolicy>
     {
-    
-    }  
+    }
 }

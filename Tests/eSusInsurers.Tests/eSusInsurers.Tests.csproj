@@ -38,4 +38,8 @@
     <ProjectReference Include="..\..\eSusInsurers\eSusInsurers.csproj" />
     <ProjectReference Include="..\..\eSusInsurers.Infrastructure\eSusInsurers.Infrastructure.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Mappings\" />
+  </ItemGroup>
 </Project>

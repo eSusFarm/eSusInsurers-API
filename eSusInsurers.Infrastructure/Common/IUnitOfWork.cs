@@ -30,7 +30,18 @@ namespace eSusInsurers.Infrastructure.Common
         ISeasonCutOffDateRepository SeasonCutOffDateRepository { get; }
         ICropRepository CropRepository { get; }
         ICropCategoryRepository CropCategoryRepository { get; }
-        IRegionsRepository RegionsRepository { get; }
+        IEsusFarmPolicyRepository EsusFarmPolicyRepository { get; }
+        
+        IInsuranceRequestsRepository InsuranceRequestsRepository { get; }
+        IEtheriscPolicyRepository EtheriscPolicyRepository { get; }
+        IInsurancePoliciesRepository InsurancePoliciesRepository { get; }
+        IInsuranceRiskRepository InsuranceRiskRepository { get; }
+        ICropInsuranceRepository CropInsuranceRepository { get; }
+        IFarmerRepository FarmerRepository { get; }
+        IFarmerCroprepository FarmerCroprepository { get; }
+        IPremiumPaymentsRepository PremiumPaymentsRepository { get; }
+        ILocationsRepository LocationsRepository { get; }
+        
         void SaveChanges();
         Task SaveChangesAsync(CancellationToken cancellationToken);
         IDbContextTransaction BeginTransaction();

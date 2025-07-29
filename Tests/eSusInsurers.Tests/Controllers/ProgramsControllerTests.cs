@@ -3,6 +3,7 @@ using eSusInsurers.Models.Common;
 using eSusInsurers.Models.InsuranceProducts;
 using eSusInsurers.Models.Programs;
 using eSusInsurers.Services.Interfaces;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -66,6 +67,33 @@ public class ProgramsControllerTests
         }
         
         [Fact]
+        public async Task GetCropCategories_ThrowsException_ShouldReturnBadRequest()
+        {
+            //Arrange
+            const int cropCategory = 1;
+            var cropCategories = new List<InsuranceProductModel>
+            {
+                new InsuranceProductModel {InsurancePolicyId = 1 },
+            };
+            
+            // Arrange
+            var pagingOptions = new PagingOptions { Page = 1, PageSize = 10 };
+            var filter = new InsuranceProductFilterOption();
+            var sort = new SortingOptions();
+            var expectedException = new Exception("Test error");
+            _programsService.Setup(s => s.GetPrograms(It.IsAny<GetProgramsQuery>(), It.IsAny<CancellationToken>()))
+                .Throws(expectedException);
+
+            // Act
+            var result = await _controller.Getprograms(pagingOptions);
+
+            // Assert
+            var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
+            var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
+            error.Should().NotBeNull();
+        }
+        
+        [Fact]
         public async Task AddPrograms_ReturnsCreatedResult_WhenSuccessful()
         {
             // Arrange
@@ -83,6 +111,22 @@ public class ProgramsControllerTests
         }
         
         [Fact]
+        public async Task AddPrograms_ReturnsCreatedResult_WhenExceptionThrown()
+        {
+            // Arrange
+            var request = new ProgramRequest();
+            var expectedException = new Exception("Test error");
+            _programsService.Setup(s => s.AddProgram(It.IsAny<ProgramRequest>(), It.IsAny<CancellationToken>()))
+                .Throws(expectedException);
+            // Act
+            var result =  _controller.AddProgram(request);
+            // Assert
+            var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
+            var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
+            error.Should().NotBeNull();
+        }
+        
+        [Fact]
         public async Task UpdatePrograms_ReturnsUpdatedResult_WhenSuccessful()
         {
             // Arrange
@@ -93,10 +137,93 @@ public class ProgramsControllerTests
             _programsService.Setup(s => s.UpdateProgram(programId, It.IsAny<ProgramRequest>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
             // Act
-            var result = await _controller.AddProgram(request);
+            var result = await _controller.UpdateProgram( programId, request);
             // Assert
-            var createdResult = Assert.IsType<ObjectResult>(result);
-            Assert.Equal(201, createdResult.StatusCode);
-            Assert.Equal(expectedResultBool, createdResult.Value);
+            var createdResult = Assert.IsType<NoContentResult>(result);
+            Assert.Equal(204, createdResult.StatusCode);
+        }
+        
+        [Fact]
+        public async Task UpdatePrograms_ReturnsUpdatedResult_WhenExceptionThrown()
+        {
+            // Arrange
+            int programId = 1;
+            var request = new ProgramRequest();
+            
+            var expectedException = new Exception("Test error");
+            _programsService.Setup(s => s.UpdateProgram(programId, It.IsAny<ProgramRequest>(), It.IsAny<CancellationToken>()))
+                .Throws(expectedException);
+            // Act
+            var result =  _controller.UpdateProgram(programId, request);
+            var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
+            var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
+            error.Should().NotBeNull();
+        }
+        [Fact]
+        public async Task DeletePrograms_ReturnsUpdatedResult_WhenSuccessful()
+        {
+            // Arrange
+            int programId = 1;
+            var request = new ProgramRequest();
+            bool expectedResultBool = false;
+
+            _programsService.Setup(s => s.DeleteProgram(programId,  It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+            // Act
+            var result = await _controller.DeleteProgram( programId);
+            // Assert
+            var createdResult = Assert.IsType<NoContentResult>(result);
+            Assert.Equal(204, createdResult.StatusCode);
+        }
+        
+        [Fact]
+        public async Task DeletePrograms_ReturnsUpdatedResult_WhenExceptionThrown()
+        {
+            // Arrange
+            int programId = 1;
+            var request = new ProgramRequest();
+            
+            var expectedException = new Exception("Test error");
+            _programsService.Setup(s => s.DeleteProgram(programId,  It.IsAny<CancellationToken>()))
+                .Throws(expectedException);
+            // Act
+            var result =  _controller.DeleteProgram( programId);
+            var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
+            var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
+            error.Should().NotBeNull();
+        }
+        
+        [Fact]
+        public async Task Activate_ReturnsUpdatedResult_WhenSuccessful()
+        {
+            // Arrange
+            int programId = 1;
+            var request = new ProgramRequest();
+            bool expectedResultBool = false;
+
+            _programsService.Setup(s => s.ActivateProgram(programId,  It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+            // Act
+            var result = await _controller.ActivateProgram( programId);
+            // Assert
+            var createdResult = Assert.IsType<NoContentResult>(result);
+            Assert.Equal(204, createdResult.StatusCode);
+        }
+        
+        [Fact]
+        public async Task ActivatePrograms_ReturnsUpdatedResult_WhenExceptionThrown()
+        {
+            // Arrange
+            int programId = 1;
+            var request = new ProgramRequest();
+            
+            var expectedException = new Exception("Test error");
+            _programsService.Setup(s => s.ActivateProgram(programId,  It.IsAny<CancellationToken>()))
+                .Throws(expectedException);
+            // Act
+            var result =  _controller.ActivateProgram( programId);
+            var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
+            var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;
+            error.Should().NotBeNull();
         }
 }

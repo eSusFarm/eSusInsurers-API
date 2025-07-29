@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace eSusInsurers.Domain.Models;
+
+public partial class InsurancePremium : BaseAuditableEntity
+{
+
+    public int InsurancePolicyId { get; set; }
+
+    public int? InsuranceRiskId { get; set; }
+
+    public decimal? TotalPremiumAmount { get; set; }
+
+    public decimal? PremiumAmountCurrency { get; set; }
+
+    public decimal? SumInsuredAmount { get; set; }
+
+    public decimal? SumInsuredAmountCurrency { get; set; }
+
+    public bool? IsActive { get; set; }
+
+    public virtual ICollection<CropInsurancePremium> CropInsurancePremia { get; set; } = new List<CropInsurancePremium>();
+
+    public virtual ICollection<CropInsurancePremiumsAu> CropInsurancePremiumsAus { get; set; } = new List<CropInsurancePremiumsAu>();
+
+    public virtual InsurancePolicy InsurancePolicy { get; set; } = null!;
+
+    public virtual ICollection<InsurancePremiumFrequency> InsurancePremiumFrequencies { get; set; } = new List<InsurancePremiumFrequency>();
+
+    public virtual ICollection<InsurancePremiumFrequencyAu> InsurancePremiumFrequencyAus { get; set; } = new List<InsurancePremiumFrequencyAu>();
+
+    public virtual InsuranceRisk? InsuranceRisk { get; set; }
+}
