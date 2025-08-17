@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace eSusInsurers.Domain.Entities;
 
+[ExcludeFromCodeCoverage]
 public partial class ApplicationChildMenu : BaseAuditableEntity
 {
 

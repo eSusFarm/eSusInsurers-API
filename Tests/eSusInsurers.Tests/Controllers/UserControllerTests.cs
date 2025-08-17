@@ -1,6 +1,7 @@
 using eSusInsurers.Controllers;
 using eSusInsurers.Models;
 using eSusInsurers.Models.Common;
+using eSusInsurers.Models.Users;
 using eSusInsurers.Models.Users.ChangePassword;
 using eSusInsurers.Models.Users.GetUsers;
 using eSusInsurers.Models.Users.Login;
@@ -274,8 +275,8 @@ public class UserControllerTests
     public async Task ResetPassword_ReturnsSuccessfully()
     {
         _userService.Setup(s =>
-            s.ResetPassword(It.IsAny<string>(), It.IsAny<Models.Users.UpdatePassword.ResetPasswordRequest>(), It.IsAny<CancellationToken>()));
-        var result = _controller.ResetPassword("somehitng@something", new Models.Users.UpdatePassword.ResetPasswordRequest());
+            s.ResetPassword(It.IsAny<string>(), It.IsAny<eSusInsurers.Models.Users.UpdatePassword.ResetPasswordRequest>(), It.IsAny<CancellationToken>()));
+        var result = _controller.ResetPassword("somehitng@something", new eSusInsurers.Models.Users.UpdatePassword.ResetPasswordRequest());
         var okResult = Assert.IsType<OkObjectResult>(result.Result);
     }
     [Fact]
@@ -283,8 +284,8 @@ public class UserControllerTests
     {
         var expectedException = new Exception("Test error");
         _userService.Setup(s =>
-            s.ResetPassword(It.IsAny<string>(), It.IsAny<Models.Users.UpdatePassword.ResetPasswordRequest>(), It.IsAny<CancellationToken>())).Throws(expectedException);
-        var result = _controller.ResetPassword("somehitng@something", new Models.Users.UpdatePassword.ResetPasswordRequest());
+            s.ResetPassword(It.IsAny<string>(), It.IsAny<eSusInsurers.Models.Users.UpdatePassword.ResetPasswordRequest>(), It.IsAny<CancellationToken>())).Throws(expectedException);
+        var result = _controller.ResetPassword("somehitng@something", new eSusInsurers.Models.Users.UpdatePassword.ResetPasswordRequest());
         // Assert
         var badRequestResult = result.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
         var error = badRequestResult.Value.Should().BeAssignableTo<object>().Subject;

@@ -1,5 +1,8 @@
-﻿namespace eSusInsurers.Models.Roles.RoleDetails
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace eSusInsurers.Models.Roles.RoleDetails
 {
+    [ExcludeFromCodeCoverage]
     public class MenuRoleApplicationChildMenu
     {
         public int MenuRolesPrivilegeId { get; set; }
