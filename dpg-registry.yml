@@ -21,11 +21,11 @@ dpga:
       https://github.com/eSusFarm/eSusInsurers-API/blob/develop/PROJECT_CHARTER.md
   security:
     - >-
-      https://github.com/eSusFarm/eSusInsurers-API/blob/develop/docs/Privacy%20Policy.rst
+    - 'https://github.com/eSusFarm/eSusInsurers-API/blob/develop/docs/Privacy%20Policy.rst'
     - 'https://github.com/eSusFarm/eSusInsurers-API/blob/develop/SECURITY.md'
-  code_of_conduct: 'https://github.com/eSusFarm/eSusInsurers-API/blob/develop/CODE_OF_CONDUCT.md'
+  code_of_conduct: 'https://github.com/eSusFarm/eSusInsurers-Web/blob/develop/CODE_OF_CONDUCT.md'
   ai_ethics: >-
-    https://github.com/eSusFarm/eSusInsurers-API/blob/develop/docs/DO_NO_HARM.rst
+    - 'https://github.com/eSusFarm/eSusInsurers-Web/blob/develop/AI_ETHICS.md'
   evidence_of_use:
     - >-
       https://blog.etherisc.com/etherisc-esusfarm-and-agro-consortium-enter-strategic-crop-insurance-partnership-strengthening-8184165782f5
