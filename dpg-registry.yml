@@ -43,8 +43,8 @@ dpga:
   stage: DPG Candidate
   maintainer:
     name: eSusFarm Africa
-    email: opensource@esusfarm.org
-    website: 'https://esusfarm.org'
+    email: admin@esusfarm.africa
+    website: 'https://esusfarm.africa'
   languages:
     - Python
     - JavaScript
