@@ -1,0 +1,64 @@
+version: '1.0'
+dpga:
+  name: eSusFarm Blockchain Weather Index Insurance
+  description: >
+    An open-source blockchain-powered parametric crop insurance solution that
+    provides automated, transparent, and fair payouts to smallholder farmers
+    affected by climate risks. It leverages smart contracts on Ethereum and
+    federated learning-based farmer scoring to ensure equitable insurance access
+    while protecting farmer data privacy.
+  license: MPL-2.0
+  license_url: 'https://www.mozilla.org/en-US/MPL/2.0/'
+  repos:
+    - 'https://github.com/eSusFarm/eSusInsurers-Web'
+    - 'https://github.com/eSusFarm/eSusInsurers-API'
+  documentation:
+    - 'https://esusinsurers-web.readthedocs.io/en/latest/'
+    - 'https://esusinsurers-api.readthedocs.io/en/latest/index.html'
+  contribution_and_governance:
+    - 'https://github.com/eSusFarm/eSusInsurers-API/blob/develop/CONTRIBUTING.md'
+    - >-
+      https://github.com/eSusFarm/eSusInsurers-API/blob/develop/PROJECT_CHARTER.md
+  security:
+    - >-
+      https://github.com/eSusFarm/eSusInsurers-API/blob/develop/docs/Privacy%20Policy.rst
+    - 'https://github.com/eSusFarm/eSusInsurers-API/blob/develop/SECURITY.md'
+  code_of_conduct: 'https://github.com/eSusFarm/eSusInsurers-API/blob/develop/CODE_OF_CONDUCT.md'
+  ai_ethics: >-
+    https://github.com/eSusFarm/eSusInsurers-API/blob/develop/docs/DO_NO_HARM.rst
+  evidence_of_use:
+    - >-
+      https://blog.etherisc.com/etherisc-esusfarm-and-agro-consortium-enter-strategic-crop-insurance-partnership-strengthening-8184165782f5
+  sdgs:
+    - number: 1
+      name: No Poverty
+    - number: 2
+      name: Zero Hunger
+    - number: 5
+      name: Gender Equality
+    - number: 8
+      name: Decent Work and Economic Growth
+    - number: 13
+      name: Climate Action
+  stage: DPG Candidate
+  maintainer:
+    name: eSusFarm Africa
+    email: opensource@esusfarm.org
+    website: 'https://esusfarm.org'
+  languages:
+    - Python
+    - JavaScript
+    - Node.js
+    - React
+    - SQL
+    - Solidity
+  deployment_examples:
+    - >-
+      Piloted in South Africa, Uganda, and Eswatini with 300+ farmers accessing
+      blockchain-based crop insurance.
+    - >-
+      Partnership with Etherisc to integrate decentralized insurance smart
+      contracts for weather-index payouts.
+  federated_learning: true
+  privacy_by_design: true
+  blockchain_smart_contracts: true
