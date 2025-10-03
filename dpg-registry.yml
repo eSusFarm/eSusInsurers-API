@@ -21,7 +21,6 @@ dpga:
       https://github.com/eSusFarm/eSusInsurers-API/blob/develop/PROJECT_CHARTER.md
   security:
     - >-
-    - 'https://github.com/eSusFarm/eSusInsurers-API/blob/develop/docs/Privacy%20Policy.rst'
     - 'https://github.com/eSusFarm/eSusInsurers-API/blob/develop/SECURITY.md'
   code_of_conduct: 'https://github.com/eSusFarm/eSusInsurers-Web/blob/develop/CODE_OF_CONDUCT.md'
   ai_ethics: >-
@@ -29,6 +28,8 @@ dpga:
   evidence_of_use:
     - >-
       https://blog.etherisc.com/etherisc-esusfarm-and-agro-consortium-enter-strategic-crop-insurance-partnership-strengthening-8184165782f5
+  privacy: 
+    - 'https://github.com/eSusFarm/eSusInsurers-API/blob/develop/docs/Privacy%20Policy.rst'
   sdgs:
     - number: 1
       name: No Poverty
