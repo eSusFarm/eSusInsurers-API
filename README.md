@@ -39,6 +39,6 @@ cd .\eSusFarm\eSusInsurers-API
 dotnet run
 ```
 #Community
-Please feel free to use our discussions tab to reach out to us for any questions, tips, and be on the lookout for 
+Please feel free to use our [discussions](https://github.com/eSusFarm/eSusInsurers-API/discussions) tab to reach out to us for any questions, tips, and be on the lookout for 
 all our latest announcements!
 
