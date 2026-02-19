@@ -1,4 +1,6 @@
-﻿namespace eSusInsurers.Models.Users.Login
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace eSusInsurers.Models.Users.Login
 {
     public class AuthenticatedResponse
     {
@@ -39,6 +41,7 @@
         public bool? Delete { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class ApplicationChildMenu
     {
         public long? ApplicationChildMenuId { get; set; }

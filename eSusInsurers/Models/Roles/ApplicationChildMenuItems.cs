@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using eSusInsurers.Common.Mappings;
 using eSusInsurers.Domain.Entities;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WMS.Models.Roles
 {
+    [ExcludeFromCodeCoverage]
     public class ApplicationChildMenuItems : IMapFrom<ApplicationChildMenu>, IMapFrom<MenuRolesPrivilege>
     {
         public int ApplicationChildMenuId { get; set; }
@@ -19,7 +21,6 @@ namespace WMS.Models.Roles
         public int Sequence { get; set; }
         
         public List<ApplicationFunctionalitiesList> ApplicationFunctionalities { get; set; } = new();
-
         public void Mapping(Profile profile)
         {
             profile.CreateMap<ApplicationChildMenu, ApplicationChildMenuItems>()
